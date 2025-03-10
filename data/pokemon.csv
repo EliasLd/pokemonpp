@@ -1,0 +1,152 @@
+Nom,Type 1,Type 2,Points de Vie,Attaque,Dégâts d'Attaque
+Bulbizarre,Plante,Poison,45,Fouet Lianes,60
+Herbizarre,Plante,Poison,60,Tranch’Herbe,80
+Florizarre,Plante,Poison,80,Lance-Soleil,100
+Salamèche,Feu,,39,Flammèche,70
+Reptincel,Feu,,58,Lance-Flammes,85
+Dracaufeu,Feu,Vol,78,Déflagration,110
+Carapuce,Eau,,44,Pistolet à O,65
+Carabaffe,Eau,,59,Hydrocanon,80
+Tortank,Eau,,79,Hydroblast,105
+Chenipan,Insecte,,45,Charge,50
+Chrysacier,Insecte,,50,Armure,30
+Papilusion,Insecte,Vol,60,Poudre Dodo,70
+Aspicot,Insecte,Poison,40,Dard-Venin,50
+Coconfort,Insecte,Poison,45,Armure,40
+Dardargnan,Insecte,Poison,65,Furie,120
+Roucool,Normal,Vol,40,Tornade,60
+Roucoups,Normal,Vol,63,Cru-Ailes,80
+Roucarnage,Normal,Vol,83,Lame d’Air,100
+Rattata,Normal,,30,Morsure,75
+Rattatac,Normal,,55,Tranche,110
+Piafabec,Normal,Vol,40,Picpic,60
+Rapasdepic,Normal,Vol,65,Drill-Peck,100
+Abo,Poison,,35,Morsure,60
+Arbok,Poison,,60,Acide,85
+Pikachu,Électrik,,35,Éclair,70
+Raichu,Électrik,,60,Tonnerre,100
+Sabelette,Sol,,50,Griffe,60
+Sablaireau,Sol,,75,Jet de Sable,85
+Nidoran♀,Poison,,55,Dard-Venin,60
+Nidorina,Poison,,70,Morsure,80
+Nidoqueen,Poison,Sol,90,Coup de Boule,110
+Nidoran♂,Poison,,46,Dard-Venin,55
+Nidorino,Poison,,61,Coup de Boule,75
+Nidoking,Poison,Sol,81,Poing-Karate,105
+Mélofée,Fée,,70,Métronome,60
+Mélodelfe,Fée,,95,Vague Psy,80
+Goupix,Feu,,38,Flammèche,55
+Feunard,Feu,,73,Déflagration,100
+Rondoudou,Normal,Fée,115,Berceuse,50
+Grodoudou,Normal,Fée,140,Métronome,70
+Nosferapti,Poison,Vol,40,Vampirisme,60
+Nosferalto,Poison,Vol,75,Cru-Ailes,80
+Mystherbe,Plante,Poison,45,Poudre Toxik,55
+Ortide,Plante,Poison,60,Acide,75
+Rafflesia,Plante,Poison,75,Lance-Soleil,100
+Paras,Insecte,Plante,35,Spore,55
+Parasect,Insecte,Plante,60,Tranch’Herbe,85
+Mimitoss,Insecte,Poison,60,Poudre Dodo,60
+Aéromite,Insecte,Poison,70,Cru-Ailes,85
+Taupiqueur,Sol,,10,Tunnel,80
+Triopikeur,Sol,,35,Tunnel,100
+Miaouss,Normal,,40,Griffe,55
+Persian,Normal,,65,Morsure,90
+Psykokwak,Eau,,50,Choc Mental,60
+Akwakwak,Eau,,80,Hydrocanon,110
+Férosinge,Combat,,40,Poing-Karate,65
+Colossinge,Combat,,65,Poing de Feu,95
+Caninos,Feu,,55,Flammèche,75
+Arcanin,Feu,,90,Déflagration,120
+Ptitard,Eau,,40,Pistolet à O,55
+Têtarte,Eau,,65,Hydroqueue,75
+Tartard,Eau,Combat,90,Onde Boréale,110
+Abra,Psy,,25,Choc Mental,50
+Kadabra,Psy,,40,Psyko,90
+Alakazam,Psy,,55,Psyko,120
+Machoc,Combat,,70,Balayage,60
+Machopeur,Combat,,80,Dynamopoing,85
+Mackogneur,Combat,,90,Coup Cross,120
+Chétiflor,Plante,Poison,50,Tranch’Herbe,60
+Boustiflor,Plante,Poison,65,Acide,80
+Empiflor,Plante,Poison,80,Lance-Soleil,100
+Tentacool,Eau,Poison,40,Acide,55
+Tentacruel,Eau,Poison,80,Hydrocanon,95
+Racaillou,Roche,Sol,40,Jet-Pierres,60
+Gravalanch,Roche,Sol,55,Éboulement,80
+Grolem,Roche,Sol,80,Explosion,120
+Ponyta,Feu,,50,Flammèche,65
+Galopa,Feu,,65,Déflagration,110
+Ramoloss,Eau,Psy,90,Pistolet à O,60
+Flagadoss,Eau,Psy,95,Psyko,110
+Magnéti,Électrik,Acier,25,Éclair,55
+Magnéton,Électrik,Acier,50,Tonnerre,95
+Canarticho,Normal,Vol,52,Coupe,70
+Doduo,Normal,Vol,35,Cru-Ailes,75
+Dodrio,Normal,Vol,60,Drill-Peck,100
+Otaria,Eau,,65,Aurora Beam,70
+Lamantine,Eau,Glace,90,Blizzard,110
+Tadmorv,Poison,,80,Acide,70
+Grotadmorv,Poison,,105,Toxik,95
+Kokiyas,Eau,,30,Écume,55
+Crustabri,Eau,Glace,50,Laser Glace,85
+Fantominus,Spectre,Poison,30,Léchouille,60
+Spectrum,Spectre,Poison,45,Ball’Ombre,90
+Ectoplasma,Spectre,Poison,60,Ball’Ombre,120
+Onix,Roche,Sol,35,Queue de Fer,70
+Soporifik,Psy,,60,Choc Mental,60
+Hypnomade,Psy,,85,Psyko,100
+Krabby,Eau,,30,Pince-Masse,75
+Krabboss,Eau,,55,Hydroqueue,95
+Voltorbe,Électrik,,40,Éclair,55
+Électrode,Électrik,,60,Tonnerre,95
+Nœunœuf,Plante,Psy,60,Choc Mental,65
+Noadkoko,Plante,Psy,95,Lance-Soleil,120
+Osselait,Sol,,50,Massd’Os,70
+Ossatueur,Sol,,60,Massd’Os,95
+Kicklee,Combat,,50,Pied-Voltige,120
+Tygnon,Combat,,50,Poing-Karaté,100
+Excelangue,Normal,,90,Léchouille,85
+Smogo,Poison,,40,Toxik,60
+Smogogo,Poison,,65,Purédpois,95
+Rhinocorne,Sol,Roche,80,Éboulement,85
+Rhinoféros,Sol,Roche,105,Séisme,120
+Leveinard,Normal,,250,Écras’Face,55
+Saquedeneu,Plante,,65,Tranch’Herbe,80
+Kangourex,Normal,,105,Uppercut,95
+Hypotrempe,Eau,,30,Pistolet à O,55
+Hypocéan,Eau,,55,Hydrocanon,90
+Poissirène,Eau,,45,Picpic,65
+Poissoroy,Eau,,80,Hydroqueue,95
+Stari,Eau,,30,Laser Glace,75
+Staross,Eau,Psy,60,Psyko,120
+Mime,Psy,Fée,40,Mur Lumière,100
+Insécateur,Insecte,Vol,70,Cru-Ailes,110
+Lippoutou,Glace,Psy,65,Blizzard,115
+Élektek,Électrik,,65,Tonnerre,110
+Magmar,Feu,,65,Déflagration,110
+Scarabrute,Insecte,,65,Coup de Boule,125
+Tauros,Normal,,75,Charge,100
+Magicarpe,Eau,,20,Éclaboussure,10
+Léviator,Eau,Vol,95,Hydroqueue,120
+Lokhlass,Eau,Glace,130,Laser Glace,120
+Métamorph,Normal,,48,Morphing,0
+Évoli,Normal,,55,Morsure,70
+Aquali,Eau,,130,Hydrocanon,110
+Voltali,Électrik,,65,Tonnerre,110
+Pyroli,Feu,,65,Déflagration,110
+Porygon,Normal,,65,Vague Psy,90
+Amonita,Roche,Eau,35,Éboulement,80
+Amonistar,Roche,Eau,70,Hydrocanon,110
+Kabuto,Roche,Eau,30,Tranche,75
+Kabutops,Roche,Eau,60,Lame de Roc,115
+Ptéra,Roche,Vol,80,Cru-Ailes,120
+Ronflex,Normal,,160,Coud’Krâne,110
+Artikodin,Glace,Vol,90,Blizzard,125
+Électhor,Électrik,Vol,90,Fatal-Foudre,125
+Sulfura,Feu,Vol,90,Lance-Flammes,125
+Minidraco,Dragon,,41,Draco-Rage,90
+Draco,Dragon,,61,Vive-Attaque,110
+Dracolosse,Dragon,Vol,91,Colère,140
+Mewtwo,Psy,,106,Psyko,150
+Mew,Psy,,100,Métronome,100
