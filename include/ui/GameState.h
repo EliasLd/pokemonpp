@@ -2,10 +2,12 @@
 #define GAMESTATE_H
 
 enum class GameState {
+    StartMenu,
     MainMenu,
-    Selection,
+    SelectionMenu,
     Battle,
-    Exit
+    Credits,
+    Exit,
 };
 
 #endif
