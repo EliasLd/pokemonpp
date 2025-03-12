@@ -1,4 +1,5 @@
 #include "Pokemon.h"
+#include "PokemonReader.h"
 
 Pokemon::Pokemon(const std::string& name, const std::string& type1, const std::string& type2, int hp, const std::string& attack_name, int attack_damage)
     : name {name}
@@ -78,17 +79,27 @@ PokemonPlante::PokemonPlante(const std::string& name, const std::string& type1, 
         resistances = { "Eau", "Sol", "Roche" };
     }
 
-std::shared_ptr<Pokemon> createPokemon(const std::string& name, const std::string& type1, const std::string& type2, int hp, const std::string& attackName, int attackDamage) {
-
-    if (type1 == "Feu" || type2 == "Feu") 
-        return std::make_shared<PokemonFeu>(name, type1, type2, hp, attackName, attackDamage);
-    if (type1 == "Eau" || type2 == "Eau") 
-        return std::make_shared<PokemonEau>(name, type1, type2, hp, attackName, attackDamage);
-    if (type1 == "Plante" || type2 == "Plante") 
-        return std::make_shared<PokemonPlante>(name, type1, type2, hp, attackName, attackDamage);
-
-    std::cerr << "The type of the pokemon " << name << " is not handled yet." << std::endl;
+    std::shared_ptr<Pokemon> createPokemon(
+        const std::string& name, 
+        const std::string& type1, 
+        const std::string& type2, 
+        int hp, 
+        const std::string& attackName, 
+        int attackDamage
+    ) {
+        HandledTypes r_type1 { getHandledType(type1) };
+        HandledTypes r_type2 { getHandledType(type2) };
     
-    return nullptr;  
-}
+        // Check if the type is handled
+        if (r_type1 == HandledTypes::Feu || r_type2 == HandledTypes::Feu)
+            return std::make_shared<PokemonFeu>(name, type1, type2, hp, attackName, attackDamage);
+        if (r_type1 == HandledTypes::Eau || r_type2 == HandledTypes::Eau) 
+            return std::make_shared<PokemonEau>(name, type1, type2, hp, attackName, attackDamage);
+        if (r_type1 == HandledTypes::Plante || r_type2 == HandledTypes::Plante)
+            return std::make_shared<PokemonPlante>(name, type1, type2, hp, attackName, attackDamage);
+    
+        std::cerr << "The type of the pokemon " << name << " is not handled yet." << std::endl;
 
+        return nullptr;
+    }
+    
