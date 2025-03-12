@@ -1,6 +1,8 @@
 #include "Pokemon.h"
 #include "PokemonReader.h"
 
+#include <iomanip>
+
 Pokemon::Pokemon(const std::string& name, const std::string& type1, const std::string& type2, int hp, const std::string& attack_name, int attack_damage)
     : name {name}
     , type1 {type1}
@@ -9,11 +11,15 @@ Pokemon::Pokemon(const std::string& name, const std::string& type1, const std::s
     , attack_name {attack_name}
     , attack_damage {attack_damage} {}
 
-void Pokemon::display() const {
-    std::cout   << "Pokemon: " << name 
-                << " [" << type1 << (type2.empty() ? "]" : " | " + type2 + "]")
-                << " - " << hp << " hp" << std::endl;
-}
+    const std::string Pokemon::toString() const {
+        std::ostringstream s;
+    
+        s << std::left << std::setw(20) << name;  
+        s << std::setw(25) << ("[" + type1 + (type2.empty() ? "]" : " | " + type2 + "]")); 
+        s << std::setw(10) << " - " + std::to_string(hp) + " hp";  
+    
+        return s.str();
+    }
 
 const std::string& Pokemon::getName() const {
     return name;

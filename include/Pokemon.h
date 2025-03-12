@@ -40,7 +40,7 @@ public:
     const std::vector<std::string>& getResistances() const;
 
     void takeDamage(int damage);
-    void display() const;
+    const std::string toString() const;
 };
 
 class PokemonFeu : public Pokemon 
