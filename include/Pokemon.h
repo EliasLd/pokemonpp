@@ -35,7 +35,7 @@ public:
     const std::string& getType2() const;
     int getHp() const;
     const std::string& getAttackName() const;
-    int getAtackDamage() const;
+    int getAttackDamage() const;
     const std::vector<std::string>& getWeaknesses() const;
     const std::vector<std::string>& getResistances() const;
 

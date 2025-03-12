@@ -35,7 +35,7 @@ const std::string& Pokemon::getAttackName() const {
     return attack_name;
 }
 
-int Pokemon::getAtackDamage() const {
+int Pokemon::getAttackDamage() const {
     return attack_damage;
 }
 
