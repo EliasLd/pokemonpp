@@ -1,0 +1,51 @@
+#ifndef TRAINER_H
+#define TRAINER_H
+
+#include "Pokemon.h"
+
+class Trainer
+{
+protected:
+    std::string name {};
+    std::vector<std::shared_ptr<Pokemon>> pokemons {};
+
+public:
+    Trainer(const std::string& name, std::vector<std::shared_ptr<Pokemon>> pokemons);
+
+    virtual ~Trainer() = default;
+    // pure virtual function
+    virtual const std::string& toString() const = 0;
+};
+
+class Player : public Trainer
+{
+private:
+    int badges {};
+    int wins {};
+    int defeats {};
+
+public:
+    Player(const std::string& name, std::vector<std::shared_ptr<Pokemon>> pokemons);
+    const std::string& toString() const override;
+};
+
+class GymLeader : public Trainer
+{
+private:
+    std::string gym_name {};
+    std::string badge {};
+
+public: 
+    GymLeader(const std::string& name, std::vector<std::shared_ptr<Pokemon>> pokemons,
+              const std::string& gym_name, const std::string& badge);
+    const std::string& toString() const override;
+};
+
+class Master : public Trainer
+{
+public:
+    Master(const std::string& name, std::vector<std::shared_ptr<Pokemon>> pokemons);
+    const std::string& toString() const override;
+};
+
+#endif
