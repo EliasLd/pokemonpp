@@ -3,7 +3,6 @@
 #include "ftxui/component/screen_interactive.hpp"
 #include "ftxui/component/component.hpp"
 #include "ftxui/dom/elements.hpp"
-#include "ftxui/dom/elements.hpp"
 
 using namespace ftxui;
 
@@ -103,7 +102,7 @@ std::vector<std::shared_ptr<Pokemon>> SelectionMenu(ScreenInteractive& screen, s
         scrollable_checkbox,
         warning_message,
         validate_button,
-    }) | border | center | bgcolor(Color::Black);
+    }) | border | center | bgcolor(Color::RGB(0, 0, 0));
 
     screen.Loop(container);
 
