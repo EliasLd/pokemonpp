@@ -1,7 +1,7 @@
 #include "PokemonReader.h"
 #include "StartMenu.h"
 #include "SelectionMenu.h"
-#include "GameState.h"
+#include "Game.h"
 #include "Trainer.h"
 #include "Introduction.h"
 

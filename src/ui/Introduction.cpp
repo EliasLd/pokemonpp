@@ -1,5 +1,5 @@
 #include "Introduction.h"
-#include "GameState.h"
+#include "Game.h"
 
 #include "ftxui/component/screen_interactive.hpp"
 #include "ftxui/component/component.hpp"
