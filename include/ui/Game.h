@@ -1,6 +1,8 @@
 #ifndef GAMESTATE_H
 #define GAMESTATE_H
 
+#include <string>
+
 enum class GameState {
     StartMenu,
     Introduction,
@@ -10,5 +12,10 @@ enum class GameState {
     Credits,
     Exit,
 };
+
+void runGame();
+
+extern const std::string pokemon_filename;
+extern const std::string leader_filename;
 
 #endif
