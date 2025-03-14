@@ -12,6 +12,7 @@ protected:
     std::vector<std::shared_ptr<Pokemon>> pokemons {};
 
 public:
+    Trainer() = default;
     Trainer(const std::string& name, std::vector<std::shared_ptr<Pokemon>> pokemons);
 
     virtual ~Trainer() = default;
