@@ -2,6 +2,7 @@
 #include "StartMenu.h"
 #include "SelectionMenu.h"
 #include "GameState.h"
+#include "Trainer.h"
 
 #include "ftxui/component/screen_interactive.hpp"
 #include "ftxui/component/component.hpp"
@@ -18,6 +19,7 @@ int main()
     std::vector<std::shared_ptr<Pokemon>> selected_pokemons {};
     std::string filename { "../data/pokemon.csv" };
     std::unordered_map<std::string, std::shared_ptr<Pokemon>> pokemons { readPokemonFromCSV(filename) };
+    std::vector<GymLeader> leaders { readGymLeadersFromCSV("../data/leaders.csv", pokemons)};
 
     auto screen { ScreenInteractive::Fullscreen() };
 
@@ -32,6 +34,9 @@ int main()
             selected_pokemons = SelectionMenu(screen, pokemons);
             for(const auto& p: selected_pokemons)
                 std::cout << p->toString() << std::endl;
+                
+            for(const auto& l: leaders)
+                std::cout << l.toString() << std::endl;
             
             state = GameState::Exit;
             break;
