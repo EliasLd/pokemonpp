@@ -32,7 +32,7 @@ GameState StartMenu(ScreenInteractive& screen)
                                         Color::Default, Color::White);
 
     Component selection = Container::Horizontal({
-        Button("Start", [&] {current_state = GameState::SelectionMenu; screen.ExitLoopClosure()();}, style) | center,
+        Button("Start", [&] {current_state = GameState::Introduction; screen.ExitLoopClosure()();}, style) | center,
         Renderer([] { return separatorDouble(); }),
         Button("Exit", [&] {current_state = GameState::Exit; screen.ExitLoopClosure()();}, style) | center,
     });
