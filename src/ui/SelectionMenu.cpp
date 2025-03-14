@@ -4,14 +4,23 @@
 #include "ftxui/component/component.hpp"
 #include "ftxui/dom/elements.hpp"
 
+#include <unordered_map>
+
 using namespace ftxui;
 
 // Interactive pokemon selection menu
-std::vector<std::shared_ptr<Pokemon>> SelectionMenu(ScreenInteractive& screen, std::vector<std::shared_ptr<Pokemon>>& pokemon_list)
+std::vector<std::shared_ptr<Pokemon>> SelectionMenu(
+    ScreenInteractive& screen, 
+    const std::unordered_map<std::string, std::shared_ptr<Pokemon>>& pokemon_map)
 {
-    if(pokemon_list.empty())
+    if(pokemon_map.empty())
         throw std::runtime_error("Error: no pokemon loaded.");
 
+    std::vector<std::shared_ptr<Pokemon>> pokemon_list;
+    for (const auto& pair : pokemon_map) {
+        pokemon_list.push_back(pair.second);
+    }
+    
     // Collects all the entries
     std::vector<std::string> pokemon_choices {};
     for (const auto& p: pokemon_list)
