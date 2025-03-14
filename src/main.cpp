@@ -7,6 +7,7 @@
 #include "ftxui/component/component.hpp"
 
 #include <iostream>
+#include <unordered_map>
 
 using namespace ftxui;
 
@@ -16,7 +17,7 @@ int main()
 
     std::vector<std::shared_ptr<Pokemon>> selected_pokemons {};
     std::string filename { "../data/pokemon.csv" };
-    std::vector<std::shared_ptr<Pokemon>> pokemons { readPokemonFromCSV(filename) };
+    std::unordered_map<std::string, std::shared_ptr<Pokemon>> pokemons { readPokemonFromCSV(filename) };
 
     auto screen { ScreenInteractive::Fullscreen() };
 
@@ -31,6 +32,7 @@ int main()
             selected_pokemons = SelectionMenu(screen, pokemons);
             for(const auto& p: selected_pokemons)
                 std::cout << p->toString() << std::endl;
+            
             state = GameState::Exit;
             break;
 

@@ -4,6 +4,7 @@
 #include "Pokemon.h"
 #include <vector>
 #include <string>
+#include <unordered_map>
 
 enum class HandledTypes {
     Feu,
@@ -14,6 +15,6 @@ enum class HandledTypes {
 
 HandledTypes getHandledType(const std::string& type);
 
-std::vector<std::shared_ptr<Pokemon>> readPokemonFromCSV(const std::string& filename);
+std::unordered_map<std::string, std::shared_ptr<Pokemon>> readPokemonFromCSV(const std::string& filename);
 
 #endif

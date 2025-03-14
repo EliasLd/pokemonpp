@@ -3,6 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <unordered_map>
 
 HandledTypes getHandledType(const std::string& type) {
     
@@ -14,9 +15,9 @@ HandledTypes getHandledType(const std::string& type) {
     return HandledTypes::Undefined;
 }
 
-std::vector<std::shared_ptr<Pokemon>> readPokemonFromCSV(const std::string& filename) 
+std::unordered_map<std::string, std::shared_ptr<Pokemon>> readPokemonFromCSV(const std::string& filename) 
 {
-    std::vector<std::shared_ptr<Pokemon>> pokemons;
+    std::unordered_map<std::string, std::shared_ptr<Pokemon>> pokemons;
     std::ifstream f(filename);
 
     if (!f.is_open()) {
@@ -64,7 +65,7 @@ std::vector<std::shared_ptr<Pokemon>> readPokemonFromCSV(const std::string& file
         }
 
         auto pokemon { createPokemon(name, type1, type2, hp, attackName, attackDamage) };
-        pokemons.push_back(pokemon);
+        pokemons[name] = pokemon;
     }
 
     f.close();
