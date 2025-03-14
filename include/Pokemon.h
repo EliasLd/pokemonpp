@@ -39,8 +39,10 @@ public:
     const std::vector<std::string>& getWeaknesses() const;
     const std::vector<std::string>& getResistances() const;
 
+    // Pokemon methods
     void takeDamage(int damage);
     const std::string toString() const;
+    void assignWeaknessesAndResistances();
 };
 
 class PokemonFeu : public Pokemon 
@@ -78,5 +80,7 @@ std::shared_ptr<Pokemon> createPokemon(
     const std::string& attackName, 
     int attackDamage
 );
+
+void addVectToVect(std::vector<std::string>& dest, const std::vector<std::string>& src);
 
 #endif
