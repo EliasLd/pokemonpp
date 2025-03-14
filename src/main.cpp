@@ -3,6 +3,7 @@
 #include "SelectionMenu.h"
 #include "GameState.h"
 #include "Trainer.h"
+#include "Introduction.h"
 
 #include "ftxui/component/screen_interactive.hpp"
 #include "ftxui/component/component.hpp"
@@ -20,7 +21,9 @@ int main()
     std::string filename { "../data/pokemon.csv" };
     std::unordered_map<std::string, std::shared_ptr<Pokemon>> pokemons { readPokemonFromCSV(filename) };
     std::vector<GymLeader> leaders { readGymLeadersFromCSV("../data/leaders.csv", pokemons)};
-
+    Player player {"", selected_pokemons};
+    std::string player_name {};
+    
     auto screen { ScreenInteractive::Fullscreen() };
 
     while(state != GameState::Exit) {
@@ -30,13 +33,20 @@ int main()
             state = StartMenu(screen);
             break;
 
+        case GameState::Introduction:
+            player_name = IntroductionMenu(screen, state);
+            player.setName(player_name);
+            break;
+        
         case GameState::SelectionMenu:
             selected_pokemons = SelectionMenu(screen, pokemons);
-            for(const auto& p: selected_pokemons)
-                std::cout << p->toString() << std::endl;
-                
-            for(const auto& l: leaders)
-                std::cout << l.toString() << std::endl;
+            player.setPokemons(selected_pokemons);
+
+            std::cout << player.toString() << std::endl;            
+            for(const auto& p: player.getPokemons())
+                std::cout << p->getName() << " ";
+            
+            std::cout << std::endl;
             
             state = GameState::Exit;
             break;

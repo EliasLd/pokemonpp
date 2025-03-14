@@ -8,6 +8,8 @@ Trainer::Trainer(const std::string& name, std::vector<std::shared_ptr<Pokemon>> 
     : name { name }
     , pokemons { std::move(pokemons) } {}
 
+const std::vector<std::shared_ptr<Pokemon>> Trainer::getPokemons() const { return pokemons; }
+
 Player::Player(const std::string& name, std::vector<std::shared_ptr<Pokemon>> pokemons)
     : Trainer(name, pokemons) {}
 
@@ -19,6 +21,10 @@ const std::string Player::toString() const
     s += std::to_string(defeats) + " defeat(s)";
     return s;
 }
+
+void Player::setName(const std::string& new_name) { name = new_name; }
+
+void Player::setPokemons(const std::vector<std::shared_ptr<Pokemon>>& new_pokemons) { pokemons = new_pokemons; }
 
 GymLeader::GymLeader(const std::string& name, std::vector<std::shared_ptr<Pokemon>> pokemons,
                     const std::string& gym_name, const std::string& badge)

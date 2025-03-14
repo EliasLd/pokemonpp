@@ -17,6 +17,8 @@ public:
     virtual ~Trainer() = default;
     // pure virtual function
     virtual const std::string toString() const = 0;
+
+    const std::vector<std::shared_ptr<Pokemon>> getPokemons() const;
 };
 
 class Player : public Trainer
@@ -28,7 +30,12 @@ private:
 
 public:
     Player(const std::string& name, std::vector<std::shared_ptr<Pokemon>> pokemons);
+    Player() = default;
+
     const std::string toString() const override;
+
+    void setName(const std::string& new_name);
+    void setPokemons(const std::vector<std::shared_ptr<Pokemon>>& new_pokemons);
 };
 
 class GymLeader : public Trainer

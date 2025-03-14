@@ -3,6 +3,7 @@
 
 enum class GameState {
     StartMenu,
+    Introduction,
     MainMenu,
     SelectionMenu,
     Battle,
