@@ -1,7 +1,9 @@
 #include "Pokemon.h"
 #include "PokemonReader.h"
+#include "TypeStats.h"
 
 #include <iomanip>
+#include <unordered_set>
 
 Pokemon::Pokemon(const std::string& name, const std::string& type1, const std::string& type2, int hp, const std::string& attack_name, int attack_damage)
     : name {name}
@@ -9,17 +11,42 @@ Pokemon::Pokemon(const std::string& name, const std::string& type1, const std::s
     , type2 {type2}
     , hp {hp}
     , attack_name {attack_name}
-    , attack_damage {attack_damage} {}
+    , attack_damage {attack_damage} 
+{
+    assignWeaknessesAndResistances();
+}
 
-    const std::string Pokemon::toString() const {
-        std::ostringstream s;
-    
-        s << std::left << std::setw(20) << name;  
-        s << std::setw(25) << ("[" + type1 + (type2.empty() ? "]" : " | " + type2 + "]")); 
-        s << std::setw(10) << " - " + std::to_string(hp) + " hp";  
-    
-        return s.str();
-    }
+void addVectToVect(std::vector<std::string>& dest, const std::vector<std::string>& src) {
+    // Create a set to check if an element is already in the dest vector
+    // Without increasing complexity
+    std::unordered_set<std::string> set(dest.begin(), dest.end());
+    for(const auto& elt: src)
+        if(set.find(elt) == set.end())
+            dest.push_back(elt);
+}
+
+void Pokemon::assignWeaknessesAndResistances() {
+    // Weaknesses
+    if(TypeStats::type_weaknesses.count(type1))
+        addVectToVect(weaknesses, TypeStats::type_weaknesses.at(type1));
+    if(TypeStats::type_weaknesses.count(type2))
+        addVectToVect(weaknesses, TypeStats::type_weaknesses.at(type2));
+    // Resistances
+    if(TypeStats::type_resistances.count(type1))
+        addVectToVect(resistances, TypeStats::type_resistances.at(type1));
+    if(TypeStats::type_resistances.count(type2))
+        addVectToVect(resistances, TypeStats::type_resistances.at(type2));
+}
+
+const std::string Pokemon::toString() const {
+    std::ostringstream s;
+
+    s << std::left << std::setw(20) << name;  
+    s << std::setw(25) << ("[" + type1 + (type2.empty() ? "]" : " | " + type2 + "]")); 
+    s << std::setw(10) << " - " + std::to_string(hp) + " hp";  
+
+    return s.str();
+}
 
 const std::string& Pokemon::getName() const {
     return name;
@@ -66,24 +93,15 @@ const std::vector<std::string>& Pokemon::getResistances() const {
 
 PokemonFeu::PokemonFeu(const std::string& name, const std::string& type1, const std::string& type2, int hp, const std::string& attack_name, int attack_damage)
     : Pokemon(name, type1, type2, hp, attack_name, attack_damage) 
-    {
-        weaknesses = { "Eau", "Roche", "Sol" };
-        resistances = { "Plante", "Glace", "Insecte", "Acier", "Fée" };
-    }
+    {}
 
 PokemonEau::PokemonEau(const std::string& name, const std::string& type1, const std::string& type2, int hp, const std::string& attack_name, int attack_damage)
     : Pokemon(name, type1, type2, hp, attack_name, attack_damage) 
-    {
-        weaknesses = { "Plante", "Électrik" };
-        resistances = { "Feu", "Eau", "Glace", "Acier" };
-    }
+    {}
 
 PokemonPlante::PokemonPlante(const std::string& name, const std::string& type1, const std::string& type2, int hp, const std::string& attack_name, int attack_damage)
     : Pokemon(name, type1, type2, hp, attack_name, attack_damage) 
-    {
-        weaknesses = { "Feu", "Glace", "Poison", "Vol", "Insecte" };
-        resistances = { "Eau", "Sol", "Roche" };
-    }
+    {}
 
     std::shared_ptr<Pokemon> createPokemon(
         const std::string& name, 
