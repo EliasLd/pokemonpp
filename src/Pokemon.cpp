@@ -103,6 +103,22 @@ PokemonPlante::PokemonPlante(const std::string& name, const std::string& type1, 
     : Pokemon(name, type1, type2, hp, attack_name, attack_damage) 
     {}
 
+PokemonSol::PokemonSol(const std::string& name, const std::string& type1, const std::string& type2, int hp, const std::string& attack_name, int attack_damage)
+    : Pokemon(name, type1, type2, hp, attack_name, attack_damage) 
+    {}
+
+PokemonElectrik::PokemonElectrik(const std::string& name, const std::string& type1, const std::string& type2, int hp, const std::string& attack_name, int attack_damage)
+    : Pokemon(name, type1, type2, hp, attack_name, attack_damage) 
+    {}
+
+PokemonPoison::PokemonPoison(const std::string& name, const std::string& type1, const std::string& type2, int hp, const std::string& attack_name, int attack_damage)
+    : Pokemon(name, type1, type2, hp, attack_name, attack_damage) 
+    {}
+
+PokemonPsy::PokemonPsy(const std::string& name, const std::string& type1, const std::string& type2, int hp, const std::string& attack_name, int attack_damage)
+    : Pokemon(name, type1, type2, hp, attack_name, attack_damage) 
+    {}
+    
     std::shared_ptr<Pokemon> createPokemon(
         const std::string& name, 
         const std::string& type1, 
@@ -121,6 +137,14 @@ PokemonPlante::PokemonPlante(const std::string& name, const std::string& type1, 
             return std::make_shared<PokemonEau>(name, type1, type2, hp, attackName, attackDamage);
         if (r_type1 == HandledTypes::Plante || r_type2 == HandledTypes::Plante)
             return std::make_shared<PokemonPlante>(name, type1, type2, hp, attackName, attackDamage);
+        if (r_type1 == HandledTypes::Sol || r_type2 == HandledTypes::Sol)
+            return std::make_shared<PokemonSol>(name, type1, type2, hp, attackName, attackDamage);
+        if (r_type1 == HandledTypes::Electrik || r_type2 == HandledTypes::Electrik)
+            return std::make_shared<PokemonElectrik>(name, type1, type2, hp, attackName, attackDamage);
+        if (r_type1 == HandledTypes::Poison || r_type2 == HandledTypes::Poison)
+            return std::make_shared<PokemonPoison>(name, type1, type2, hp, attackName, attackDamage);
+        if (r_type1 == HandledTypes::Psy || r_type2 == HandledTypes::Psy)
+            return std::make_shared<PokemonPsy>(name, type1, type2, hp, attackName, attackDamage);
     
         std::cerr << "The type of the pokemon " << name << " is not handled yet." << std::endl;
 

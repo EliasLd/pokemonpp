@@ -10,6 +10,10 @@ enum class HandledTypes {
     Feu,
     Eau,
     Plante,
+    Sol,
+    Electrik,
+    Poison,
+    Psy,
     Undefined
 };
 

@@ -10,6 +10,10 @@ HandledTypes getHandledType(const std::string& type) {
     if (type == "Feu")          return HandledTypes::Feu;
     if (type == "Eau")          return HandledTypes::Eau;
     if (type == "Plante")       return HandledTypes::Plante;
+    if (type == "Sol")          return HandledTypes::Sol;
+    if (type == "Électrik")     return HandledTypes::Electrik;
+    if (type == "Poison")       return HandledTypes::Poison;
+    if (type == "Psy")          return HandledTypes::Psy;
     
     // Not implemented yet
     return HandledTypes::Undefined;
