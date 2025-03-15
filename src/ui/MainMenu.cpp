@@ -13,7 +13,7 @@ void mainMenu(ftxui::ScreenInteractive& screen, GameState& state, Player& player
 {
     Component exit_button = Button (" Exit game ", [&] {
         screen.ExitLoopClosure()();
-    }, ButtonOption::Animated());
+    }, ButtonOption::Animated(Color::Red));
 
     Component header = Renderer([&] {
         return hbox ({
@@ -43,14 +43,14 @@ void mainMenu(ftxui::ScreenInteractive& screen, GameState& state, Player& player
                 });
             }),
             button | center | size(HEIGHT, EQUAL, 3),
-        });
+        }) | center;
 
         leaders_display->Add(leader_entry);
     } 
 
     Component render = Container::Vertical({
         header,
-        leaders_display,
+        leaders_display | borderDouble,
         exit_button | align_right,
     }) | center | borderDouble | bgcolor(Color::RGB(0, 0, 0));
 

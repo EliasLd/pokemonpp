@@ -103,7 +103,7 @@ std::vector<std::shared_ptr<Pokemon>> SelectionMenu(
             delete[] states;
             screen.ExitLoopClosure()();
         }
-    });
+    }, ButtonOption::Animated());
 
     // Wrapping container, displays all the menu
     Component container = Container::Vertical({
