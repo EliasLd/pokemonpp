@@ -20,6 +20,7 @@ public:
     virtual const std::string toString() const = 0;
 
     const std::vector<std::shared_ptr<Pokemon>> getPokemons() const;
+    const std::string& getName() const;
 };
 
 class Player : public Trainer
@@ -37,6 +38,10 @@ public:
 
     void setName(const std::string& new_name);
     void setPokemons(const std::vector<std::shared_ptr<Pokemon>>& new_pokemons);
+
+    int getBadges() const;
+    int getWins() const;
+    int getDefeats() const;
 };
 
 class GymLeader : public Trainer
@@ -48,7 +53,9 @@ private:
 public: 
     GymLeader(const std::string& name, std::vector<std::shared_ptr<Pokemon>> pokemons,
               const std::string& gym_name, const std::string& badge);
+
     const std::string toString() const override;
+    const std::string& getGymName() const;
 };
 
 class Master : public Trainer

@@ -4,11 +4,16 @@
 #include <fstream>
 #include <sstream>
 
+// Base Constructor
 Trainer::Trainer(const std::string& name, std::vector<std::shared_ptr<Pokemon>> pokemons)
     : name { name }
     , pokemons { std::move(pokemons) } {}
 
+// Base Accessors
 const std::vector<std::shared_ptr<Pokemon>> Trainer::getPokemons() const { return pokemons; }
+const std::string& Trainer::getName() const { return name;}
+
+// Player definition
 
 Player::Player(const std::string& name, std::vector<std::shared_ptr<Pokemon>> pokemons)
     : Trainer(name, pokemons) {}
@@ -23,8 +28,13 @@ const std::string Player::toString() const
 }
 
 void Player::setName(const std::string& new_name) { name = new_name; }
-
 void Player::setPokemons(const std::vector<std::shared_ptr<Pokemon>>& new_pokemons) { pokemons = new_pokemons; }
+
+int Player::getBadges()     const   { return badges; }
+int Player::getWins()       const   { return wins; }
+int Player::getDefeats()    const   { return defeats; }
+
+// GymLeader definition
 
 GymLeader::GymLeader(const std::string& name, std::vector<std::shared_ptr<Pokemon>> pokemons,
                     const std::string& gym_name, const std::string& badge)
@@ -39,6 +49,10 @@ const std::string GymLeader::toString() const
     s += gym_name + " - Badge: " + badge;
     return s;
 }
+
+const std::string& GymLeader::getGymName() const { return gym_name; }
+
+// Master definition
 
 Master::Master(const std::string& name, std::vector<std::shared_ptr<Pokemon>> pokemons)
     : Trainer(name, pokemons) {}
