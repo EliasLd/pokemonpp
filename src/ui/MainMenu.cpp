@@ -13,7 +13,7 @@ void mainMenu(ftxui::ScreenInteractive& screen, GameState& state, Player& player
 {
     Component exit_button = Button (" Exit game ", [&] {
         screen.ExitLoopClosure()();
-    });
+    }, ButtonOption::Animated());
 
     Component header = Renderer([&] {
         return hbox ({
@@ -27,8 +27,30 @@ void mainMenu(ftxui::ScreenInteractive& screen, GameState& state, Player& player
         }) | center | border;
     });
 
+    Component leaders_display = Container::Vertical({});
+
+    for(const auto& leader: leaders) {
+        Component button = Button("Fight", [&] {
+            screen.ExitLoopClosure()();
+        }, ButtonOption::Animated());
+
+        Component leader_entry = Container::Horizontal ({
+            Renderer([=] { 
+                return hbox ({
+                    text(" " + leader.getName() + " - " + leader.getGymName()) 
+                    | vcenter | size(WIDTH, EQUAL, 40),
+                    separatorDouble(),
+                });
+            }),
+            button | center | size(HEIGHT, EQUAL, 3),
+        });
+
+        leaders_display->Add(leader_entry);
+    } 
+
     Component render = Container::Vertical({
         header,
+        leaders_display,
         exit_button | align_right,
     }) | center | borderDouble | bgcolor(Color::RGB(0, 0, 0));
 
