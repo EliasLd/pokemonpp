@@ -7,7 +7,6 @@
 #include "Introduction.h"
 
 #include "ftxui/component/screen_interactive.hpp"
-#include "ftxui/component/component.hpp"
 
 const std::string pokemon_filename  {"../data/pokemon.csv"};
 const std::string leader_filename   {"../data/leaders.csv"};
@@ -43,13 +42,11 @@ void runGame()
         case GameState::SelectionMenu:
             player_pokemons = SelectionMenu(screen, pokemons);
             player.setPokemons(player_pokemons);
+            
+            state = GameState::MainMenu;
+            break;
 
-            std::cout << player.toString() << std::endl;            
-            for(const auto& p: player.getPokemons())
-                std::cout << p->getName() << " ";
-            
-            std::cout << std::endl;
-            
+        case GameState::MainMenu:
             state = GameState::Exit;
             break;
 
