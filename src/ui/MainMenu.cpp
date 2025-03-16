@@ -23,7 +23,9 @@ Component PlayerStats(const Player& player) {
             separatorDouble(),
             text(" " + std::to_string(player.getWins()) + " win(s) ") | color(Color::Green),
             separatorDouble(),
-            text(" " + std::to_string(player.getDefeats()) + " defeat(s) ") | color(Color::Red) | size(WIDTH, EQUAL, 12),
+            text(" " + std::to_string(player.getDefeats()) + " defeat(s) ") | color(Color::Red),
+            separatorDouble(),
+            text(" " + std::to_string(player.getNbPotions()) + " potion(s) ") | color(Color::Pink1),
         }) | center | border;
     });
 
@@ -84,6 +86,42 @@ Component Title(const Player& player, const std::vector<GymLeader>& leaders) {
     return title;
 }
 
+void updatePokemonsEntries(std::vector<std::string>& values, std::vector<std::string>& entries, Player& player) {
+    // Used to display selected pokemon details
+    // and refresh pokmeon order if changed
+    values.clear();
+    entries.clear();
+    for (const auto& p : player.getPokemons()) {
+        values.push_back(p->getName());
+        entries.push_back(p->getName() + " " +
+                            std::to_string(p->getCurrentHp()) + "/" +
+                            std::to_string(p->getBaseHp()));
+    }
+}
+
+Component movePokemonContainer(std::vector<std::string>& values, std::vector<std::string>& entries, Player& player, int& selected) {
+    // Swap pokemon position in pokemon list
+    auto move_up_button = Button("↑", [&] {
+        if (selected > 0) {
+            player.swapPokemons(selected, selected - 1);
+            selected--;
+            updatePokemonsEntries(values, entries, player);
+        }
+    });
+    auto move_down_button = Button("↓", [&] {
+        if (selected < player.getPokemons().size() - 1) {
+            player.swapPokemons(selected, selected + 1);
+            selected++;
+            updatePokemonsEntries(values, entries, player);
+        }
+    });
+
+    return Container::Vertical ({
+        move_up_button,
+        move_down_button,
+    });
+}
+
 void mainMenu(ScreenInteractive& screen, GameState& state, Player& player, 
     std::vector<GymLeader>& leaders, 
     std::vector<Master>& masters)
@@ -92,6 +130,10 @@ void mainMenu(ScreenInteractive& screen, GameState& state, Player& player,
     Component title             { Title(player, leaders) };
     Component leaders_display   { Container::Vertical({}) };
     Component exit_button       { exitButton(screen) };
+
+    std::vector<std::string> tab_values {};
+    std::vector<std::string> tab_entries {};
+    int tab_selected {};
 
     leaders_display->Add(title);
 
@@ -103,11 +145,38 @@ void mainMenu(ScreenInteractive& screen, GameState& state, Player& player,
         }
     } 
 
-    Component render = Container::Vertical({
+    updatePokemonsEntries(tab_values, tab_entries, player);
+    // display player's pokemons
+    auto tab_toggle { Radiobox(&tab_values, &tab_selected) };
+    // display details of selected pokemon
+    auto tab_content = Renderer([&] {
+        return hbox({
+            separatorEmpty(),
+            separatorDouble(),
+            separatorEmpty(),
+            text(tab_entries[tab_selected]),
+            separatorEmpty(),
+        });
+    });
+
+    Component move_container = movePokemonContainer(tab_values, tab_entries, player, tab_selected);
+
+    Component leaders_container = Container::Vertical({
         header,
         leaders_display | border,
         exit_button | align_right,
-    }) | center | borderDouble | bgcolor(Color::RGB(0, 0, 0));
+    }) | center | bgcolor(Color::RGB(0, 0, 0));
+    
+    Component pokemon_container = Container::Horizontal({
+        tab_toggle,
+        tab_content,
+        move_container,
+    }) | border | size(HEIGHT, EQUAL, 6);
+
+    Component render = Container::Horizontal({
+        leaders_container,
+        pokemon_container,
+    }) | center | bgcolor(Color::RGB(0, 0, 0));
 
     screen.Loop(render);
 }
