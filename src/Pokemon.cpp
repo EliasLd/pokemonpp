@@ -39,6 +39,11 @@ void Pokemon::assignWeaknessesAndResistances() {
         addVectToVect(resistances, TypeStats::type_resistances.at(type2));
 }
 
+void Pokemon::heal() {
+    // Full heal
+    current_hp = base_hp;
+}
+
 const std::string Pokemon::toString() const {
     std::ostringstream s;
 

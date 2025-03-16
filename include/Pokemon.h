@@ -45,6 +45,7 @@ public:
     void takeDamage(int damage);
     const std::string toString() const;
     void assignWeaknessesAndResistances();
+    void heal();
 };
 
 class PokemonFeu : public Pokemon 

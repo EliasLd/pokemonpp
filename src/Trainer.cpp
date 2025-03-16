@@ -17,7 +17,11 @@ const std::string& Trainer::getName() const { return name;}
 // Player definition
 
 Player::Player(const std::string& name, std::vector<std::shared_ptr<Pokemon>> pokemons)
-    : Trainer(name, pokemons) {}
+    : Trainer(name, pokemons) 
+{
+    // Player starts with 5 potions
+    nb_potions = 5;
+}
 
 const std::string Player::toString() const 
 {
@@ -30,10 +34,12 @@ const std::string Player::toString() const
 
 void Player::setName(const std::string& new_name) { name = new_name; }
 void Player::setPokemons(const std::vector<std::shared_ptr<Pokemon>>& new_pokemons) { pokemons = new_pokemons; }
+void Player::setNbPotions(int new_nb_potions) { nb_potions = new_nb_potions; }
 
 int Player::getBadges()     const   { return badges; }
 int Player::getWins()       const   { return wins; }
 int Player::getDefeats()    const   { return defeats; }
+int Player::getNbPotions()  const   { return nb_potions; }
 
 void Player::swapPokemons(int index1, int index2) {
     std::swap(pokemons[index1], pokemons[index2]);
