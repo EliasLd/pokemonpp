@@ -12,7 +12,8 @@ protected:
     std::string name;
     std::string type1;
     std::string type2;
-    int hp;
+    int base_hp;
+    int current_hp;
     std::string attack_name;
     int attack_damage;
     std::vector<std::string> weaknesses {};
@@ -22,7 +23,7 @@ public:
     Pokemon (const std::string& name, 
             const std::string& type1, 
             const std::string& type2,
-            int hp, 
+            int base_hp, 
             const std::string& attack_name, 
             int attack_damage);
     
@@ -33,7 +34,8 @@ public:
     const std::string& getName() const;
     const std::string& getType1() const;
     const std::string& getType2() const;
-    int getHp() const;
+    int getBaseHp() const;
+    int getCurrentHp() const;
     const std::string& getAttackName() const;
     int getAttackDamage() const;
     const std::vector<std::string>& getWeaknesses() const;
@@ -51,7 +53,7 @@ public:
     PokemonFeu(const std::string& name, 
                 const std::string& type1, 
                 const std::string& type2, 
-                int hp, const std::string& attack_name, int attack_damage);
+                int base_hp, const std::string& attack_name, int attack_damage);
 };
 
 class PokemonEau : public Pokemon 
@@ -60,7 +62,7 @@ public:
     PokemonEau(const std::string& name,
                 const std::string& type1,
                 const std::string& type2, 
-                int hp, const std::string& attack_name, int attack_damage);
+                int base_hp, const std::string& attack_name, int attack_damage);
 };
 
 class PokemonPlante : public Pokemon 
@@ -69,7 +71,7 @@ public:
     PokemonPlante(const std::string& name, 
         const std::string& type1, 
         const std::string& type2, 
-        int hp, const std::string& attack_name, int attack_damage);
+        int base_hp, const std::string& attack_name, int attack_damage);
 };
 
 class PokemonSol : public Pokemon 
@@ -78,7 +80,7 @@ public:
     PokemonSol(const std::string& name, 
         const std::string& type1, 
         const std::string& type2, 
-        int hp, const std::string& attack_name, int attack_damage);
+        int base_hp, const std::string& attack_name, int attack_damage);
 };
 
 class PokemonElectrik : public Pokemon 
@@ -87,7 +89,7 @@ public:
     PokemonElectrik(const std::string& name, 
         const std::string& type1, 
         const std::string& type2, 
-        int hp, const std::string& attack_name, int attack_damage);
+        int base_hp, const std::string& attack_name, int attack_damage);
 };
 
 class PokemonPoison : public Pokemon 
@@ -96,7 +98,7 @@ public:
     PokemonPoison(const std::string& name, 
         const std::string& type1, 
         const std::string& type2, 
-        int hp, const std::string& attack_name, int attack_damage);
+        int base_hp, const std::string& attack_name, int attack_damage);
 };
 
 class PokemonPsy : public Pokemon 
@@ -105,14 +107,14 @@ public:
     PokemonPsy(const std::string& name, 
         const std::string& type1, 
         const std::string& type2, 
-        int hp, const std::string& attack_name, int attack_damage);
+        int base_hp, const std::string& attack_name, int attack_damage);
 };
 
 std::shared_ptr<Pokemon> createPokemon(
     const std::string& name, 
     const std::string& type1, 
     const std::string& type2, 
-    int hp,
+    int base_hp,
     const std::string& attackName, 
     int attackDamage
 );

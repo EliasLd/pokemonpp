@@ -5,14 +5,15 @@
 #include <iomanip>
 #include <unordered_set>
 
-Pokemon::Pokemon(const std::string& name, const std::string& type1, const std::string& type2, int hp, const std::string& attack_name, int attack_damage)
+Pokemon::Pokemon(const std::string& name, const std::string& type1, const std::string& type2, int base_hp, const std::string& attack_name, int attack_damage)
     : name {name}
     , type1 {type1}
     , type2 {type2}
-    , hp {hp}
+    , base_hp {base_hp}
     , attack_name {attack_name}
     , attack_damage {attack_damage} 
 {
+    current_hp = base_hp;
     assignWeaknessesAndResistances();
 }
 
@@ -43,7 +44,7 @@ const std::string Pokemon::toString() const {
 
     s << std::left << std::setw(20) << name;  
     s << std::setw(25) << ("[" + type1 + (type2.empty() ? "]" : " | " + type2 + "]")); 
-    s << std::setw(10) << " - " + std::to_string(hp) + " hp";  
+    s << std::setw(10) << " - " + std::to_string(base_hp) + " hp";  
 
     return s.str();
 }
@@ -60,8 +61,12 @@ const std::string& Pokemon::getType2() const {
     return type2;
 }
 
-int Pokemon::getHp() const {
-    return hp;
+int Pokemon::getBaseHp() const {
+    return base_hp;
+}
+
+int Pokemon::getCurrentHp() const {
+    return current_hp;
 }
 
 const std::string& Pokemon::getAttackName() const {
@@ -79,8 +84,8 @@ void Pokemon::attack(Pokemon& target) {
 }
 
 void Pokemon::takeDamage(int damage) {
-    hp -= damage;
-    if (hp < 0) hp = 0;
+    current_hp -= damage;
+    if (current_hp < 0) current_hp = 0;
 }
 
 const std::vector<std::string>& Pokemon::getWeaknesses() const {
@@ -91,39 +96,39 @@ const std::vector<std::string>& Pokemon::getResistances() const {
     return resistances;
 }
 
-PokemonFeu::PokemonFeu(const std::string& name, const std::string& type1, const std::string& type2, int hp, const std::string& attack_name, int attack_damage)
-    : Pokemon(name, type1, type2, hp, attack_name, attack_damage) 
+PokemonFeu::PokemonFeu(const std::string& name, const std::string& type1, const std::string& type2, int base_hp, const std::string& attack_name, int attack_damage)
+    : Pokemon(name, type1, type2, base_hp, attack_name, attack_damage) 
     {}
 
-PokemonEau::PokemonEau(const std::string& name, const std::string& type1, const std::string& type2, int hp, const std::string& attack_name, int attack_damage)
-    : Pokemon(name, type1, type2, hp, attack_name, attack_damage) 
+PokemonEau::PokemonEau(const std::string& name, const std::string& type1, const std::string& type2, int base_hp, const std::string& attack_name, int attack_damage)
+    : Pokemon(name, type1, type2, base_hp, attack_name, attack_damage) 
     {}
 
-PokemonPlante::PokemonPlante(const std::string& name, const std::string& type1, const std::string& type2, int hp, const std::string& attack_name, int attack_damage)
-    : Pokemon(name, type1, type2, hp, attack_name, attack_damage) 
+PokemonPlante::PokemonPlante(const std::string& name, const std::string& type1, const std::string& type2, int base_hp, const std::string& attack_name, int attack_damage)
+    : Pokemon(name, type1, type2, base_hp, attack_name, attack_damage) 
     {}
 
-PokemonSol::PokemonSol(const std::string& name, const std::string& type1, const std::string& type2, int hp, const std::string& attack_name, int attack_damage)
-    : Pokemon(name, type1, type2, hp, attack_name, attack_damage) 
+PokemonSol::PokemonSol(const std::string& name, const std::string& type1, const std::string& type2, int base_hp, const std::string& attack_name, int attack_damage)
+    : Pokemon(name, type1, type2, base_hp, attack_name, attack_damage) 
     {}
 
-PokemonElectrik::PokemonElectrik(const std::string& name, const std::string& type1, const std::string& type2, int hp, const std::string& attack_name, int attack_damage)
-    : Pokemon(name, type1, type2, hp, attack_name, attack_damage) 
+PokemonElectrik::PokemonElectrik(const std::string& name, const std::string& type1, const std::string& type2, int base_hp, const std::string& attack_name, int attack_damage)
+    : Pokemon(name, type1, type2, base_hp, attack_name, attack_damage) 
     {}
 
-PokemonPoison::PokemonPoison(const std::string& name, const std::string& type1, const std::string& type2, int hp, const std::string& attack_name, int attack_damage)
-    : Pokemon(name, type1, type2, hp, attack_name, attack_damage) 
+PokemonPoison::PokemonPoison(const std::string& name, const std::string& type1, const std::string& type2, int base_hp, const std::string& attack_name, int attack_damage)
+    : Pokemon(name, type1, type2, base_hp, attack_name, attack_damage) 
     {}
 
-PokemonPsy::PokemonPsy(const std::string& name, const std::string& type1, const std::string& type2, int hp, const std::string& attack_name, int attack_damage)
-    : Pokemon(name, type1, type2, hp, attack_name, attack_damage) 
+PokemonPsy::PokemonPsy(const std::string& name, const std::string& type1, const std::string& type2, int base_hp, const std::string& attack_name, int attack_damage)
+    : Pokemon(name, type1, type2, base_hp, attack_name, attack_damage) 
     {}
     
     std::shared_ptr<Pokemon> createPokemon(
         const std::string& name, 
         const std::string& type1, 
         const std::string& type2, 
-        int hp, 
+        int base_hp, 
         const std::string& attackName, 
         int attackDamage
     ) {
@@ -132,19 +137,19 @@ PokemonPsy::PokemonPsy(const std::string& name, const std::string& type1, const 
     
         // Check if the type is handled
         if (r_type1 == HandledTypes::Feu || r_type2 == HandledTypes::Feu)
-            return std::make_shared<PokemonFeu>(name, type1, type2, hp, attackName, attackDamage);
+            return std::make_shared<PokemonFeu>(name, type1, type2, base_hp, attackName, attackDamage);
         if (r_type1 == HandledTypes::Eau || r_type2 == HandledTypes::Eau) 
-            return std::make_shared<PokemonEau>(name, type1, type2, hp, attackName, attackDamage);
+            return std::make_shared<PokemonEau>(name, type1, type2, base_hp, attackName, attackDamage);
         if (r_type1 == HandledTypes::Plante || r_type2 == HandledTypes::Plante)
-            return std::make_shared<PokemonPlante>(name, type1, type2, hp, attackName, attackDamage);
+            return std::make_shared<PokemonPlante>(name, type1, type2, base_hp, attackName, attackDamage);
         if (r_type1 == HandledTypes::Sol || r_type2 == HandledTypes::Sol)
-            return std::make_shared<PokemonSol>(name, type1, type2, hp, attackName, attackDamage);
+            return std::make_shared<PokemonSol>(name, type1, type2, base_hp, attackName, attackDamage);
         if (r_type1 == HandledTypes::Electrik || r_type2 == HandledTypes::Electrik)
-            return std::make_shared<PokemonElectrik>(name, type1, type2, hp, attackName, attackDamage);
+            return std::make_shared<PokemonElectrik>(name, type1, type2, base_hp, attackName, attackDamage);
         if (r_type1 == HandledTypes::Poison || r_type2 == HandledTypes::Poison)
-            return std::make_shared<PokemonPoison>(name, type1, type2, hp, attackName, attackDamage);
+            return std::make_shared<PokemonPoison>(name, type1, type2, base_hp, attackName, attackDamage);
         if (r_type1 == HandledTypes::Psy || r_type2 == HandledTypes::Psy)
-            return std::make_shared<PokemonPsy>(name, type1, type2, hp, attackName, attackDamage);
+            return std::make_shared<PokemonPsy>(name, type1, type2, base_hp, attackName, attackDamage);
     
         std::cerr << "The type of the pokemon " << name << " is not handled yet." << std::endl;
 
