@@ -19,7 +19,7 @@ Component PlayerStats(const Player& player) {
         return hbox ({
             text(player.getName() + " "),
             separatorDouble(),
-            text(" " + std::to_string(player.getBadges()) + " badges ") | color(Color::BlueLight),
+            text(" " + std::to_string(player.getBadges()) + " badge(s) ") | color(Color::BlueLight),
             separatorDouble(),
             text(" " + std::to_string(player.getWins()) + " win(s) ") | color(Color::Green),
             separatorDouble(),
@@ -95,7 +95,7 @@ void updatePokemonsEntries(std::vector<std::string>& values, std::vector<std::st
         values.push_back(p->getName());
         entries.push_back(p->getName() + " " +
                             std::to_string(p->getCurrentHp()) + "/" +
-                            std::to_string(p->getBaseHp()));
+                            std::to_string(p->getBaseHp()) + " hp");
     }
 }
 
@@ -156,6 +156,7 @@ void mainMenu(ScreenInteractive& screen, GameState& state, Player& player,
             separatorEmpty(),
             text(tab_entries[tab_selected]),
             separatorEmpty(),
+            separatorDouble(),
         });
     });
 
