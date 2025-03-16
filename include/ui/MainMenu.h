@@ -6,6 +6,11 @@
 
 #include "ftxui/component/screen_interactive.hpp"
 
+ftxui::Component exitButton(ftxui::ScreenInteractive& screen);
+ftxui::Component PlayerStats(const Player& player);
+ftxui::Component leaderEntry(ftxui::ScreenInteractive& screen, const GymLeader& leader, const Player& player);
+ftxui::Component Title(const Player& player, const std::vector<GymLeader>& leaders);
+
 void mainMenu(ftxui::ScreenInteractive& screen, GameState& state, Player& player, 
             std::vector<GymLeader>& leaders, 
             std::vector<Master>& masters);
