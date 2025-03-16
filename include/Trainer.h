@@ -49,13 +49,17 @@ class GymLeader : public Trainer
 private:
     std::string gym_name {};
     std::string badge {};
+    int badges_condition{};
+    bool defeated { false };
 
 public: 
     GymLeader(const std::string& name, std::vector<std::shared_ptr<Pokemon>> pokemons,
-              const std::string& gym_name, const std::string& badge);
+              const std::string& gym_name, const std::string& badge, int badges_condition);
 
     const std::string toString() const override;
     const std::string& getGymName() const;
+    int getBadgesCondition() const;
+    bool isDefeated() const;
 };
 
 class Master : public Trainer
