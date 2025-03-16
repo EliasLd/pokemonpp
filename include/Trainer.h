@@ -5,6 +5,8 @@
 
 #include <unordered_map>
 
+inline constexpr int default_potions=5;
+
 class Trainer
 {
 protected:
@@ -29,7 +31,7 @@ private:
     int badges {};
     int wins {};
     int defeats {};
-    int nb_potions {};
+    int nb_potions {default_potions};
 
 public:
     Player(const std::string& name, std::vector<std::shared_ptr<Pokemon>> pokemons);

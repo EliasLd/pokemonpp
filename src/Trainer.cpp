@@ -18,10 +18,7 @@ const std::string& Trainer::getName() const { return name;}
 
 Player::Player(const std::string& name, std::vector<std::shared_ptr<Pokemon>> pokemons)
     : Trainer(name, pokemons) 
-{
-    // Player starts with 5 potions
-    nb_potions = 5;
-}
+{}
 
 const std::string Player::toString() const 
 {
