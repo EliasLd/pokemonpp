@@ -19,7 +19,7 @@ public:
     // pure virtual function
     virtual const std::string toString() const = 0;
 
-    const std::vector<std::shared_ptr<Pokemon>> getPokemons() const;
+    const std::vector<std::shared_ptr<Pokemon>>& getPokemons() const;
     const std::string& getName() const;
 };
 
@@ -42,6 +42,8 @@ public:
     int getBadges() const;
     int getWins() const;
     int getDefeats() const;
+
+    void swapPokemons(int index1, int index2);
 };
 
 class GymLeader : public Trainer

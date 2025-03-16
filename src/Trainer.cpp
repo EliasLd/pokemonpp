@@ -3,6 +3,7 @@
 
 #include <fstream>
 #include <sstream>
+#include <algorithm>
 
 // Base Constructor
 Trainer::Trainer(const std::string& name, std::vector<std::shared_ptr<Pokemon>> pokemons)
@@ -10,7 +11,7 @@ Trainer::Trainer(const std::string& name, std::vector<std::shared_ptr<Pokemon>> 
     , pokemons { std::move(pokemons) } {}
 
 // Base Accessors
-const std::vector<std::shared_ptr<Pokemon>> Trainer::getPokemons() const { return pokemons; }
+const std::vector<std::shared_ptr<Pokemon>>& Trainer::getPokemons() const { return pokemons; }
 const std::string& Trainer::getName() const { return name;}
 
 // Player definition
@@ -33,6 +34,10 @@ void Player::setPokemons(const std::vector<std::shared_ptr<Pokemon>>& new_pokemo
 int Player::getBadges()     const   { return badges; }
 int Player::getWins()       const   { return wins; }
 int Player::getDefeats()    const   { return defeats; }
+
+void Player::swapPokemons(int index1, int index2) {
+    std::swap(pokemons[index1], pokemons[index2]);
+}
 
 // GymLeader definition
 
