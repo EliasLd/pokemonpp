@@ -189,16 +189,18 @@ void mainMenu(ScreenInteractive& screen, GameState& state, Player& player,
     });
 
     Component heal_button = healdButton(tab_selected, player);
+    Component separator_container = Renderer([&] { return vbox(separatorDouble());});
     Component move_container = movePokemonContainer(tab_values, tab_entries, player, tab_selected);
     
     Component pokemon_container = Container::Horizontal({
         tab_toggle,
         tab_content,
         Container::Vertical ({
-            move_container,
-            heal_button | size(WIDTH, EQUAL, 7),
+            move_container | hcenter,
+            separator_container,
+            heal_button,
         }),
-    }) | border | size(HEIGHT, EQUAL, 9);
+    }) | border | size(HEIGHT, EQUAL, 10);
 
     // Renderer, wrap all containers.
     Component render = Container::Horizontal({
