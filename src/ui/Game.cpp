@@ -52,7 +52,10 @@ void runGame()
 
         case GameState::MainMenu:
             mainMenu(screen, state, player, leaders, masters);
-            state = GameState::Exit;
+            break;
+
+        case GameState::Fight:
+            state = GameState::MainMenu;
             break;
 
         case GameState::Exit:

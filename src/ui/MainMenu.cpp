@@ -7,8 +7,9 @@
 
 using namespace ftxui;
 
-Component exitButton(ScreenInteractive& screen) {
+Component exitButton(ScreenInteractive& screen, GameState& state) {
     return Button(" Exit game ", [&] {
+        state = GameState::Exit;
         screen.ExitLoopClosure()();
     }, ButtonOption::Animated(Color::Red));
 }
@@ -32,12 +33,13 @@ Component PlayerStats(const Player& player) {
     return stats;
 }
 
-Component leaderEntry(ScreenInteractive& screen, const GymLeader& leader, const Player& player) {
+Component leaderEntry(ScreenInteractive& screen, const GymLeader& leader, const Player& player, GameState& state) {
     /* 
         Display informations about a gym leader
         and a button to fight them
     */
     Component button = Button("Fight", [&] {
+        state = GameState::Fight;
         screen.ExitLoopClosure()();
     }, ButtonOption::Animated());
 
@@ -154,7 +156,7 @@ void mainMenu(ScreenInteractive& screen, GameState& state, Player& player,
     Component header            { PlayerStats(player) };
     Component title             { Title(player, leaders) };
     Component leaders_display   { Container::Vertical({}) };
-    Component exit_button       { exitButton(screen) };
+    Component exit_button       { exitButton(screen, state) };
 
     std::vector<std::string> tab_values {};
     std::vector<std::string> tab_entries {};
@@ -165,7 +167,7 @@ void mainMenu(ScreenInteractive& screen, GameState& state, Player& player,
     for(const auto& leader: leaders) {
         // Display infos and fight button for each unlocked gym leader
         if(player.getBadges() >= leader.getBadgesCondition()) {
-            Component leader_entry = leaderEntry(screen, leader, player);
+            Component leader_entry = leaderEntry(screen, leader, player, state);
             leaders_display->Add(leader_entry);
         }
     } 

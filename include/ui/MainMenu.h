@@ -6,9 +6,9 @@
 
 #include "ftxui/component/screen_interactive.hpp"
 
-ftxui::Component exitButton(ftxui::ScreenInteractive& screen);
+ftxui::Component exitButton(ftxui::ScreenInteractive& screen, GameState& state);
 ftxui::Component PlayerStats(const Player& player);
-ftxui::Component leaderEntry(ftxui::ScreenInteractive& screen, const GymLeader& leader, const Player& player);
+ftxui::Component leaderEntry(ftxui::ScreenInteractive& screen, const GymLeader& leader, const Player& player, GameState& state);
 ftxui::Component Title(const Player& player, const std::vector<GymLeader>& leaders);
 ftxui::Component movePokemonContainer(std::vector<std::string>& values, std::vector<std::string>& entries, Player& player, int& selected);
 ftxui::Component PokemonDetails(Player& player, int& selected, std::vector<std::string>& values, std::vector<std::string>& entries);
