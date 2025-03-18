@@ -19,11 +19,13 @@ Component PlayerStats(const Player& player) {
         return hbox ({
             text(player.getName() + " "),
             separatorDouble(),
-            text(" " + std::to_string(player.getBadges()) + " badges ") | color(Color::BlueLight),
+            text(" " + std::to_string(player.getBadges()) + " badge(s) ") | color(Color::BlueLight),
             separatorDouble(),
             text(" " + std::to_string(player.getWins()) + " win(s) ") | color(Color::Green),
             separatorDouble(),
-            text(" " + std::to_string(player.getDefeats()) + " defeat(s) ") | color(Color::Red) | size(WIDTH, EQUAL, 12),
+            text(" " + std::to_string(player.getDefeats()) + " defeat(s) ") | color(Color::Red),
+            separatorDouble(),
+            text(" " + std::to_string(player.getNbPotions()) + " potion(s) ") | color(Color::Pink1),
         }) | center | border;
     });
 
@@ -84,6 +86,67 @@ Component Title(const Player& player, const std::vector<GymLeader>& leaders) {
     return title;
 }
 
+void updatePokemonsEntries(std::vector<std::string>& values, std::vector<std::string>& entries, Player& player) {
+    // Used to refresh pokemon displayed pokemon
+    // details when moved
+    values.clear();
+    entries.clear();
+    for (const auto& p : player.getPokemons())
+        values.push_back(p->getName());
+}
+
+Component movePokemonContainer(std::vector<std::string>& values, std::vector<std::string>& entries, Player& player, int& selected) {
+    // Swap pokemon position in pokemon list
+    auto move_up_button = Button("↑", [&] {
+        if (selected > 0) {
+            player.swapPokemons(selected, selected - 1);
+            selected--;
+            updatePokemonsEntries(values, entries, player);
+        }
+    });
+    auto move_down_button = Button("↓", [&] {
+        if (selected < player.getPokemons().size() - 1) {
+            player.swapPokemons(selected, selected + 1);
+            selected++;
+            updatePokemonsEntries(values, entries, player);
+        }
+    });
+
+    return Container::Vertical ({
+        move_up_button | center,
+        move_down_button | center,
+    });
+}
+
+Component PokemonDetails(Player& player, int& selected, std::vector<std::string>& values, std::vector<std::string>& entries) {
+    // Display pokemon details
+    auto& p = player.getPokemons()[selected];
+
+    return Container::Vertical({
+        Renderer([&] {
+            return vbox({
+                text(p->getName()) | bold,
+                separator(),
+                text(std::to_string(p->getCurrentHp()) + "/" + std::to_string(p->getBaseHp()) + " HP"),
+                text("Type(s): " + p->getType1() + (p->getType2().empty() ? "" : ", " + p->getType2())),
+            }) | border | center;
+        }),
+    });
+}
+
+Component healdButton(int& selected, Player& player) {
+    return Button("Heal", [&] {
+        auto& selected_pokemon { player.getPokemons()[selected] };
+        // Heal the pokemon only if needed and player has at least 1 potion
+        if(selected_pokemon->getCurrentHp() < selected_pokemon->getBaseHp() 
+        && player.getNbPotions() > 0) 
+        {
+            selected_pokemon->heal();
+            player.setNbPotions(player.getNbPotions() - 1);
+        }
+    }, ButtonOption::Animated(Color::Pink1));
+}
+
 void mainMenu(ScreenInteractive& screen, GameState& state, Player& player, 
     std::vector<GymLeader>& leaders, 
     std::vector<Master>& masters)
@@ -92,6 +155,10 @@ void mainMenu(ScreenInteractive& screen, GameState& state, Player& player,
     Component title             { Title(player, leaders) };
     Component leaders_display   { Container::Vertical({}) };
     Component exit_button       { exitButton(screen) };
+
+    std::vector<std::string> tab_values {};
+    std::vector<std::string> tab_entries {};
+    int tab_selected {};
 
     leaders_display->Add(title);
 
@@ -103,11 +170,43 @@ void mainMenu(ScreenInteractive& screen, GameState& state, Player& player,
         }
     } 
 
-    Component render = Container::Vertical({
+    Component leaders_container = Container::Vertical({
         header,
         leaders_display | border,
         exit_button | align_right,
-    }) | center | borderDouble | bgcolor(Color::RGB(0, 0, 0));
+    }) | center | bgcolor(Color::RGB(0, 0, 0));
+
+    updatePokemonsEntries(tab_values, tab_entries, player);
+    // display player's pokemons
+    auto tab_toggle { Radiobox(&tab_values, &tab_selected) };
+    // display details of selected pokemon
+    Component tab_content = Renderer([&] {
+        return hbox({
+            separatorDouble(),
+            PokemonDetails(player, tab_selected, tab_values, tab_entries)->Render(),
+            separatorDouble(),
+        }); 
+    });
+
+    Component heal_button = healdButton(tab_selected, player);
+    Component separator_container = Renderer([&] { return vbox(separatorDouble());});
+    Component move_container = movePokemonContainer(tab_values, tab_entries, player, tab_selected);
+    
+    Component pokemon_container = Container::Horizontal({
+        tab_toggle,
+        tab_content,
+        Container::Vertical ({
+            move_container | hcenter,
+            separator_container,
+            heal_button,
+        }),
+    }) | border | size(HEIGHT, EQUAL, 10);
+
+    // Renderer, wrap all containers.
+    Component render = Container::Horizontal({
+        leaders_container,
+        pokemon_container,
+    }) | center | bgcolor(Color::RGB(0, 0, 0));
 
     screen.Loop(render);
 }

@@ -5,6 +5,8 @@
 
 #include <unordered_map>
 
+inline constexpr int default_potions=5;
+
 class Trainer
 {
 protected:
@@ -19,7 +21,7 @@ public:
     // pure virtual function
     virtual const std::string toString() const = 0;
 
-    const std::vector<std::shared_ptr<Pokemon>> getPokemons() const;
+    const std::vector<std::shared_ptr<Pokemon>>& getPokemons() const;
     const std::string& getName() const;
 };
 
@@ -29,6 +31,7 @@ private:
     int badges {};
     int wins {};
     int defeats {};
+    int nb_potions {default_potions};
 
 public:
     Player(const std::string& name, std::vector<std::shared_ptr<Pokemon>> pokemons);
@@ -38,10 +41,14 @@ public:
 
     void setName(const std::string& new_name);
     void setPokemons(const std::vector<std::shared_ptr<Pokemon>>& new_pokemons);
+    void setNbPotions(int new_nb_potions);
 
     int getBadges() const;
     int getWins() const;
     int getDefeats() const;
+    int getNbPotions() const;
+
+    void swapPokemons(int index1, int index2);
 };
 
 class GymLeader : public Trainer
