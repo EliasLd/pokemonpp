@@ -3,15 +3,22 @@
 
 #include <fstream>
 #include <sstream>
+#include <algorithm>
 
+// Base Constructor
 Trainer::Trainer(const std::string& name, std::vector<std::shared_ptr<Pokemon>> pokemons)
     : name { name }
     , pokemons { std::move(pokemons) } {}
 
-const std::vector<std::shared_ptr<Pokemon>> Trainer::getPokemons() const { return pokemons; }
+// Base Accessors
+const std::vector<std::shared_ptr<Pokemon>>& Trainer::getPokemons() const { return pokemons; }
+const std::string& Trainer::getName() const { return name;}
+
+// Player definition
 
 Player::Player(const std::string& name, std::vector<std::shared_ptr<Pokemon>> pokemons)
-    : Trainer(name, pokemons) {}
+    : Trainer(name, pokemons) 
+{}
 
 const std::string Player::toString() const 
 {
@@ -23,14 +30,26 @@ const std::string Player::toString() const
 }
 
 void Player::setName(const std::string& new_name) { name = new_name; }
-
 void Player::setPokemons(const std::vector<std::shared_ptr<Pokemon>>& new_pokemons) { pokemons = new_pokemons; }
+void Player::setNbPotions(int new_nb_potions) { nb_potions = new_nb_potions; }
+
+int Player::getBadges()     const   { return badges; }
+int Player::getWins()       const   { return wins; }
+int Player::getDefeats()    const   { return defeats; }
+int Player::getNbPotions()  const   { return nb_potions; }
+
+void Player::swapPokemons(int index1, int index2) {
+    std::swap(pokemons[index1], pokemons[index2]);
+}
+
+// GymLeader definition
 
 GymLeader::GymLeader(const std::string& name, std::vector<std::shared_ptr<Pokemon>> pokemons,
-                    const std::string& gym_name, const std::string& badge)
+                    const std::string& gym_name, const std::string& badge, int badges_condition)
     : Trainer(name, pokemons)
     , gym_name { gym_name }
-    , badge { badge } {}
+    , badge { badge }
+    , badges_condition { badges_condition } {}
 
 const std::string GymLeader::toString() const
 {
@@ -39,6 +58,12 @@ const std::string GymLeader::toString() const
     s += gym_name + " - Badge: " + badge;
     return s;
 }
+
+const std::string& GymLeader::getGymName() const { return gym_name; }
+int GymLeader::getBadgesCondition() const { return badges_condition; }
+bool GymLeader::isDefeated() const { return defeated; }
+
+// Master definition
 
 Master::Master(const std::string& name, std::vector<std::shared_ptr<Pokemon>> pokemons)
     : Trainer(name, pokemons) {}
@@ -70,13 +95,16 @@ std::vector<GymLeader> readGymLeadersFromCSV(
     while(std::getline(f, line)) {
 
         std::stringstream ss(line);
-        std::string name {}, gym_name {}, badge {};
+        std::string name {}, gym_name {}, badge {}, badge_condition_str {};
         std::vector<std::shared_ptr<Pokemon>> pokemons {};
         std::string pokemon_token {};
 
         std::getline(ss, name, ',');
         std::getline(ss, gym_name, ',');
         std::getline(ss, badge, ',');
+        std::getline(ss, badge_condition_str, ',');
+        
+        int badges_condition { std::stoi(badge_condition_str) };
 
         // Read pokemons (up to 6 tokens)
         while(std::getline(ss, pokemon_token, ',')) {
@@ -93,7 +121,7 @@ std::vector<GymLeader> readGymLeadersFromCSV(
             }
         }
 
-        GymLeader leader {name, pokemons, gym_name, badge};
+        GymLeader leader {name, pokemons, gym_name, badge, badges_condition};
         leaders.push_back(leader);
 
     }
