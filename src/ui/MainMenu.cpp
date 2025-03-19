@@ -1,5 +1,6 @@
 #include "MainMenu.h"
 #include "Game.h"
+#include "Fight.h"
 
 #include "ftxui/component/screen_interactive.hpp"
 #include "ftxui/component/component.hpp"
@@ -33,13 +34,13 @@ Component PlayerStats(const Player& player) {
     return stats;
 }
 
-Component leaderEntry(ScreenInteractive& screen, const GymLeader& leader, const Player& player, GameState& state) {
+Component leaderEntry(ScreenInteractive& screen, GymLeader& leader, Player& player, GameState& state) {
     /* 
         Display informations about a gym leader
         and a button to fight them
     */
     Component button = Button("Fight", [&] {
-        state = GameState::Fight;
+        Fight(screen, player, leader);
         screen.ExitLoopClosure()();
     }, ButtonOption::Animated());
 
@@ -164,7 +165,7 @@ void mainMenu(ScreenInteractive& screen, GameState& state, Player& player,
 
     leaders_display->Add(title);
 
-    for(const auto& leader: leaders) {
+    for(auto& leader: leaders) {
         // Display infos and fight button for each unlocked gym leader
         if(player.getBadges() >= leader.getBadgesCondition()) {
             Component leader_entry = leaderEntry(screen, leader, player, state);

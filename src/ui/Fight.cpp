@@ -11,3 +11,25 @@ bool isOpponentMaster(Trainer& opponent) {
     return dynamic_cast<Master*>(&opponent) != nullptr;
 }
 
+void Fight(ftxui::ScreenInteractive& screen, Player& player, Trainer& opponent) {
+    screen.Clear();
+
+    Component fight_title = Renderer([&] {
+        return hbox ({
+            text("Pokemon trainer " + player.getName()),
+            text(" VS ") | color(Color::Green),
+            text(opponent.toString()), 
+        });
+    });
+
+    Component exit_button = Button("Exit (tmp)", [&] {
+        screen.ExitLoopClosure()();
+    });
+
+    Component renderer = Container::Vertical({
+        fight_title | center,
+        exit_button | center,
+    }) | center | borderDouble;
+
+    screen.Loop(renderer);
+}
