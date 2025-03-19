@@ -137,9 +137,8 @@ Component PokemonDetails(Player& player, int& selected, std::vector<std::string>
     });
 }
 
-Component healdButton(int& selected, Player& player) {
+Component healButton(std::shared_ptr<Pokemon> selected_pokemon, Player& player) {
     return Button("Heal", [&] {
-        auto& selected_pokemon { player.getPokemons()[selected] };
         // Heal the pokemon only if needed and player has at least 1 potion
         if(selected_pokemon->getCurrentHp() < selected_pokemon->getBaseHp() 
         && player.getNbPotions() > 0) 
@@ -191,7 +190,7 @@ void mainMenu(ScreenInteractive& screen, GameState& state, Player& player,
         }); 
     });
 
-    Component heal_button = healdButton(tab_selected, player);
+    Component heal_button = healButton(player.getPokemons()[tab_selected], player);
     Component separator_container = Renderer([&] { return vbox(separatorDouble());});
     Component move_container = movePokemonContainer(tab_values, tab_entries, player, tab_selected);
     
