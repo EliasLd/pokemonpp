@@ -11,7 +11,7 @@ ftxui::Component PlayerStats(const Player& player);
 ftxui::Component leaderEntry(ftxui::ScreenInteractive& screen, GymLeader& leader, Player& player, GameState& state);
 ftxui::Component Title(const Player& player, const std::vector<GymLeader>& leaders);
 ftxui::Component movePokemonContainer(std::vector<std::string>& values, std::vector<std::string>& entries, Player& player, int& selected);
-ftxui::Component PokemonDetails(Player& player, int& selected, std::vector<std::string>& values, std::vector<std::string>& entries);
+ftxui::Component PokemonDetails(std::shared_ptr<Pokemon> p);
 ftxui::Component healButton(std::shared_ptr<Pokemon> selected_pokemon, Player& player);
 
 void updatePokemonsEntries(std::vector<std::string>& values, std::vector<std::string>& entries, Player& player);

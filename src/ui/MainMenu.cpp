@@ -121,10 +121,8 @@ Component movePokemonContainer(std::vector<std::string>& values, std::vector<std
     });
 }
 
-Component PokemonDetails(Player& player, int& selected, std::vector<std::string>& values, std::vector<std::string>& entries) {
+Component PokemonDetails(std::shared_ptr<Pokemon> p) {
     // Display pokemon details
-    auto& p = player.getPokemons()[selected];
-
     return Container::Vertical({
         Renderer([&] {
             return vbox({
@@ -185,7 +183,7 @@ void mainMenu(ScreenInteractive& screen, GameState& state, Player& player,
     Component tab_content = Renderer([&] {
         return hbox({
             separatorDouble(),
-            PokemonDetails(player, tab_selected, tab_values, tab_entries)->Render(),
+            PokemonDetails(player.getPokemons()[tab_selected])->Render(),
             separatorDouble(),
         }); 
     });
