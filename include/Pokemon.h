@@ -27,7 +27,7 @@ public:
             const std::string& attack_name, 
             int attack_damage);
     
-    virtual void attack(Pokemon& p);
+    virtual void attack(std::shared_ptr<Pokemon> target, int damages);
     virtual ~Pokemon() = default;
     
     // Getters

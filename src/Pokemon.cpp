@@ -82,10 +82,8 @@ int Pokemon::getAttackDamage() const {
     return attack_damage;
 }
 
-void Pokemon::attack(Pokemon& target) {
-    std::cout << name << " attaque " << target.getName() << " avec " << attack_name 
-              << " et inflige " << attack_damage << " dégâts !" << std::endl;
-    target.takeDamage(attack_damage);
+void Pokemon::attack(std::shared_ptr<Pokemon> target, int damages) {
+    target->takeDamage(damages);
 }
 
 void Pokemon::takeDamage(int damage) {
