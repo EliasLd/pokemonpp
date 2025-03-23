@@ -103,59 +103,87 @@ PokemonFeu::PokemonFeu(const std::string& name, const std::string& type1, const 
     : Pokemon(name, type1, type2, base_hp, attack_name, attack_damage) 
     {}
 
+std::shared_ptr<Pokemon> PokemonFeu::clone() const {
+    return std::make_shared<PokemonFeu>(*this);
+}
+
 PokemonEau::PokemonEau(const std::string& name, const std::string& type1, const std::string& type2, int base_hp, const std::string& attack_name, int attack_damage)
     : Pokemon(name, type1, type2, base_hp, attack_name, attack_damage) 
     {}
+
+std::shared_ptr<Pokemon> PokemonEau::clone() const {
+    return std::make_shared<PokemonEau>(*this);
+}
 
 PokemonPlante::PokemonPlante(const std::string& name, const std::string& type1, const std::string& type2, int base_hp, const std::string& attack_name, int attack_damage)
     : Pokemon(name, type1, type2, base_hp, attack_name, attack_damage) 
     {}
 
+std::shared_ptr<Pokemon> PokemonPlante::clone() const {
+    return std::make_shared<PokemonPlante>(*this);
+}
+
 PokemonSol::PokemonSol(const std::string& name, const std::string& type1, const std::string& type2, int base_hp, const std::string& attack_name, int attack_damage)
     : Pokemon(name, type1, type2, base_hp, attack_name, attack_damage) 
     {}
+
+std::shared_ptr<Pokemon> PokemonSol::clone() const {
+    return std::make_shared<PokemonSol>(*this);
+}
 
 PokemonElectrik::PokemonElectrik(const std::string& name, const std::string& type1, const std::string& type2, int base_hp, const std::string& attack_name, int attack_damage)
     : Pokemon(name, type1, type2, base_hp, attack_name, attack_damage) 
     {}
 
+std::shared_ptr<Pokemon> PokemonElectrik::clone() const {
+    return std::make_shared<PokemonElectrik>(*this);
+}
+
 PokemonPoison::PokemonPoison(const std::string& name, const std::string& type1, const std::string& type2, int base_hp, const std::string& attack_name, int attack_damage)
     : Pokemon(name, type1, type2, base_hp, attack_name, attack_damage) 
     {}
 
+std::shared_ptr<Pokemon> PokemonPoison::clone() const {
+    return std::make_shared<PokemonPoison>(*this);
+}
+
 PokemonPsy::PokemonPsy(const std::string& name, const std::string& type1, const std::string& type2, int base_hp, const std::string& attack_name, int attack_damage)
     : Pokemon(name, type1, type2, base_hp, attack_name, attack_damage) 
     {}
-    
-    std::shared_ptr<Pokemon> createPokemon(
-        const std::string& name, 
-        const std::string& type1, 
-        const std::string& type2, 
-        int base_hp, 
-        const std::string& attackName, 
-        int attackDamage
-    ) {
-        HandledTypes r_type1 { getHandledType(type1) };
-        HandledTypes r_type2 { getHandledType(type2) };
-    
-        // Check if the type is handled
-        if (r_type1 == HandledTypes::Feu || r_type2 == HandledTypes::Feu)
-            return std::make_shared<PokemonFeu>(name, type1, type2, base_hp, attackName, attackDamage);
-        if (r_type1 == HandledTypes::Eau || r_type2 == HandledTypes::Eau) 
-            return std::make_shared<PokemonEau>(name, type1, type2, base_hp, attackName, attackDamage);
-        if (r_type1 == HandledTypes::Plante || r_type2 == HandledTypes::Plante)
-            return std::make_shared<PokemonPlante>(name, type1, type2, base_hp, attackName, attackDamage);
-        if (r_type1 == HandledTypes::Sol || r_type2 == HandledTypes::Sol)
-            return std::make_shared<PokemonSol>(name, type1, type2, base_hp, attackName, attackDamage);
-        if (r_type1 == HandledTypes::Electrik || r_type2 == HandledTypes::Electrik)
-            return std::make_shared<PokemonElectrik>(name, type1, type2, base_hp, attackName, attackDamage);
-        if (r_type1 == HandledTypes::Poison || r_type2 == HandledTypes::Poison)
-            return std::make_shared<PokemonPoison>(name, type1, type2, base_hp, attackName, attackDamage);
-        if (r_type1 == HandledTypes::Psy || r_type2 == HandledTypes::Psy)
-            return std::make_shared<PokemonPsy>(name, type1, type2, base_hp, attackName, attackDamage);
-    
-        std::cerr << "The type of the pokemon " << name << " is not handled yet." << std::endl;
 
-        return nullptr;
-    }
+std::shared_ptr<Pokemon> PokemonPsy::clone() const {
+    return std::make_shared<PokemonPsy>(*this);
+}
+
+    
+std::shared_ptr<Pokemon> createPokemon(
+    const std::string& name, 
+    const std::string& type1, 
+    const std::string& type2, 
+    int base_hp, 
+    const std::string& attackName, 
+    int attackDamage
+) {
+    HandledTypes r_type1 { getHandledType(type1) };
+    HandledTypes r_type2 { getHandledType(type2) };
+
+    // Check if the type is handled
+    if (r_type1 == HandledTypes::Feu || r_type2 == HandledTypes::Feu)
+        return std::make_shared<PokemonFeu>(name, type1, type2, base_hp, attackName, attackDamage);
+    if (r_type1 == HandledTypes::Eau || r_type2 == HandledTypes::Eau) 
+        return std::make_shared<PokemonEau>(name, type1, type2, base_hp, attackName, attackDamage);
+    if (r_type1 == HandledTypes::Plante || r_type2 == HandledTypes::Plante)
+        return std::make_shared<PokemonPlante>(name, type1, type2, base_hp, attackName, attackDamage);
+    if (r_type1 == HandledTypes::Sol || r_type2 == HandledTypes::Sol)
+        return std::make_shared<PokemonSol>(name, type1, type2, base_hp, attackName, attackDamage);
+    if (r_type1 == HandledTypes::Electrik || r_type2 == HandledTypes::Electrik)
+        return std::make_shared<PokemonElectrik>(name, type1, type2, base_hp, attackName, attackDamage);
+    if (r_type1 == HandledTypes::Poison || r_type2 == HandledTypes::Poison)
+        return std::make_shared<PokemonPoison>(name, type1, type2, base_hp, attackName, attackDamage);
+    if (r_type1 == HandledTypes::Psy || r_type2 == HandledTypes::Psy)
+        return std::make_shared<PokemonPsy>(name, type1, type2, base_hp, attackName, attackDamage);
+
+    std::cerr << "The type of the pokemon " << name << " is not handled yet." << std::endl;
+    return nullptr;
+}
     

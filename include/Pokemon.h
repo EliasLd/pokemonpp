@@ -29,6 +29,7 @@ public:
     
     virtual void attack(std::shared_ptr<Pokemon> target, int damages);
     virtual ~Pokemon() = default;
+    virtual std::shared_ptr<Pokemon> clone() const = 0;
     
     // Getters
     const std::string& getName() const;
@@ -55,6 +56,8 @@ public:
                 const std::string& type1, 
                 const std::string& type2, 
                 int base_hp, const std::string& attack_name, int attack_damage);
+
+    std::shared_ptr<Pokemon> clone() const override;
 };
 
 class PokemonEau : public Pokemon 
@@ -64,6 +67,8 @@ public:
                 const std::string& type1,
                 const std::string& type2, 
                 int base_hp, const std::string& attack_name, int attack_damage);
+
+    std::shared_ptr<Pokemon> clone() const override;
 };
 
 class PokemonPlante : public Pokemon 
@@ -73,6 +78,8 @@ public:
         const std::string& type1, 
         const std::string& type2, 
         int base_hp, const std::string& attack_name, int attack_damage);
+
+    std::shared_ptr<Pokemon> clone() const override;
 };
 
 class PokemonSol : public Pokemon 
@@ -82,6 +89,8 @@ public:
         const std::string& type1, 
         const std::string& type2, 
         int base_hp, const std::string& attack_name, int attack_damage);
+
+    std::shared_ptr<Pokemon> clone() const override;
 };
 
 class PokemonElectrik : public Pokemon 
@@ -91,6 +100,8 @@ public:
         const std::string& type1, 
         const std::string& type2, 
         int base_hp, const std::string& attack_name, int attack_damage);
+
+    std::shared_ptr<Pokemon> clone() const override;
 };
 
 class PokemonPoison : public Pokemon 
@@ -100,6 +111,8 @@ public:
         const std::string& type1, 
         const std::string& type2, 
         int base_hp, const std::string& attack_name, int attack_damage);
+
+    std::shared_ptr<Pokemon> clone() const override;
 };
 
 class PokemonPsy : public Pokemon 
@@ -109,6 +122,8 @@ public:
         const std::string& type1, 
         const std::string& type2, 
         int base_hp, const std::string& attack_name, int attack_damage);
+
+    std::shared_ptr<Pokemon> clone() const override;
 };
 
 std::shared_ptr<Pokemon> createPokemon(

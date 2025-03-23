@@ -115,7 +115,7 @@ std::vector<GymLeader> readGymLeadersFromCSV(
 
             if(!pokemon_token.empty()) {
 
-                std::shared_ptr<Pokemon> pokemon { pokemon_map[pokemon_token] };
+                std::shared_ptr<Pokemon> pokemon { pokemon_map[pokemon_token]->clone() };
 
                 if(pokemon)
                     pokemons.push_back(pokemon);
