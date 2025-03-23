@@ -7,6 +7,7 @@
 #include "ftxui/component/screen_interactive.hpp"
 
 bool isOpponentMaster(Trainer& opponent);
-void Fight(ftxui::ScreenInteractive& screen, Player& player, Trainer& opponent);
+bool allPokemonsKO(const std::vector<std::shared_ptr<Pokemon>> pokemon_list);
+void Fight(ftxui::ScreenInteractive& screen, Player& player, GymLeader& opponent);
 
 #endif
