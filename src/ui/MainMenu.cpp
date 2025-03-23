@@ -40,8 +40,10 @@ Component leaderEntry(ScreenInteractive& screen, GymLeader& leader, Player& play
         and a button to fight them
     */
     Component button = Button("Fight", [&] {
-        Fight(screen, player, leader);
-        screen.ExitLoopClosure()();
+        if(!leader.isDefeated()) {
+            Fight(screen, player, leader);
+            screen.ExitLoopClosure()();
+        }
     }, ButtonOption::Animated());
 
     Component leader_entry = Container::Horizontal({
