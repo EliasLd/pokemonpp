@@ -42,6 +42,9 @@ public:
     void setName(const std::string& new_name);
     void setPokemons(const std::vector<std::shared_ptr<Pokemon>>& new_pokemons);
     void setNbPotions(int new_nb_potions);
+    void setWins(int new_wins);
+    void setDefeats(int new_defeats);
+    void setBadges(int new_badges);
 
     int getBadges() const;
     int getWins() const;
@@ -67,6 +70,7 @@ public:
     const std::string& getGymName() const;
     int getBadgesCondition() const;
     bool isDefeated() const;
+    void Defeated();
 };
 
 class Master : public Trainer

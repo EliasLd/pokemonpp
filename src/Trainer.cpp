@@ -32,6 +32,9 @@ const std::string Player::toString() const
 void Player::setName(const std::string& new_name) { name = new_name; }
 void Player::setPokemons(const std::vector<std::shared_ptr<Pokemon>>& new_pokemons) { pokemons = new_pokemons; }
 void Player::setNbPotions(int new_nb_potions) { nb_potions = new_nb_potions; }
+void Player::setWins(int new_wins) { wins = new_wins; }
+void Player::setDefeats(int new_defeats) { defeats = new_defeats; }
+void Player::setBadges(int new_badges) { badges = new_badges; }
 
 int Player::getBadges()     const   { return badges; }
 int Player::getWins()       const   { return wins; }
@@ -62,6 +65,7 @@ const std::string GymLeader::toString() const
 const std::string& GymLeader::getGymName() const { return gym_name; }
 int GymLeader::getBadgesCondition() const { return badges_condition; }
 bool GymLeader::isDefeated() const { return defeated; }
+void GymLeader::Defeated() { defeated = true; }
 
 // Master definition
 
