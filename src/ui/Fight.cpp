@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "Trainer.h"
+#include "FightUtils.h"
 #include "MainMenu.h"
 
 #include "ftxui/component/screen_interactive.hpp"
@@ -8,51 +9,14 @@
 
 using namespace ftxui;
 
-bool isOpponentMaster(Trainer& opponent) {
-    return dynamic_cast<Master*>(&opponent) != nullptr;
-}
-
-void updatePokemonIndex(int& index, std::vector<std::shared_ptr<Pokemon>> pokemon_list) {
-
-    int list_lenght { static_cast<int>(pokemon_list.size()) };
-    while(index < list_lenght - 1 && pokemon_list[index]->getCurrentHp() <= 0) {
-        index++;
-    }
-}
-
-bool allPokemonsKO(const std::vector<std::shared_ptr<Pokemon>> pokemon_list) {
-
-    for(const auto& p: pokemon_list) {
-        if(p->getCurrentHp() > 0)
-            return false;
-    }
-
-    return true;
-}
-
-float getDamagesMultiplicator(std::shared_ptr<Pokemon>& src, std::shared_ptr<Pokemon>& target) {
-
-    std::string type1 { src->getType1() };
-    std::string type2 { src->getType2() };
-
-    for(const auto& weakness: target->getWeaknesses()){
-        if(type1 == weakness || type2 == weakness)
-            return 2.0f;
-    }
-    for(const auto& resistance: target->getResistances()){
-        if(type1 == resistance || type2 == resistance)
-            return 0.5f;
-    }
-
-    return 1.0f;
-
-}
-
 void opponentTurn(bool& is_player_turn, std::vector<std::shared_ptr<Pokemon>>& player_pokemons, 
                   int& player_index, std::shared_ptr<Pokemon>& opponent_pokemon, 
-                  std::vector<Element>& logs, ScreenInteractive& screen, Player& player) {
+                  Player& player, Trainer& opponent, 
+                  std::vector<Element>& logs, ScreenInteractive& screen) {
+
     if (!is_player_turn) {
         if(opponent_pokemon->getCurrentHp() > 0) {
+
             std::shared_ptr<Pokemon> target = player_pokemons[player_index];
             if(target->getCurrentHp() > 0) {
                 float multiplicator { getDamagesMultiplicator(opponent_pokemon, target) };
@@ -65,6 +29,7 @@ void opponentTurn(bool& is_player_turn, std::vector<std::shared_ptr<Pokemon>>& p
 
             if(allPokemonsKO(player_pokemons)) {
                 player.setDefeats(player.getDefeats() + 1);
+                resetPokemonHp(opponent.getPokemons());
                 screen.ExitLoopClosure()();
             }
 
@@ -101,12 +66,56 @@ void Fight(ftxui::ScreenInteractive& screen, Player& player, GymLeader& opponent
     updatePokemonIndex(opponent_index, opponent_pokemons);
 
     std::vector<Element> fight_logs {};
+    
+    int log_scroll_index {};
 
+    Component logs = Container::Vertical({
+        Renderer([&] {
+            int log_size = fight_logs.size();
+            int display_count = 8; 
+            int start_index = std::max(0, log_size - display_count - log_scroll_index);
+            
+            std::vector<Element> visible_logs;
+            for (int i = start_index; i < log_size; ++i) {
+                visible_logs.push_back(fight_logs[i]);
+            }
+    
+            return vbox(visible_logs) | flex | size(HEIGHT, LESS_THAN, 8);
+        })
+    });
+    
     Component fight_header = fightHeader(player, opponent);
 
-    Component exit_button = Button("Exit (tmp)", [&] {
-        screen.ExitLoopClosure()();
+    Component attack_button = Button("Attack", [&] {
+        if(is_player_turn) {
+            std::shared_ptr<Pokemon> target = opponent_pokemons[opponent_index];
+            if(target->getCurrentHp() > 0) {
+                float multiplicator { getDamagesMultiplicator(player_pokemons[player_index], target) };
+                int damage { static_cast<int>(multiplicator * player_pokemons[player_index]->getAttackDamage()) };
+                target->takeDamage(damage);
+                fight_logs.push_back(text(player_pokemons[player_index]->getName() + " does " + std::to_string(damage) + " damages to " + target->getName()));
+                
+                screen.PostEvent(Event::Custom);
+
+                if(allPokemonsKO(opponent_pokemons)) {
+                    opponent.Defeated();
+                    player.setNbPotions(player.getNbPotions() + 1);
+                    player.setBadges(player.getBadges() + 1);
+                    player.setWins(player.getWins() + 1);
+                    screen.ExitLoopClosure()();
+                }
+
+                // Update opponent pokemon if K.O
+                updatePokemonIndex(opponent_index, opponent_pokemons);
+            }
+            
+            is_player_turn = false;
+
+            opponentTurn(is_player_turn, player_pokemons, player_index, opponent_pokemons[opponent_index], player, opponent, fight_logs, screen);
+        }
     });
+
+    Component heal_button = healButton(player_index, player);
 
     Component player_interface = Container::Vertical({
         Renderer([&] {
@@ -125,6 +134,10 @@ void Fight(ftxui::ScreenInteractive& screen, Player& player, GymLeader& opponent
                 separatorDouble(),
             });
         }),
+        Container::Horizontal({
+            attack_button,
+            heal_button
+        }) | center,
     }) | center | border;
 
     Component opponent_interface = Container::Vertical ({
@@ -145,56 +158,16 @@ void Fight(ftxui::ScreenInteractive& screen, Player& player, GymLeader& opponent
         }),
     }) | center | border;
 
-    Component attack_button = Button("Attack", [&] {
-        if(is_player_turn) {
-            std::shared_ptr<Pokemon> target = opponent_pokemons[opponent_index];
-            if(target->getCurrentHp() > 0) {
-                float multiplicator { getDamagesMultiplicator(player_pokemons[player_index], target) };
-                int damage { static_cast<int>(multiplicator * player_pokemons[player_index]->getAttackDamage()) };
-                target->takeDamage(damage);
-                fight_logs.push_back(text(player_pokemons[player_index]->getName() + " does " + std::to_string(damage) + " damages to " + target->getName()));
-                
-                if(allPokemonsKO(opponent_pokemons)) {
-                    opponent.Defeated();
-                    player.setNbPotions(player.getNbPotions() + 5);
-                    player.setBadges(player.getBadges() + 1);
-                    player.setWins(player.getWins() + 1);
-                    // Cela enlève juste l'affichage du combat
-                    // Le pokemon adverse peut toujours attaquer.
-                    screen.ExitLoopClosure()();
-                }
-
-                // Mise à jour du Pokémon adverse si K.O.
-                updatePokemonIndex(opponent_index, opponent_pokemons);
-            }
-            
-            is_player_turn = false;
-
-            opponentTurn(is_player_turn, player_pokemons, player_index, opponent_pokemons[opponent_index], fight_logs, screen, player);
-
-            screen.PostEvent(Event::Custom);
-        }
-    });
-
-    Component heal_button = healButton(player_index, player);
-
     if(allPokemonsKO(player_pokemons))
         screen.ExitLoopClosure()();
-
-    Component logs = Renderer([&]{
-        return vbox(fight_logs) | flex;
-    });
             
     Component renderer = Container::Vertical({
-        fight_header,
+        fight_header | center,
         Container::Horizontal({
             player_interface | center,
             logs | center | flex | border,
             opponent_interface | center,
         }),
-        exit_button | center,
-        attack_button | center,
-        heal_button | center,
     }) | center | border | bgcolor(Color::RGB(0, 0, 0));
 
     screen.Loop(renderer);
