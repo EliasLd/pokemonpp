@@ -87,8 +87,4 @@ public:
     void Defeated() override;
 };
 
-std::vector<GymLeader> readGymLeadersFromCSV(
-    const std::string& filename,
-    std::unordered_map<std::string, std::shared_ptr<Pokemon>> pokemon_map);
-
 #endif
