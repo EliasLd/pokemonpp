@@ -1,11 +1,9 @@
 #include "Game.h"
 #include "DataReader.h"
-
 #include "StartMenu.h"
 #include "Introduction.h"
 #include "SelectionMenu.h"
 #include "MainMenu.h"
-
 #include "Trainer.h"
 
 #include "ftxui/component/screen_interactive.hpp"
@@ -19,9 +17,8 @@ void runGame()
     GameState state { GameState::StartMenu };
 
     std::unordered_map<std::string, std::shared_ptr<Pokemon>> pokemons {readPokemonFromCSV(pokemon_filename)};
-
     std::vector<GymLeader> leaders {readGymLeadersFromCSV(leader_filename, pokemons)};
-    std::vector<Master> masters {};
+    std::vector<Master> masters {readMasterFromCSV(master_filename, pokemons)};
     
     Player player {};
     std::vector<std::shared_ptr<Pokemon>> player_pokemons {};

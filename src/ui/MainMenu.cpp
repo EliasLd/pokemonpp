@@ -1,6 +1,7 @@
 #include "MainMenu.h"
 #include "Game.h"
 #include "Fight.h"
+#include "FightUtils.h"
 
 #include "ftxui/component/screen_interactive.hpp"
 #include "ftxui/component/component.hpp"
@@ -173,6 +174,15 @@ void mainMenu(ScreenInteractive& screen, GameState& state, Player& player,
         }
     } 
 
+    Component masters_container = Container::Vertical({});
+
+    if(defeatedAllGym(leaders)){
+        masters_container->Add(Button("Fight a random Pokemon Master", [&] {
+            Fight(screen, player, masters[0]);
+            screen.ExitLoopClosure()();
+        }, ButtonOption::Animated(Color::Yellow1)));
+    }
+
     Component leaders_container = Container::Vertical({
         header,
         leaders_display | border,
@@ -206,9 +216,12 @@ void mainMenu(ScreenInteractive& screen, GameState& state, Player& player,
     }) | border | size(HEIGHT, EQUAL, 10);
 
     // Renderer, wrap all containers.
-    Component render = Container::Horizontal({
-        leaders_container,
-        pokemon_container,
+    Component render = Container::Vertical({
+        Container::Horizontal({
+            leaders_container,
+            pokemon_container,
+        }),
+        masters_container | center,
     }) | center | bgcolor(Color::RGB(0, 0, 0));
 
     screen.Loop(render);

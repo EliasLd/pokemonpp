@@ -46,3 +46,12 @@ float getDamagesMultiplicator(std::shared_ptr<Pokemon>& src, std::shared_ptr<Pok
     return 1.0f;
 
 }
+
+bool defeatedAllGym(std::vector<GymLeader>& trainers) {
+    for(const auto& trainer: trainers) {
+        if(!trainer.isDefeated())
+            return false;
+    }
+
+    return true;
+}

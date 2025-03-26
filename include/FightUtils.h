@@ -8,5 +8,6 @@ void updatePokemonIndex(int& index, std::vector<std::shared_ptr<Pokemon>> pokemo
 bool allPokemonsKO(const std::vector<std::shared_ptr<Pokemon>> pokemon_list);
 void resetPokemonHp(const std::vector<std::shared_ptr<Pokemon>>& pokemon_list);
 float getDamagesMultiplicator(std::shared_ptr<Pokemon>& src, std::shared_ptr<Pokemon>& target);
+bool defeatedAllGym(std::vector<GymLeader>& trainers);
 
 #endif

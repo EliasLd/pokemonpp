@@ -133,3 +133,44 @@ std::vector<GymLeader> readGymLeadersFromCSV(
     return leaders;
 
 }
+
+std::vector<Master> readMasterFromCSV(const std::string& filename, const std::unordered_map<std::string, std::shared_ptr<Pokemon>> pokemon_map)
+{
+    std::vector<Master> masters {};
+    std::ifstream f(filename);
+
+    if (!f.is_open()) {
+        std::cerr << "Error: cannot open " << filename << std::endl;
+        return masters;
+    }
+    
+    std::string line;
+    // Ignore the first line
+    std::getline(f, line);
+
+    while (std::getline(f, line)) {
+        std::stringstream ss(line);
+        std::string name;
+        std::vector<std::shared_ptr<Pokemon>> pokemons {};
+        std::string pokemon_token;
+
+        std::getline(ss, name, ',');
+
+        // Read pokemons (up to 6 tokens)
+        while (std::getline(ss, pokemon_token, ',')) {
+            if (!pokemon_token.empty()) {
+                auto it = pokemon_map.find(pokemon_token);
+                if (it != pokemon_map.end()) {
+                    pokemons.push_back(it->second->clone());
+                } else {
+                    std::cerr << "Error: cannot find Pokemon " << pokemon_token << std::endl;
+                }
+            }
+        }
+
+        masters.emplace_back(name, pokemons);
+    }
+
+    return masters;
+}
+
