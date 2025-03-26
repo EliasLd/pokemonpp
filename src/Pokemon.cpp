@@ -1,5 +1,5 @@
 #include "Pokemon.h"
-#include "PokemonReader.h"
+#include "DataReader.h"
 #include "TypeStats.h"
 
 #include <iomanip>
