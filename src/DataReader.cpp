@@ -14,6 +14,9 @@ HandledTypes getHandledType(const std::string& type) {
     if (type == "Électrik")     return HandledTypes::Electrik;
     if (type == "Poison")       return HandledTypes::Poison;
     if (type == "Psy")          return HandledTypes::Psy;
+    if (type == "Combat")       return HandledTypes::Combat;
+    if (type == "Dragon")       return HandledTypes::Dragon;
+    if (type == "Vol")          return HandledTypes::Vol;
     
     // Not implemented yet
     return HandledTypes::Undefined;

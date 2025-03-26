@@ -16,6 +16,9 @@ enum class HandledTypes {
     Electrik,
     Poison,
     Psy,
+    Combat,
+    Dragon,
+    Vol,
     Undefined
 };
 
