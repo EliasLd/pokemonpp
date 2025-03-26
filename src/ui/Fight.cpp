@@ -49,7 +49,7 @@ Component fightHeader(const Player& player, const Trainer& opponent) {
 }
 
 
-void Fight(ftxui::ScreenInteractive& screen, Player& player, GymLeader& opponent) {
+void Fight(ftxui::ScreenInteractive& screen, Player& player, Trainer& opponent) {
 
     screen.Clear();
 

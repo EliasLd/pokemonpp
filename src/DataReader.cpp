@@ -1,4 +1,4 @@
-#include "PokemonReader.h"
+#include "DataReader.h"
 
 #include <fstream>
 #include <sstream>
@@ -74,4 +74,59 @@ std::unordered_map<std::string, std::shared_ptr<Pokemon>> readPokemonFromCSV(con
 
     f.close();
     return pokemons;
+}
+
+std::vector<GymLeader> readGymLeadersFromCSV(
+    const std::string& filename,
+    std::unordered_map<std::string, std::shared_ptr<Pokemon>> pokemon_map)
+{
+    std::vector<GymLeader> leaders {};
+    std::ifstream f(filename);
+
+    if(!f.is_open()) {
+        std::cerr << "Error: cannot open " << filename << std::endl;
+        return leaders;
+    }
+    
+    std::string line;
+    // Ignore the first line
+    std::getline(f, line);
+
+    while(std::getline(f, line)) {
+
+        std::stringstream ss(line);
+        std::string name {}, gym_name {}, badge {}, badge_condition_str {};
+        std::vector<std::shared_ptr<Pokemon>> pokemons {};
+        std::string pokemon_token {};
+
+        std::getline(ss, name, ',');
+        std::getline(ss, gym_name, ',');
+        std::getline(ss, badge, ',');
+        std::getline(ss, badge_condition_str, ',');
+        
+        int badges_condition { std::stoi(badge_condition_str) };
+
+        // Read pokemons (up to 6 tokens)
+        while(std::getline(ss, pokemon_token, ',')) {
+
+            if(!pokemon_token.empty()) {
+
+                std::shared_ptr<Pokemon> pokemon { pokemon_map[pokemon_token]->clone() };
+
+                if(pokemon)
+                    pokemons.push_back(pokemon);
+                else
+                    std::cerr << "Error: cannot find Pokemon " << pokemon_token << std::endl;
+
+            }
+        }
+
+        GymLeader leader {name, pokemons, gym_name, badge, badges_condition};
+        leaders.push_back(leader);
+
+    }
+
+    f.close();
+    return leaders;
+
 }

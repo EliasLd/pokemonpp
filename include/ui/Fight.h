@@ -12,6 +12,6 @@ void opponentTurn(bool& is_player_turn, std::vector<std::shared_ptr<Pokemon>>& p
     Player& player, Trainer& opponent, 
     std::vector<ftxui::Element>& logs, ftxui::ScreenInteractive& screen);
 
-void Fight(ftxui::ScreenInteractive& screen, Player& player, GymLeader& opponent);
+void Fight(ftxui::ScreenInteractive& screen, Player& player, Trainer& opponent);
 
 #endif
