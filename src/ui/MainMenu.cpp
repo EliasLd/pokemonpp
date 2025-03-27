@@ -1,6 +1,8 @@
 #include "MainMenu.h"
 #include "Game.h"
 #include "Fight.h"
+#include "FightUtils.h"
+#include "Random.h"
 
 #include "ftxui/component/screen_interactive.hpp"
 #include "ftxui/component/component.hpp"
@@ -48,7 +50,7 @@ Component leaderEntry(ScreenInteractive& screen, GymLeader& leader, Player& play
 
     Component leader_entry = Container::Horizontal({
 
-        Renderer([=] {
+        Renderer([&] {
 
             std::vector<Element> leader_elements = {};
             leader_elements.push_back(text(leader.getName() + " - " + leader.getGymName()) | vcenter | size(WIDTH, EQUAL, 40));
@@ -56,8 +58,8 @@ Component leaderEntry(ScreenInteractive& screen, GymLeader& leader, Player& play
             int earned_badges { player.getBadges() };
             
             if(leader.isDefeated())
-                leader_elements.push_back(text("Defeated") | color(Color::Green3) | center);
-            else
+                leader_elements.push_back(text("  Defeated  ") | color(Color::Green3) | center);
+            else    
                 leader_elements.push_back(text("Not defeated") | color(Color::Red1) | center);
             
             leader_elements.push_back(separatorEmpty());
@@ -173,6 +175,21 @@ void mainMenu(ScreenInteractive& screen, GameState& state, Player& player,
         }
     } 
 
+    Component masters_container = Container::Vertical({});
+
+    if(defeatedAllGym(leaders)){
+        masters_container->Add(Button("Fight a random Pokemon Master", [&] {
+            int random_index {};
+            do {
+                random_index = Random::get(0, static_cast<int>(masters.size()) - 1);
+            } while (masters[random_index].isDefeated() && !defeatedAllMasters(masters));
+            if(!defeatedAllMasters(masters)) {
+            Fight(screen, player, masters[random_index]);
+            screen.ExitLoopClosure()();
+            }
+        }, ButtonOption::Animated(Color::Yellow1)));
+    }
+
     Component leaders_container = Container::Vertical({
         header,
         leaders_display | border,
@@ -206,9 +223,12 @@ void mainMenu(ScreenInteractive& screen, GameState& state, Player& player,
     }) | border | size(HEIGHT, EQUAL, 10);
 
     // Renderer, wrap all containers.
-    Component render = Container::Horizontal({
-        leaders_container,
-        pokemon_container,
+    Component render = Container::Vertical({
+        Container::Horizontal({
+            leaders_container,
+            pokemon_container,
+        }),
+        masters_container | center,
     }) | center | bgcolor(Color::RGB(0, 0, 0));
 
     screen.Loop(render);

@@ -126,6 +126,39 @@ public:
     std::shared_ptr<Pokemon> clone() const override;
 };
 
+class PokemonCombat : public Pokemon 
+{
+public:
+    PokemonCombat(const std::string& name, 
+        const std::string& type1, 
+        const std::string& type2, 
+        int base_hp, const std::string& attack_name, int attack_damage);
+
+    std::shared_ptr<Pokemon> clone() const override;
+};
+
+class PokemonDragon : public Pokemon 
+{
+public:
+    PokemonDragon(const std::string& name, 
+        const std::string& type1, 
+        const std::string& type2, 
+        int base_hp, const std::string& attack_name, int attack_damage);
+
+    std::shared_ptr<Pokemon> clone() const override;
+};
+
+class PokemonVol : public Pokemon 
+{
+public:
+    PokemonVol(const std::string& name, 
+        const std::string& type1, 
+        const std::string& type2, 
+        int base_hp, const std::string& attack_name, int attack_damage);
+
+    std::shared_ptr<Pokemon> clone() const override;
+};
+
 std::shared_ptr<Pokemon> createPokemon(
     const std::string& name, 
     const std::string& type1, 

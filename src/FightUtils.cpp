@@ -6,15 +6,18 @@ bool isOpponentMaster(Trainer& opponent) {
     return dynamic_cast<Master*>(&opponent) != nullptr;
 }
 
-void updatePokemonIndex(int& index, std::vector<std::shared_ptr<Pokemon>> pokemon_list) {
+void updatePokemonIndex(int& index, std::vector<std::shared_ptr<Pokemon>>& pokemon_list) {
 
     int list_lenght { static_cast<int>(pokemon_list.size()) };
     while(index < list_lenght - 1 && pokemon_list[index]->getCurrentHp() <= 0) {
         index++;
     }
+    if(index >= list_lenght) {
+        index = list_lenght - 1;
+    }
 }
 
-bool allPokemonsKO(const std::vector<std::shared_ptr<Pokemon>> pokemon_list) {
+bool allPokemonsKO(const std::vector<std::shared_ptr<Pokemon>>& pokemon_list) {
 
     for(const auto& p: pokemon_list) {
         if(p->getCurrentHp() > 0)
@@ -45,4 +48,22 @@ float getDamagesMultiplicator(std::shared_ptr<Pokemon>& src, std::shared_ptr<Pok
 
     return 1.0f;
 
+}
+
+bool defeatedAllGym(const std::vector<GymLeader>& leaders) {
+    for(const auto& leader: leaders) {
+        if(!leader.isDefeated())
+            return false;
+    }
+
+    return true;
+}
+
+bool defeatedAllMasters(const std::vector<Master>& masters) {
+    for(const auto& master: masters) {
+        if(!master.isDefeated())
+            return false;
+    }
+
+    return true;
 }

@@ -1,5 +1,5 @@
 #include "Pokemon.h"
-#include "PokemonReader.h"
+#include "DataReader.h"
 #include "TypeStats.h"
 
 #include <iomanip>
@@ -155,6 +155,29 @@ std::shared_ptr<Pokemon> PokemonPsy::clone() const {
     return std::make_shared<PokemonPsy>(*this);
 }
 
+PokemonCombat::PokemonCombat(const std::string& name, const std::string& type1, const std::string& type2, int base_hp, const std::string& attack_name, int attack_damage)
+    : Pokemon(name, type1, type2, base_hp, attack_name, attack_damage) 
+    {}
+
+std::shared_ptr<Pokemon> PokemonCombat::clone() const {
+    return std::make_shared<PokemonCombat>(*this);
+}
+
+PokemonDragon::PokemonDragon(const std::string& name, const std::string& type1, const std::string& type2, int base_hp, const std::string& attack_name, int attack_damage)
+    : Pokemon(name, type1, type2, base_hp, attack_name, attack_damage) 
+    {}
+
+std::shared_ptr<Pokemon> PokemonDragon::clone() const {
+    return std::make_shared<PokemonDragon>(*this);
+}
+
+PokemonVol::PokemonVol(const std::string& name, const std::string& type1, const std::string& type2, int base_hp, const std::string& attack_name, int attack_damage)
+    : Pokemon(name, type1, type2, base_hp, attack_name, attack_damage) 
+    {}
+
+std::shared_ptr<Pokemon> PokemonVol::clone() const {
+    return std::make_shared<PokemonVol>(*this);
+}
     
 std::shared_ptr<Pokemon> createPokemon(
     const std::string& name, 
@@ -182,6 +205,12 @@ std::shared_ptr<Pokemon> createPokemon(
         return std::make_shared<PokemonPoison>(name, type1, type2, base_hp, attackName, attackDamage);
     if (r_type1 == HandledTypes::Psy || r_type2 == HandledTypes::Psy)
         return std::make_shared<PokemonPsy>(name, type1, type2, base_hp, attackName, attackDamage);
+    if (r_type1 == HandledTypes::Combat || r_type2 == HandledTypes::Combat)
+        return std::make_shared<PokemonCombat>(name, type1, type2, base_hp, attackName, attackDamage);
+    if (r_type1 == HandledTypes::Dragon || r_type2 == HandledTypes::Dragon)
+        return std::make_shared<PokemonDragon>(name, type1, type2, base_hp, attackName, attackDamage);
+    if (r_type1 == HandledTypes::Vol || r_type2 == HandledTypes::Vol)
+        return std::make_shared<PokemonVol>(name, type1, type2, base_hp, attackName, attackDamage);
 
     std::cerr << "The type of the pokemon " << name << " is not handled yet." << std::endl;
     return nullptr;
