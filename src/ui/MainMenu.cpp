@@ -49,7 +49,7 @@ Component leaderEntry(ScreenInteractive& screen, GymLeader& leader, Player& play
 
     Component leader_entry = Container::Horizontal({
 
-        Renderer([=] {
+        Renderer([&] {
 
             std::vector<Element> leader_elements = {};
             leader_elements.push_back(text(leader.getName() + " - " + leader.getGymName()) | vcenter | size(WIDTH, EQUAL, 40));
@@ -57,8 +57,8 @@ Component leaderEntry(ScreenInteractive& screen, GymLeader& leader, Player& play
             int earned_badges { player.getBadges() };
             
             if(leader.isDefeated())
-                leader_elements.push_back(text("Defeated") | color(Color::Green3) | center);
-            else
+                leader_elements.push_back(text("  Defeated  ") | color(Color::Green3) | center);
+            else    
                 leader_elements.push_back(text("Not defeated") | color(Color::Red1) | center);
             
             leader_elements.push_back(separatorEmpty());
