@@ -81,7 +81,7 @@ std::unordered_map<std::string, std::shared_ptr<Pokemon>> readPokemonFromCSV(con
 
 std::vector<GymLeader> readGymLeadersFromCSV(
     const std::string& filename,
-    std::unordered_map<std::string, std::shared_ptr<Pokemon>> pokemon_map)
+    std::unordered_map<std::string, std::shared_ptr<Pokemon>>& pokemon_map)
 {
     std::vector<GymLeader> leaders {};
     std::ifstream f(filename);
@@ -134,7 +134,7 @@ std::vector<GymLeader> readGymLeadersFromCSV(
 
 }
 
-std::vector<Master> readMasterFromCSV(const std::string& filename, const std::unordered_map<std::string, std::shared_ptr<Pokemon>> pokemon_map)
+std::vector<Master> readMasterFromCSV(const std::string& filename, std::unordered_map<std::string, std::shared_ptr<Pokemon>>& pokemon_map)
 {
     std::vector<Master> masters {};
     std::ifstream f(filename);
@@ -171,6 +171,7 @@ std::vector<Master> readMasterFromCSV(const std::string& filename, const std::un
         masters.emplace_back(name, pokemons);
     }
 
+    f.close();
     return masters;
 }
 

@@ -16,8 +16,10 @@ void opponentTurn(bool& is_player_turn, std::vector<std::shared_ptr<Pokemon>>& p
 
     if (!is_player_turn) {
         if(opponent_pokemon->getCurrentHp() > 0) {
-
-            std::shared_ptr<Pokemon> target = player_pokemons[player_index];
+            std::shared_ptr<Pokemon> target {};
+            if(player_index < static_cast<int>(player_pokemons.size())){
+                target = player_pokemons[player_index];
+            }
             if(target->getCurrentHp() > 0) {
                 float multiplicator { getDamagesMultiplicator(opponent_pokemon, target) };
                 int damage { static_cast<int>(multiplicator * opponent_pokemon->getAttackDamage()) };
@@ -88,7 +90,10 @@ void Fight(ftxui::ScreenInteractive& screen, Player& player, Trainer& opponent) 
 
     Component attack_button = Button("Attack", [&] {
         if(is_player_turn) {
-            std::shared_ptr<Pokemon> target = opponent_pokemons[opponent_index];
+            std::shared_ptr<Pokemon> target {};
+            if(opponent_index < static_cast<int>(opponent_pokemons.size())){
+                target = opponent_pokemons[opponent_index];
+            }
             if(target->getCurrentHp() > 0) {
                 float multiplicator { getDamagesMultiplicator(player_pokemons[player_index], target) };
                 int damage { static_cast<int>(multiplicator * player_pokemons[player_index]->getAttackDamage()) };
@@ -100,7 +105,7 @@ void Fight(ftxui::ScreenInteractive& screen, Player& player, Trainer& opponent) 
                 if(allPokemonsKO(opponent_pokemons)) {
                     opponent.Defeated();
                     player.setNbPotions(player.getNbPotions() + 1);
-                    player.setBadges(player.getBadges() + 1);
+                    if(!is_master) { player.setBadges(player.getBadges() + 1); }
                     player.setWins(player.getWins() + 1);
                     screen.ExitLoopClosure()();
                 }

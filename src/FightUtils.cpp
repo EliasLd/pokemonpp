@@ -6,15 +6,18 @@ bool isOpponentMaster(Trainer& opponent) {
     return dynamic_cast<Master*>(&opponent) != nullptr;
 }
 
-void updatePokemonIndex(int& index, std::vector<std::shared_ptr<Pokemon>> pokemon_list) {
+void updatePokemonIndex(int& index, std::vector<std::shared_ptr<Pokemon>>& pokemon_list) {
 
     int list_lenght { static_cast<int>(pokemon_list.size()) };
     while(index < list_lenght - 1 && pokemon_list[index]->getCurrentHp() <= 0) {
         index++;
     }
+    if(index >= list_lenght) {
+        index = list_lenght - 1;
+    }
 }
 
-bool allPokemonsKO(const std::vector<std::shared_ptr<Pokemon>> pokemon_list) {
+bool allPokemonsKO(const std::vector<std::shared_ptr<Pokemon>>& pokemon_list) {
 
     for(const auto& p: pokemon_list) {
         if(p->getCurrentHp() > 0)
