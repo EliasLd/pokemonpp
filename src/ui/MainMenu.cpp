@@ -2,6 +2,7 @@
 #include "Game.h"
 #include "Fight.h"
 #include "FightUtils.h"
+#include "Random.h"
 
 #include "ftxui/component/screen_interactive.hpp"
 #include "ftxui/component/component.hpp"
@@ -178,8 +179,14 @@ void mainMenu(ScreenInteractive& screen, GameState& state, Player& player,
 
     if(defeatedAllGym(leaders)){
         masters_container->Add(Button("Fight a random Pokemon Master", [&] {
-            Fight(screen, player, masters[0]);
+            int random_index {};
+            do {
+                random_index = Random::get(0, static_cast<int>(masters.size()) - 1);
+            } while (masters[random_index].isDefeated() && !defeatedAllMasters(masters));
+            if(!defeatedAllMasters(masters)) {
+            Fight(screen, player, masters[random_index]);
             screen.ExitLoopClosure()();
+            }
         }, ButtonOption::Animated(Color::Yellow1)));
     }
 
