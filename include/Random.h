@@ -21,7 +21,7 @@ namespace Random
 
     inline std::mt19937 mt { generate() };
 
-    inline int get(int min, int max) { return std::uniform_int_distribution{min, max}(mt) };
+    inline int get(int min, int max) { return std::uniform_int_distribution{min, max}(mt); }
 }
 
 #endif
