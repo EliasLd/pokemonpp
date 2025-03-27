@@ -96,6 +96,8 @@ void Fight(ftxui::ScreenInteractive& screen, Player& player, Trainer& opponent) 
             }
             if(target->getCurrentHp() > 0) {
                 float multiplicator { getDamagesMultiplicator(player_pokemons[player_index], target) };
+                // Pokemon masters deal +25% damages 
+                if(is_master) { multiplicator = 1.25 * multiplicator; }
                 int damage { static_cast<int>(multiplicator * player_pokemons[player_index]->getAttackDamage()) };
                 target->takeDamage(damage);
                 fight_logs.push_back(text(player_pokemons[player_index]->getName() + " does " + std::to_string(damage) + " damages to " + target->getName()));
