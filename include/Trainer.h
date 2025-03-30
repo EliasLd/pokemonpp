@@ -54,6 +54,8 @@ public:
 
     void swapPokemons(int index1, int index2);
     void Defeated() override;
+
+    const std::string interactWith(const std::shared_ptr<Interact>& target);
 };
 
 class GymLeader : public Trainer
