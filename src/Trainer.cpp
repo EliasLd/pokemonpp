@@ -47,6 +47,10 @@ void Player::swapPokemons(int index1, int index2) {
 
 void Player::Defeated() { setDefeats(getDefeats() + 1); }
 
+const std::string Player::interactWith(const std::shared_ptr<Interact>& target) {
+    return target->interactWith();
+}
+
 // GymLeader definition
 
 GymLeader::GymLeader(const std::string& name, std::vector<std::shared_ptr<Pokemon>> pokemons,

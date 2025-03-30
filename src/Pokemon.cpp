@@ -107,12 +107,20 @@ std::shared_ptr<Pokemon> PokemonFeu::clone() const {
     return std::make_shared<PokemonFeu>(*this);
 }
 
+const std::string PokemonFeu::interactWith() const {
+    return name + " crépite d'énergie et fait jaillir quelques étincelles autour de lui !";
+}
+
 PokemonEau::PokemonEau(const std::string& name, const std::string& type1, const std::string& type2, int base_hp, const std::string& attack_name, int attack_damage)
     : Pokemon(name, type1, type2, base_hp, attack_name, attack_damage) 
     {}
 
 std::shared_ptr<Pokemon> PokemonEau::clone() const {
     return std::make_shared<PokemonEau>(*this);
+}
+
+const std::string PokemonEau::interactWith() const {
+    return name + " clapote joyeusement et projette quelques gouttes d'eau dans les airs !";
 }
 
 PokemonPlante::PokemonPlante(const std::string& name, const std::string& type1, const std::string& type2, int base_hp, const std::string& attack_name, int attack_damage)
@@ -123,12 +131,20 @@ std::shared_ptr<Pokemon> PokemonPlante::clone() const {
     return std::make_shared<PokemonPlante>(*this);
 }
 
+const std::string PokemonPlante::interactWith() const {
+    return name + " agite ses feuilles en captant la lumière du soleil avec enthousiasme !";
+}
+
 PokemonSol::PokemonSol(const std::string& name, const std::string& type1, const std::string& type2, int base_hp, const std::string& attack_name, int attack_damage)
     : Pokemon(name, type1, type2, base_hp, attack_name, attack_damage) 
     {}
 
 std::shared_ptr<Pokemon> PokemonSol::clone() const {
     return std::make_shared<PokemonSol>(*this);
+}
+
+const std::string PokemonSol::interactWith() const {
+    return name + " gratte le sol et soulève un petit nuage de poussière en signe d'excitation !";
 }
 
 PokemonElectrik::PokemonElectrik(const std::string& name, const std::string& type1, const std::string& type2, int base_hp, const std::string& attack_name, int attack_damage)
@@ -139,12 +155,20 @@ std::shared_ptr<Pokemon> PokemonElectrik::clone() const {
     return std::make_shared<PokemonElectrik>(*this);
 }
 
+const std::string PokemonElectrik::interactWith() const {
+    return name + " émet de petits arcs électriques et fait crépiter l'air autour de lui !";
+}
+
 PokemonPoison::PokemonPoison(const std::string& name, const std::string& type1, const std::string& type2, int base_hp, const std::string& attack_name, int attack_damage)
     : Pokemon(name, type1, type2, base_hp, attack_name, attack_damage) 
     {}
 
 std::shared_ptr<Pokemon> PokemonPoison::clone() const {
     return std::make_shared<PokemonPoison>(*this);
+}
+
+const std::string PokemonPoison::interactWith() const {
+    return name + " libère un léger nuage toxique et te fixe avec un regard malicieux !";
 }
 
 PokemonPsy::PokemonPsy(const std::string& name, const std::string& type1, const std::string& type2, int base_hp, const std::string& attack_name, int attack_damage)
@@ -155,12 +179,20 @@ std::shared_ptr<Pokemon> PokemonPsy::clone() const {
     return std::make_shared<PokemonPsy>(*this);
 }
 
+const std::string PokemonPsy::interactWith() const {
+    return name + " ferme les yeux et semble lire dans tes pensées... Troublant !";
+}
+
 PokemonCombat::PokemonCombat(const std::string& name, const std::string& type1, const std::string& type2, int base_hp, const std::string& attack_name, int attack_damage)
     : Pokemon(name, type1, type2, base_hp, attack_name, attack_damage) 
     {}
 
 std::shared_ptr<Pokemon> PokemonCombat::clone() const {
     return std::make_shared<PokemonCombat>(*this);
+}
+
+const std::string PokemonCombat::interactWith() const {
+    return name + " s'échauffe en exécutant quelques coups rapides dans le vide !";
 }
 
 PokemonDragon::PokemonDragon(const std::string& name, const std::string& type1, const std::string& type2, int base_hp, const std::string& attack_name, int attack_damage)
@@ -171,12 +203,20 @@ std::shared_ptr<Pokemon> PokemonDragon::clone() const {
     return std::make_shared<PokemonDragon>(*this);
 }
 
+const std::string PokemonDragon::interactWith() const {
+    return name + " rugit fièrement, faisant trembler l'air d'une puissance ancestrale !";
+}
+
 PokemonVol::PokemonVol(const std::string& name, const std::string& type1, const std::string& type2, int base_hp, const std::string& attack_name, int attack_damage)
     : Pokemon(name, type1, type2, base_hp, attack_name, attack_damage) 
     {}
 
 std::shared_ptr<Pokemon> PokemonVol::clone() const {
     return std::make_shared<PokemonVol>(*this);
+}
+
+const std::string PokemonVol::interactWith() const {
+    return name + " bat des ailes avec grâce et tournoie dans les airs avant de se poser en douceur !";
 }
     
 std::shared_ptr<Pokemon> createPokemon(
