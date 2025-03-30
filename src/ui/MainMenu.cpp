@@ -180,13 +180,16 @@ void mainMenu(ScreenInteractive& screen, GameState& state, Player& player,
     if(defeatedAllGym(leaders)){
         masters_container->Add(Button("Fight a random Pokemon Master", [&] {
             int random_index {};
+
             do {
                 random_index = Random::get(0, static_cast<int>(masters.size()) - 1);
             } while (masters[random_index].isDefeated() && !defeatedAllMasters(masters));
+
             if(!defeatedAllMasters(masters)) {
-            Fight(screen, player, masters[random_index]);
-            screen.ExitLoopClosure()();
+                Fight(screen, player, masters[random_index]);
+                screen.ExitLoopClosure()();
             }
+            
         }, ButtonOption::Animated(Color::Yellow1)));
     }
 
