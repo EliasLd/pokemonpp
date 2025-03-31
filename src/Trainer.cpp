@@ -73,6 +73,10 @@ int GymLeader::getBadgesCondition() const { return badges_condition; }
 bool GymLeader::isDefeated() const { return defeated; }
 void GymLeader::Defeated() { defeated = true; }
 
+const std::string GymLeader::interactWith() const {
+    return name + ": Félicitations ! Tu as prouvé ta force et ta détermination. Continue comme ça et tu deviendras un véritable maître Pokemon !";
+}
+
 // Master definition
 
 Master::Master(const std::string& name, std::vector<std::shared_ptr<Pokemon>> pokemons)

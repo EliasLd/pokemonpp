@@ -2,6 +2,7 @@
 #define TRAINER_H
 
 #include "Pokemon.h"
+#include "Interact.h"
 
 #include <unordered_map>
 
@@ -58,7 +59,7 @@ public:
     const std::string interactWith(const std::shared_ptr<Interact>& target);
 };
 
-class GymLeader : public Trainer
+class GymLeader : public Trainer, public Interact
 {
 private:
     std::string gym_name {};
@@ -75,6 +76,7 @@ public:
     int getBadgesCondition() const;
     bool isDefeated() const;
     void Defeated() override;
+    const std::string interactWith() const override;
 };
 
 class Master : public Trainer
