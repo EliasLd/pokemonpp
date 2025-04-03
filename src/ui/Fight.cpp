@@ -74,7 +74,7 @@ void Fight(ftxui::ScreenInteractive& screen, Player& player, Trainer& opponent) 
     Component logs = Container::Vertical({
         Renderer([&] {
             int log_size = fight_logs.size();
-            int display_count = 8; 
+            int display_count = 6; 
             int start_index = std::max(0, log_size - display_count - log_scroll_index);
             
             std::vector<Element> visible_logs;
@@ -86,18 +86,30 @@ void Fight(ftxui::ScreenInteractive& screen, Player& player, Trainer& opponent) 
         })
     });
     
+    Component logs_container = Renderer([&] {
+        return vbox({
+            text("Fight logs"),
+            separatorDouble(),
+            logs->Render(),
+        });
+    });
+
     Component fight_header = fightHeader(player, opponent);
 
     Component attack_button = Button("Attack", [&] {
+
         if(is_player_turn) {
+
             std::shared_ptr<Pokemon> target {};
+
             if(opponent_index < static_cast<int>(opponent_pokemons.size())){
                 target = opponent_pokemons[opponent_index];
             }
+
             if(target->getCurrentHp() > 0) {
                 float multiplicator { getDamagesMultiplicator(player_pokemons[player_index], target) };
                 // Pokemon masters deal +25% damages 
-                if(is_master) { multiplicator = 1.25 * multiplicator; }
+                if(is_master) { multiplicator *= 1.25; }
                 int damage { static_cast<int>(multiplicator * player_pokemons[player_index]->getAttackDamage()) };
                 target->takeDamage(damage);
                 fight_logs.push_back(text(player_pokemons[player_index]->getName() + " does " + std::to_string(damage) + " damages to " + target->getName()));
@@ -120,7 +132,7 @@ void Fight(ftxui::ScreenInteractive& screen, Player& player, Trainer& opponent) 
 
             opponentTurn(is_player_turn, player_pokemons, player_index, opponent_pokemons[opponent_index], player, opponent, fight_logs, screen);
         }
-    });
+    }, ButtonOption::Animated());
 
     Component heal_button = healButton(player_index, player);
 
@@ -169,10 +181,10 @@ void Fight(ftxui::ScreenInteractive& screen, Player& player, Trainer& opponent) 
         screen.ExitLoopClosure()();
             
     Component renderer = Container::Vertical({
-        fight_header | center,
+        fight_header | center | border,
         Container::Horizontal({
             player_interface | center,
-            logs | center | flex | border,
+            logs_container | center | flex | border,
             opponent_interface | center,
         }),
     }) | center | border | bgcolor(Color::RGB(0, 0, 0));
