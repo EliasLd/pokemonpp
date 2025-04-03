@@ -2,6 +2,7 @@
 #define TRAINER_H
 
 #include "Pokemon.h"
+#include "Interact.h"
 
 #include <unordered_map>
 
@@ -20,6 +21,7 @@ public:
     virtual ~Trainer() = default;
     // pure virtual function
     virtual const std::string toString() const = 0;
+    virtual void Defeated() = 0;
 
     const std::vector<std::shared_ptr<Pokemon>>& getPokemons() const;
     const std::string& getName() const;
@@ -42,6 +44,9 @@ public:
     void setName(const std::string& new_name);
     void setPokemons(const std::vector<std::shared_ptr<Pokemon>>& new_pokemons);
     void setNbPotions(int new_nb_potions);
+    void setWins(int new_wins);
+    void setDefeats(int new_defeats);
+    void setBadges(int new_badges);
 
     int getBadges() const;
     int getWins() const;
@@ -49,9 +54,12 @@ public:
     int getNbPotions() const;
 
     void swapPokemons(int index1, int index2);
+    void Defeated() override;
+
+    const std::string interactWith(const std::shared_ptr<Interact>& target);
 };
 
-class GymLeader : public Trainer
+class GymLeader : public Trainer, public Interact
 {
 private:
     std::string gym_name {};
@@ -67,17 +75,20 @@ public:
     const std::string& getGymName() const;
     int getBadgesCondition() const;
     bool isDefeated() const;
+    void Defeated() override;
+    const std::string interactWith() const override;
 };
 
 class Master : public Trainer
 {
+private:
+    bool defeated { false };
+
 public:
     Master(const std::string& name, std::vector<std::shared_ptr<Pokemon>> pokemons);
     const std::string toString() const override;
+    bool isDefeated() const;
+    void Defeated() override;
 };
-
-std::vector<GymLeader> readGymLeadersFromCSV(
-    const std::string& filename,
-    std::unordered_map<std::string, std::shared_ptr<Pokemon>> pokemon_map);
 
 #endif

@@ -1,5 +1,8 @@
 #include "MainMenu.h"
 #include "Game.h"
+#include "Fight.h"
+#include "FightUtils.h"
+#include "Random.h"
 
 #include "ftxui/component/screen_interactive.hpp"
 #include "ftxui/component/component.hpp"
@@ -7,8 +10,9 @@
 
 using namespace ftxui;
 
-Component exitButton(ScreenInteractive& screen) {
+Component exitButton(ScreenInteractive& screen, GameState& state) {
     return Button(" Exit game ", [&] {
+        state = GameState::Exit;
         screen.ExitLoopClosure()();
     }, ButtonOption::Animated(Color::Red));
 }
@@ -32,18 +36,41 @@ Component PlayerStats(const Player& player) {
     return stats;
 }
 
-Component leaderEntry(ScreenInteractive& screen, const GymLeader& leader, const Player& player) {
+Component leaderInteractButton(Player& player, GymLeader& leader, std::shared_ptr<Element> interaction_text) {
+    return Button("Interact", [&] {
+        if(leader.isDefeated()) {
+            *interaction_text = text(player.interactWith(std::make_shared<GymLeader>(leader)));
+        }
+        else {
+            *interaction_text = text(leader.getName() + " a le regard plein de détermination et n'attend qu'une chose: vous combattre !");
+        }
+    }, ButtonOption::Animated());
+}
+
+Component leaderEntry(ScreenInteractive& screen, GymLeader& leader, Player& player, GameState& state, std::shared_ptr<Element> interaction_text) {
     /* 
         Display informations about a gym leader
         and a button to fight them
     */
     Component button = Button("Fight", [&] {
-        screen.ExitLoopClosure()();
+        if(!leader.isDefeated()) {
+            Fight(screen, player, leader);
+            screen.ExitLoopClosure()();
+        }
+    }, ButtonOption::Animated());
+
+    Component interaction_button = Button("Interact", [&] {
+        if(leader.isDefeated()) {
+            *interaction_text = text(player.interactWith(std::make_shared<GymLeader>(leader)));
+        }
+        else {
+            *interaction_text = text(leader.getName() + " a le regard plein de détermination et n'attend qu'une chose: vous combattre !");
+        }
     }, ButtonOption::Animated());
 
     Component leader_entry = Container::Horizontal({
 
-        Renderer([=] {
+        Renderer([&] {
 
             std::vector<Element> leader_elements = {};
             leader_elements.push_back(text(leader.getName() + " - " + leader.getGymName()) | vcenter | size(WIDTH, EQUAL, 40));
@@ -51,8 +78,8 @@ Component leaderEntry(ScreenInteractive& screen, const GymLeader& leader, const 
             int earned_badges { player.getBadges() };
             
             if(leader.isDefeated())
-                leader_elements.push_back(text("Defeated") | color(Color::Green3) | center);
-            else
+                leader_elements.push_back(text("  Defeated  ") | color(Color::Green3) | center);
+            else    
                 leader_elements.push_back(text("Not defeated") | color(Color::Red1) | center);
             
             leader_elements.push_back(separatorEmpty());
@@ -61,6 +88,7 @@ Component leaderEntry(ScreenInteractive& screen, const GymLeader& leader, const 
             return hbox(leader_elements);
         }),
         button | center | size(HEIGHT, EQUAL, 3),
+        interaction_button | center,
     }) | center;
 
     return leader_entry;
@@ -118,14 +146,12 @@ Component movePokemonContainer(std::vector<std::string>& values, std::vector<std
     });
 }
 
-Component PokemonDetails(Player& player, int& selected, std::vector<std::string>& values, std::vector<std::string>& entries) {
+Component PokemonDetails(std::shared_ptr<Pokemon> p) {
     // Display pokemon details
-    auto& p = player.getPokemons()[selected];
-
     return Container::Vertical({
         Renderer([&] {
             return vbox({
-                text(p->getName()) | bold,
+                text(p->getName()) | bold | center,
                 separator(),
                 text(std::to_string(p->getCurrentHp()) + "/" + std::to_string(p->getBaseHp()) + " HP"),
                 text("Type(s): " + p->getType1() + (p->getType2().empty() ? "" : ", " + p->getType2())),
@@ -134,9 +160,9 @@ Component PokemonDetails(Player& player, int& selected, std::vector<std::string>
     });
 }
 
-Component healdButton(int& selected, Player& player) {
+Component healButton(int& selected, Player& player) {
     return Button("Heal", [&] {
-        auto& selected_pokemon { player.getPokemons()[selected] };
+        auto& selected_pokemon = player.getPokemons()[selected];
         // Heal the pokemon only if needed and player has at least 1 potion
         if(selected_pokemon->getCurrentHp() < selected_pokemon->getBaseHp() 
         && player.getNbPotions() > 0) 
@@ -147,6 +173,25 @@ Component healdButton(int& selected, Player& player) {
     }, ButtonOption::Animated(Color::Pink1));
 }
 
+Component interactionBox(std::shared_ptr<Element> interaction_text) {
+    return Container::Vertical({
+        Renderer([&] {
+            return vbox({
+                text("Interaction box") | bold | color(Color::Green) | center,
+                separatorDouble(),
+                *interaction_text
+            }) | border | center;
+        })
+    });
+}
+
+Component pokemonInteractButton(int& selected, Player& player, std::shared_ptr<Element> interaction_text) {
+    return Button("Interact", [&] {
+        auto& selected_pokemon = player.getPokemons()[selected];
+        *interaction_text = text(player.interactWith(selected_pokemon));
+    }, ButtonOption::Animated(Color::Orange4)) | center;
+}
+
 void mainMenu(ScreenInteractive& screen, GameState& state, Player& player, 
     std::vector<GymLeader>& leaders, 
     std::vector<Master>& masters)
@@ -154,59 +199,107 @@ void mainMenu(ScreenInteractive& screen, GameState& state, Player& player,
     Component header            { PlayerStats(player) };
     Component title             { Title(player, leaders) };
     Component leaders_display   { Container::Vertical({}) };
-    Component exit_button       { exitButton(screen) };
+    Component exit_button       { exitButton(screen, state) };
 
     std::vector<std::string> tab_values {};
     std::vector<std::string> tab_entries {};
     int tab_selected {};
 
+    auto interaction_text = std::make_shared<Element>(text(""));
+
     leaders_display->Add(title);
 
-    for(const auto& leader: leaders) {
+    for(auto& leader: leaders) {
         // Display infos and fight button for each unlocked gym leader
         if(player.getBadges() >= leader.getBadgesCondition()) {
-            Component leader_entry = leaderEntry(screen, leader, player);
+            Component leader_entry = leaderEntry(screen, leader, player, state, interaction_text);
             leaders_display->Add(leader_entry);
         }
     } 
 
+    Component masters_container = Container::Vertical({});
+
+    if(defeatedAllGym(leaders)){
+        masters_container->Add(Button("Fight a random Pokemon Master", [&] {
+            int random_index {};
+
+            do {
+                random_index = Random::get(0, static_cast<int>(masters.size()) - 1);
+            } while (masters[random_index].isDefeated() && !defeatedAllMasters(masters));
+
+            if(!defeatedAllMasters(masters)) {
+                Fight(screen, player, masters[random_index]);
+                screen.ExitLoopClosure()();
+            }
+            
+        }, ButtonOption::Animated(Color::Yellow1)));
+    }
+
     Component leaders_container = Container::Vertical({
         header,
         leaders_display | border,
-        exit_button | align_right,
+        exit_button | xflex | size(WIDTH, EQUAL, 11),
     }) | center | bgcolor(Color::RGB(0, 0, 0));
 
     updatePokemonsEntries(tab_values, tab_entries, player);
     // display player's pokemons
-    auto tab_toggle { Radiobox(&tab_values, &tab_selected) };
+
+    Component separator_container = Renderer([&] { return vbox(separatorDouble());});
+
+    Component tab_toggle = Container::Vertical({
+        Radiobox(&tab_values, &tab_selected),
+        separator_container,
+    });
     // display details of selected pokemon
     Component tab_content = Renderer([&] {
         return hbox({
             separatorDouble(),
-            PokemonDetails(player, tab_selected, tab_values, tab_entries)->Render(),
+            PokemonDetails(player.getPokemons()[tab_selected])->Render(),
             separatorDouble(),
         }); 
     });
 
-    Component heal_button = healdButton(tab_selected, player);
-    Component separator_container = Renderer([&] { return vbox(separatorDouble());});
+    Component heal_button = healButton(tab_selected, player);
     Component move_container = movePokemonContainer(tab_values, tab_entries, player, tab_selected);
+    Component pokemon_interact_button = pokemonInteractButton(tab_selected, player, interaction_text);
+    Component interaction_box = interactionBox(interaction_text);
     
     Component pokemon_container = Container::Horizontal({
-        tab_toggle,
+        Container::Vertical({
+            tab_toggle | border,
+            pokemon_interact_button,
+        }),
         tab_content,
         Container::Vertical ({
-            move_container | hcenter,
+            move_container,
             separator_container,
             heal_button,
         }),
-    }) | border | size(HEIGHT, EQUAL, 10);
+    }) | border | size(HEIGHT, EQUAL, 13);
 
     // Renderer, wrap all containers.
-    Component render = Container::Horizontal({
-        leaders_container,
-        pokemon_container,
-    }) | center | bgcolor(Color::RGB(0, 0, 0));
+    Component render {};
+
+    if (defeatedAllGym(leaders)) {
+        render = Container::Vertical({
+            interaction_box,
+            Container::Horizontal({
+                leaders_container,
+                Container::Vertical({
+                    pokemon_container,
+                    masters_container | center,
+                })
+            }),
+        }) | center | bgcolor(Color::RGB(0, 0, 0));
+    } else {
+        render = Container::Vertical({
+            interaction_box,
+            Container::Horizontal({
+                leaders_container,
+                pokemon_container,
+            }),
+        }) | center | bgcolor(Color::RGB(0, 0, 0));
+    }
 
     screen.Loop(render);
 }
