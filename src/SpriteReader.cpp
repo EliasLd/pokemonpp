@@ -1,5 +1,11 @@
 #include "SpriteReader.h"
 
+#include "ftxui/component/component.hpp"
+#include "ftxui/dom/elements.hpp"
+#include "ftxui/screen/color.hpp"
+
+using namespace ftxui;
+
 // Anonymous namespace to encapsulate private class, enum, and functions
 namespace {
 
@@ -280,6 +286,32 @@ std::vector<std::vector<Color>> convertToColorGrid(const std::vector<std::pair<s
     }
 
     return grid;
+}
+
+Component createSpriteComponent(const std::vector<std::vector<Color>>& grid) {
+    Elements array;
+    array.reserve(grid.size() / static_cast<size_t>(2));
+    for (size_t y {}; (y + 1) < grid.size(); y += 2) {
+        Elements line;
+        line.reserve(
+            grid[y].size() < grid[y + 1].size() ?
+            grid[y].size() : grid[y + 1].size()
+        );
+        for (size_t x {}; x < grid[y].size() && x < grid[y + 1].size(); ++x) {
+            line.push_back(
+                text("▀")
+                | color(grid[y][x])
+                | bgcolor(grid[y + 1][x])
+            );
+        }
+        array.emplace_back(hbox(std::move(line)));
+    }
+
+    Component sprite = Renderer([=] {
+        return vbox(std::move(array));
+    });
+
+    return sprite;
 }
 
 } // namespace
