@@ -226,4 +226,60 @@ std::vector<std::pair<std::vector<Item>, std::vector<RGB>>> parseSpriteFile(cons
     return data;
 }
 
+std::vector<std::vector<Color>> convertToColorGrid(const std::vector<std::pair<std::vector<Item>, std::vector<RGB>>>& parsed) {
+    std::vector<std::vector<Color>> grid;
+    grid.reserve(parsed.size() * 2UL);
+
+    Color fg_color = Color::Black;
+    Color bg_color = Color::Black;
+
+    for (const auto& line : parsed) {
+        size_t colorIndex {};
+        auto items = line.first;
+        auto colors = line.second;
+        size_t approx_size = items.size() > colors.size() ? items.size() - colors.size() : items.size();
+        std::vector<Color> upper_pixels;
+        std::vector<Color> lower_pixels;
+        upper_pixels.reserve(approx_size);
+        lower_pixels.reserve(approx_size);
+        for (const auto& elem : items) {
+            switch (elem)
+            {
+            case Item::FgColor:
+                fg_color = Color::RGB(colors[colorIndex].r, colors[colorIndex].g, colors[colorIndex].b);
+                ++colorIndex;
+                break;
+            case Item::BgColor:
+                bg_color = Color::RGB(colors[colorIndex].r, colors[colorIndex].g, colors[colorIndex].b);
+                ++colorIndex;
+                break;
+            case Item::ColorReset:
+                fg_color = Color::Black;
+                bg_color = Color::Black;
+                break;
+            case Item::Space:
+                upper_pixels.emplace_back(Color::Black);
+                lower_pixels.emplace_back(Color::Black);
+                break;
+            case Item::UpperSquare:
+                upper_pixels.emplace_back(fg_color);
+                lower_pixels.emplace_back(bg_color);
+                break;
+            case Item::LowerSquare:
+                upper_pixels.emplace_back(bg_color);
+                lower_pixels.emplace_back(fg_color);
+                break;
+            
+            default:
+                throw std::runtime_error("unreachable");
+                break;
+            }
+        }
+        grid.emplace_back(std::move(upper_pixels));
+        grid.emplace_back(std::move(lower_pixels));
+    }
+
+    return grid;
+}
+
 } // namespace
