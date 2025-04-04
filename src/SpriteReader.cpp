@@ -201,4 +201,29 @@ std::pair<std::vector<Item>, std::vector<RGB>> parseLine(const std::wstring& lin
     return std::make_pair(itemStorage, colorStorage);
 }
 
+std::vector<std::pair<std::vector<Item>, std::vector<RGB>>> parseSpriteFile(const std::string& file_path) {
+    std::wifstream wif(file_path);
+
+    // set the appropriate locale to read utf-8
+    const std::locale LOCALE = std::locale("C.UTF-8");
+    wif.imbue(LOCALE);
+
+    std::vector<std::pair<std::vector<Item>, std::vector<RGB>>> data {};
+
+    if(!wif.is_open())  {
+        std::cerr << "Error: could not open file " + file_path + " !" << std::endl;
+        return data;
+    }
+
+    std::wstring line;
+    while (std::getline(wif, line)) {
+        auto processed_line = parseLine(line);
+        data.emplace_back(processed_line);
+    }
+
+    wif.close();
+
+    return data;
+}
+
 } // namespace
