@@ -4,6 +4,13 @@
 #include "ftxui/dom/elements.hpp"
 #include "ftxui/screen/color.hpp"
 
+#include <memory>
+#include <utility>
+#include <fstream>
+#include <iostream>
+#include <string>
+#include <filesystem>
+
 using namespace ftxui;
 
 // Anonymous namespace to encapsulate private class, enum, and functions
@@ -312,6 +319,30 @@ Component createSpriteComponent(const std::vector<std::vector<Color>>& grid) {
     });
 
     return sprite;
+}
+
+std::string getFilePath(const std::string& english_name) {
+    std::filesystem::path file_path(SPRITE_DIR);
+    std::string file_name {};
+    size_t i {};
+    while (i < english_name.size()) {
+        const char c = english_name[i];
+        if (std::isalnum(c)) {
+            file_name += std::tolower(c);
+            ++i;
+        } else if (english_name.substr(i, 4) == "♀") {
+            file_name += "-f";
+            i += 4;
+        } else if (english_name.substr(i, 4) == "♂") {
+            file_name += "-m";
+            i += 4;
+        } else if (english_name.substr(i, 2) == ". ") {
+            file_name += '-';
+            i += 2;
+        }
+    }
+    file_path.append(file_name);
+    return file_path;
 }
 
 } // namespace
