@@ -49,6 +49,16 @@ bool isAnsiEsc(const std::wstring& s, size_t& i)  {
     return false;
 }
 
+std::optional<std::pair<size_t, Item>> extractColorReset(const std::wstring& s, size_t i) {
+    if (isAnsiEsc(s, i) && i < s.size() && s.substr(i, 3) == L"[0m") {
+        // we found what we were looking for
+        return std::make_pair(i + 3, Item::ColorReset);
+    } else {
+        // not found
+        return std::nullopt;
+    }
+}
+
 std::optional<std::pair<size_t, RGB>> parseRGB(const std::wstring& s, size_t i) {
     const wchar_t SEP = L';';
     constexpr size_t N { 3 };
