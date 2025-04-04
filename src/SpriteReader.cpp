@@ -36,6 +36,19 @@ int getDigit(const wchar_t c) {
     }
 }
 
+/// @brief Check if the character at index i in the string s is an ANSI escape. If
+/// it is, increment i by 1 and return true.
+/// @param s The string containing the characters to check.
+/// @param i The index of the character to check.
+/// @return true if the character at index i is an ANSI escape.
+bool isAnsiEsc(const std::wstring& s, size_t& i)  {
+    if (i < s.size() && s[i] == '\x1b')  {
+        ++i;
+        return true;
+    }
+    return false;
+}
+
 std::optional<std::pair<size_t, RGB>> parseRGB(const std::wstring& s, size_t i) {
     const wchar_t SEP = L';';
     constexpr size_t N { 3 };
@@ -82,6 +95,31 @@ std::optional<std::pair<size_t, RGB>> parseRGB(const std::wstring& s, size_t i) 
     uint8_t g = (uint8_t)rgb[1];
     uint8_t b = (uint8_t)rgb[2];
     return std::make_pair(i + total_num_digits + N - 1, RGB(r, g, b));
+}
+
+std::optional<std::pair<std::pair<size_t, RGB>, Item>> extractColor(const std::wstring& s, size_t i) {
+    const wchar_t SET_TEXT_ATTRIBUTES = L'm';
+    if (!isAnsiEsc(s, i)) {
+        // ansi esc missing
+        return std::nullopt;
+    } else if (s.substr(i, 6) == L"[38;2;") {
+        // forground color
+        auto parsed = parseRGB(s, i + 6);
+        if (!parsed.has_value()) return std::nullopt;
+        i = parsed.value().first;
+        if (i >= s.size() || s[i] != SET_TEXT_ATTRIBUTES) return std::nullopt;
+        return std::make_pair(std::make_pair(i + 1, parsed.value().second), Item::FgColor);
+    } else if (s.substr(i, 6) == L"[48;2;") {
+        // background color
+        auto parsed = parseRGB(s, i + 6);
+        if (!parsed.has_value()) return std::nullopt;
+        i = parsed.value().first;
+        if (i >= s.size() || s[i] != SET_TEXT_ATTRIBUTES) return std::nullopt;
+        return std::make_pair(std::make_pair(i + 1, parsed.value().second), Item::BgColor);
+    } else {
+        // unknown content
+        return std::nullopt;
+    }
 }
 
 } // namespace
