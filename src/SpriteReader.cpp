@@ -153,4 +153,52 @@ std::optional<std::pair<std::pair<size_t, RGB>, Item>> extractColor(const std::w
     }
 }
 
+std::pair<std::vector<Item>, std::vector<RGB>> parseLine(const std::wstring& line) {
+    std::vector<Item> itemStorage {};
+    std::vector<RGB> colorStorage {};
+
+    /*
+        We parse the line piece by piece :
+          - when we find something valid, we add it to one of the storage vectors
+          - then we update the index to reflect the next position to be parsed
+          - we continue until either reaching the end of the line or failing to parse something
+    */
+
+    size_t index {};
+    while (index < line.size()) {
+        {
+            auto v = extractColorReset(line, index);
+            if (v.has_value()) {
+                itemStorage.emplace_back(v.value().second);
+                index = v.value().first;
+                continue;
+            }
+        }
+
+        {
+            auto v = extractSpaceOrSquare(line, index);
+            if (v.has_value()) {
+                itemStorage.emplace_back(v.value().second);
+                index = v.value().first;
+                continue;
+            }
+        }
+
+        {
+            auto v = extractColor(line, index);
+            if (v.has_value()) {
+                itemStorage.emplace_back(v.value().second);
+                colorStorage.emplace_back(v.value().first.second);
+                index = v.value().first.first;
+                continue;
+            }
+        }
+
+        // if we get here, it means we failed to parse something
+        break;
+    }
+
+    return std::make_pair(itemStorage, colorStorage);
+}
+
 } // namespace
