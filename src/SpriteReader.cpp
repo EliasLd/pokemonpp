@@ -346,3 +346,11 @@ std::string getFilePath(const std::string& english_name) {
 }
 
 } // namespace
+
+Component getSpriteForPokemon(const std::string& english_name) {
+    std::string file_path = getFilePath(english_name);
+    const auto parsed = parseSpriteFile(file_path);
+    const auto grid = convertToColorGrid(parsed);
+    const Component sprite = createSpriteComponent(grid);
+    return sprite;
+}
