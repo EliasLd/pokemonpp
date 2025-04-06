@@ -41,11 +41,12 @@ std::unordered_map<std::string, std::shared_ptr<Pokemon>> readPokemonFromCSV(con
         // Create an input flow to read strings
         std::istringstream flow { line } ;
 
-        std::string name {}, type1 {}, type2 {}, attackName {};
+        std::string name {}, english_name {}, type1 {}, type2 {}, attackName {};
         int hp {}; 
         int attackDamage {};
 
         std::getline(flow, name, ',');
+        std::getline(flow, english_name, ',');
         std::getline(flow, type1, ',');
         std::getline(flow, type2, ','); 
 
@@ -71,7 +72,7 @@ std::unordered_map<std::string, std::shared_ptr<Pokemon>> readPokemonFromCSV(con
             continue;
         }
 
-        auto pokemon { createPokemon(name, type1, type2, hp, attackName, attackDamage) };
+        auto pokemon { createPokemon(name, english_name, type1, type2, hp, attackName, attackDamage) };
         pokemons[name] = pokemon;
     }
 
