@@ -5,7 +5,7 @@ A CLI pokemon battle simulation.
 First clone the repositery including submodule:
 
 ```bash
-git clone --recurse-submodules <repositery_url>
+git clone --recurse-submodules <repository_url>
 ```
 
 ### Classical Build and Run
