@@ -1,6 +1,9 @@
 #include "Pokemon.h"
 #include "DataReader.h"
+#include "SpriteReader.h"
 #include "TypeStats.h"
+
+#include "ftxui/component/component.hpp"
 
 #include <iomanip>
 #include <unordered_set>
@@ -16,6 +19,7 @@ Pokemon::Pokemon(const std::string& name, const std::string& english_name, const
 {
     current_hp = base_hp;
     assignWeaknessesAndResistances();
+    sprite = getSpriteForPokemon(english_name);
 }
 
 void addVectToVect(std::vector<std::string>& dest, const std::vector<std::string>& src) {
@@ -102,6 +106,10 @@ const std::vector<std::string>& Pokemon::getWeaknesses() const {
 
 const std::vector<std::string>& Pokemon::getResistances() const {
     return resistances;
+}
+
+const ftxui::Component& Pokemon::getSprite() const {
+    return sprite;
 }
 
 PokemonFeu::PokemonFeu(const std::string& name, const std::string& english_name, const std::string& type1, const std::string& type2, int base_hp, const std::string& attack_name, int attack_damage)

@@ -1,6 +1,8 @@
 #ifndef POKEMON_H
 #define POKEMON_H
 
+#include "ftxui/component/component.hpp"
+
 #include <iostream>
 #include <memory>
 #include <vector>
@@ -13,6 +15,7 @@ class Pokemon : public Interact
 protected:
     std::string name;
     std::string english_name;
+    ftxui::Component sprite;
     std::string type1;
     std::string type2;
     int base_hp;
@@ -52,6 +55,7 @@ public:
     const std::string toString() const;
     void assignWeaknessesAndResistances();
     void heal();
+    const ftxui::Component& getSprite() const;
 };
 
 class PokemonFeu : public Pokemon
