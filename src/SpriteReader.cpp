@@ -339,6 +339,9 @@ std::string getFilePath(const std::string& english_name) {
         } else if (english_name.substr(i, 2) == ". ") {
             file_name += '-';
             i += 2;
+        } else {
+            // skip the character
+            ++i;
         }
     }
     file_path.append(file_name);
