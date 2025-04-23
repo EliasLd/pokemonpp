@@ -244,18 +244,22 @@ void mainMenu(ScreenInteractive& screen, GameState& state, Player& player,
     updatePokemonsEntries(tab_values, tab_entries, player);
     // display player's pokemons
 
-    Component separator_container = Renderer([&] { return vbox(separatorDouble());});
-
     Component tab_toggle = Container::Vertical({
         Radiobox(&tab_values, &tab_selected),
-        separator_container,
     });
+
+    Component sprite = Renderer([&] {
+        Component color_drawing = player.getPokemons().at(tab_selected)->getSprite();
+        return color_drawing->Render();
+    });
+
     // display details of selected pokemon
     Component tab_content = Renderer([&] {
         return hbox({
-            separatorDouble(),
-            PokemonDetails(player.getPokemons()[tab_selected])->Render(),
-            separatorDouble(),
+            vbox({
+                PokemonDetails(player.getPokemons()[tab_selected])->Render(),
+                sprite->Render(),
+            }),
         }); 
     });
 
@@ -267,15 +271,13 @@ void mainMenu(ScreenInteractive& screen, GameState& state, Player& player,
     Component pokemon_container = Container::Horizontal({
         Container::Vertical({
             tab_toggle | border,
-            pokemon_interact_button,
-        }),
-        tab_content,
-        Container::Vertical ({
             move_container,
-            separator_container,
+            pokemon_interact_button,
             heal_button,
         }),
-    }) | border | size(HEIGHT, EQUAL, 13);
+        Renderer([] { return separatorDouble(); }),
+        tab_content,
+    }) | border;
 
     // Renderer, wrap all containers.
     Component render {};
