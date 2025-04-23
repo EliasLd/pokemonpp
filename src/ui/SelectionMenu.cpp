@@ -105,10 +105,20 @@ std::vector<std::shared_ptr<Pokemon>> SelectionMenu(
         }
     }, ButtonOption::Animated());
 
+    auto sprite = Renderer([&] {
+        int i = checkbox_container->ActiveChild()->Index();
+        if (0 <= i && i < pokemon_list.size()) {
+            return pokemon_list[i]->getSprite()->Render() | center;
+        }
+        return vbox({ text("index out of range") });
+    });
+
     // Wrapping container, displays all the menu
     Component container = Container::Vertical({
         title,
         scrollable_checkbox,
+        Renderer([] { return separatorDouble(); }),
+        sprite,
         warning_message,
         validate_button,
     }) | border | center | bgcolor(Color::RGB(0, 0, 0));

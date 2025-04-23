@@ -1,6 +1,8 @@
 #ifndef POKEMON_H
 #define POKEMON_H
 
+#include "ftxui/component/component.hpp"
+
 #include <iostream>
 #include <memory>
 #include <vector>
@@ -12,6 +14,8 @@ class Pokemon : public Interact
 {
 protected:
     std::string name;
+    std::string english_name;
+    ftxui::Component sprite;
     std::string type1;
     std::string type2;
     int base_hp;
@@ -23,6 +27,7 @@ protected:
 
 public:
     Pokemon (const std::string& name, 
+            const std::string& english_name,
             const std::string& type1, 
             const std::string& type2,
             int base_hp, 
@@ -35,6 +40,7 @@ public:
     
     // Getters
     const std::string& getName() const;
+    const std::string& getEnglishName() const;
     const std::string& getType1() const;
     const std::string& getType2() const;
     int getBaseHp() const;
@@ -49,12 +55,14 @@ public:
     const std::string toString() const;
     void assignWeaknessesAndResistances();
     void heal();
+    const ftxui::Component& getSprite() const;
 };
 
 class PokemonFeu : public Pokemon
 {
 public:
     PokemonFeu(const std::string& name, 
+                const std::string& english_name,
                 const std::string& type1, 
                 const std::string& type2, 
                 int base_hp, const std::string& attack_name, int attack_damage);
@@ -67,6 +75,7 @@ class PokemonEau : public Pokemon
 {
 public:
     PokemonEau(const std::string& name,
+                const std::string& english_name,
                 const std::string& type1,
                 const std::string& type2, 
                 int base_hp, const std::string& attack_name, int attack_damage);
@@ -79,6 +88,7 @@ class PokemonPlante : public Pokemon
 {
 public:
     PokemonPlante(const std::string& name, 
+        const std::string& english_name,
         const std::string& type1, 
         const std::string& type2, 
         int base_hp, const std::string& attack_name, int attack_damage);
@@ -91,6 +101,7 @@ class PokemonSol : public Pokemon
 {
 public:
     PokemonSol(const std::string& name, 
+        const std::string& english_name,
         const std::string& type1, 
         const std::string& type2, 
         int base_hp, const std::string& attack_name, int attack_damage);
@@ -103,6 +114,7 @@ class PokemonElectrik : public Pokemon
 {
 public:
     PokemonElectrik(const std::string& name, 
+        const std::string& english_name,
         const std::string& type1, 
         const std::string& type2, 
         int base_hp, const std::string& attack_name, int attack_damage);
@@ -115,6 +127,7 @@ class PokemonPoison : public Pokemon
 {
 public:
     PokemonPoison(const std::string& name, 
+        const std::string& english_name,
         const std::string& type1, 
         const std::string& type2, 
         int base_hp, const std::string& attack_name, int attack_damage);
@@ -127,6 +140,7 @@ class PokemonPsy : public Pokemon
 {
 public:
     PokemonPsy(const std::string& name, 
+        const std::string& english_name,
         const std::string& type1, 
         const std::string& type2, 
         int base_hp, const std::string& attack_name, int attack_damage);
@@ -139,6 +153,7 @@ class PokemonCombat : public Pokemon
 {
 public:
     PokemonCombat(const std::string& name, 
+        const std::string& english_name,
         const std::string& type1, 
         const std::string& type2, 
         int base_hp, const std::string& attack_name, int attack_damage);
@@ -151,6 +166,7 @@ class PokemonDragon : public Pokemon
 {
 public:
     PokemonDragon(const std::string& name, 
+        const std::string& english_name,
         const std::string& type1, 
         const std::string& type2, 
         int base_hp, const std::string& attack_name, int attack_damage);
@@ -163,6 +179,7 @@ class PokemonVol : public Pokemon
 {
 public:
     PokemonVol(const std::string& name, 
+        const std::string& english_name,
         const std::string& type1, 
         const std::string& type2, 
         int base_hp, const std::string& attack_name, int attack_damage);
@@ -173,6 +190,7 @@ public:
 
 std::shared_ptr<Pokemon> createPokemon(
     const std::string& name, 
+    const std::string& english_name,
     const std::string& type1, 
     const std::string& type2, 
     int base_hp,

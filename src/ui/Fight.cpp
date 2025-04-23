@@ -88,7 +88,7 @@ void Fight(ftxui::ScreenInteractive& screen, Player& player, Trainer& opponent) 
     
     Component logs_container = Renderer([&] {
         return vbox({
-            text("Fight logs"),
+            text("Fight logs") | center,
             separatorDouble(),
             logs->Render(),
         });
@@ -141,6 +141,7 @@ void Fight(ftxui::ScreenInteractive& screen, Player& player, Trainer& opponent) 
             return vbox({
                 text(player.getName() + " - " + std::to_string(player.getNbPotions()) + " potion(s)"),
                 separatorDouble(),
+                player_pokemons[player_index]->getSprite()->Render(),
                 text (
                     "Current Pokemon: " + player_pokemons[player_index]->getName() + " - "
                     + std::to_string(player_pokemons[player_index]->getCurrentHp()) + "/" 
@@ -164,6 +165,7 @@ void Fight(ftxui::ScreenInteractive& screen, Player& player, Trainer& opponent) 
             return vbox ({
                 text((is_master ? "Master " : "Gym leader ") + opponent.getName()),
                 separatorDouble(),
+                opponent_pokemons[opponent_index]->getSprite()->Render(),
                 text (
                     "Current Pokemon: " + opponent_pokemons[opponent_index]->getName() + " - "
                     + std::to_string(opponent_pokemons[opponent_index]->getCurrentHp()) + "/" 
