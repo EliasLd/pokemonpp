@@ -173,7 +173,7 @@ Component healButton(int& selected, Player& player) {
             selected_pokemon->heal();
             player.setNbPotions(player.getNbPotions() - 1);
         }
-    }, ButtonOption::Animated(Color::Pink1));
+    }, ButtonOption::Animated(Color::Pink1)) | center;
 }
 
 Component interactionBox(std::shared_ptr<Element> interaction_text) {
