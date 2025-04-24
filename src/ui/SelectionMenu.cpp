@@ -96,7 +96,7 @@ std::vector<std::shared_ptr<Pokemon>> SelectionMenu(
             // Get the chosen pokemons
             for(size_t i {0} ; i < length ; ++i) {
                 if(states[i]) 
-                    selected_pokemons.push_back(pokemon_list[i]);
+                    selected_pokemons.push_back(pokemon_list.at(i));
             }
             
             // Free allocated memory and exit menu
@@ -108,7 +108,7 @@ std::vector<std::shared_ptr<Pokemon>> SelectionMenu(
     auto sprite = Renderer([&] {
         int i = checkbox_container->ActiveChild()->Index();
         if (0 <= i && i < pokemon_list.size()) {
-            return pokemon_list[i]->getSprite()->Render() | center;
+            return pokemon_list.at(i)->getSprite()->Render() | center;
         }
         return vbox({ text("index out of range") });
     });

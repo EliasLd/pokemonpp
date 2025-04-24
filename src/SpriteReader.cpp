@@ -55,7 +55,7 @@ int getDigit(const wchar_t c) {
 /// @param i The index of the character to check.
 /// @return true if the character at index i is an ANSI escape.
 bool isAnsiEsc(const std::wstring& s, size_t& i)  {
-    if (i < s.size() && s[i] == '\x1b')  {
+    if (i < s.size() && s.at(i) == '\x1b')  {
         ++i;
         return true;
     }
@@ -64,7 +64,7 @@ bool isAnsiEsc(const std::wstring& s, size_t& i)  {
 
 std::optional<std::pair<size_t, Item>> extractSpaceOrSquare(const std::wstring& s, size_t i) {
     Item item;
-    const wchar_t& c { s[i] };
+    const wchar_t& c { s.at(i) };
 
     if (c == ' ') {
         item = Item::Space;
@@ -104,12 +104,12 @@ std::optional<std::pair<size_t, RGB>> parseRGB(const std::wstring& s, size_t i) 
         c = 0; // initialize at zero
         size_t num_digits {};
         for (size_t k {}; k < N && (start + k) < s.size(); ++k) {
-            int digit = getDigit(s[start + k]);
+            int digit = getDigit(s.at(start + k));
             if (digit != -1) {
                 ++num_digits;
                 c *= 10; // base 10 numbers
                 c += digit;
-            } else if (j == N - 1 || s[start + k] == SEP) {
+            } else if (j == N - 1 || s.at(start + k) == SEP) {
                 // the last rgb component has ended or a seperator was reached
                 break;
             } else {
@@ -125,7 +125,7 @@ std::optional<std::pair<size_t, RGB>> parseRGB(const std::wstring& s, size_t i) 
             // invalid uint8 value
             return std::nullopt;
         }
-        if (j != N - 1 && s[start + num_digits] != SEP) {
+        if (j != N - 1 && s.at(start + num_digits) != SEP) {
             // the separator is missing before the next value
             return std::nullopt;
         }
@@ -151,14 +151,14 @@ std::optional<std::pair<std::pair<size_t, RGB>, Item>> extractColor(const std::w
         auto parsed = parseRGB(s, i + 6);
         if (!parsed.has_value()) return std::nullopt;
         i = parsed.value().first;
-        if (i >= s.size() || s[i] != SET_TEXT_ATTRIBUTES) return std::nullopt;
+        if (i >= s.size() || s.at(i) != SET_TEXT_ATTRIBUTES) return std::nullopt;
         return std::make_pair(std::make_pair(i + 1, parsed.value().second), Item::FgColor);
     } else if (s.substr(i, 6) == L"[48;2;") {
         // background color
         auto parsed = parseRGB(s, i + 6);
         if (!parsed.has_value()) return std::nullopt;
         i = parsed.value().first;
-        if (i >= s.size() || s[i] != SET_TEXT_ATTRIBUTES) return std::nullopt;
+        if (i >= s.size() || s.at(i) != SET_TEXT_ATTRIBUTES) return std::nullopt;
         return std::make_pair(std::make_pair(i + 1, parsed.value().second), Item::BgColor);
     } else {
         // unknown content
@@ -259,11 +259,11 @@ std::vector<std::vector<Color>> convertToColorGrid(const std::vector<std::pair<s
             switch (elem)
             {
             case Item::FgColor:
-                fg_color = Color::RGB(colors[colorIndex].r, colors[colorIndex].g, colors[colorIndex].b);
+                fg_color = Color::RGB(colors.at(colorIndex).r, colors.at(colorIndex).g, colors.at(colorIndex).b);
                 ++colorIndex;
                 break;
             case Item::BgColor:
-                bg_color = Color::RGB(colors[colorIndex].r, colors[colorIndex].g, colors[colorIndex].b);
+                bg_color = Color::RGB(colors.at(colorIndex).r, colors.at(colorIndex).g, colors.at(colorIndex).b);
                 ++colorIndex;
                 break;
             case Item::ColorReset:
@@ -301,14 +301,14 @@ Component createSpriteComponent(const std::vector<std::vector<Color>>& grid) {
     for (size_t y {}; (y + 1) < grid.size(); y += 2) {
         Elements line;
         line.reserve(
-            grid[y].size() < grid[y + 1].size() ?
-            grid[y].size() : grid[y + 1].size()
+            grid.at(y).size() < grid.at(y + 1).size() ?
+            grid.at(y).size() : grid.at(y + 1).size()
         );
-        for (size_t x {}; x < grid[y].size() && x < grid[y + 1].size(); ++x) {
+        for (size_t x {}; x < grid.at(y).size() && x < grid.at(y + 1).size(); ++x) {
             line.push_back(
                 text("▀")
-                | color(grid[y][x])
-                | bgcolor(grid[y + 1][x])
+                | color(grid.at(y).at(x))
+                | bgcolor(grid.at(y + 1).at(x))
             );
         }
         array.emplace_back(hbox(std::move(line)));
@@ -326,7 +326,7 @@ std::string getFilePath(const std::string& english_name) {
     std::string file_name {};
     size_t i {};
     while (i < english_name.size()) {
-        const char c = english_name[i];
+        const char c = english_name.at(i);
         if (std::isalnum(c)) {
             file_name += std::tolower(c);
             ++i;

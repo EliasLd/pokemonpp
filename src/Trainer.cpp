@@ -42,7 +42,7 @@ int Player::getDefeats()    const   { return defeats; }
 int Player::getNbPotions()  const   { return nb_potions; }
 
 void Player::swapPokemons(int index1, int index2) {
-    std::swap(pokemons[index1], pokemons[index2]);
+    std::swap(pokemons.at(index1), pokemons.at(index2));
 }
 
 void Player::Defeated() { setDefeats(getDefeats() + 1); }
