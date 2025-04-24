@@ -12,8 +12,13 @@ COPY include include
 COPY src src
 
 WORKDIR /usr/src/app/build
-RUN cmake ..
-RUN make
+RUN --mount=type=cache,target=/usr/src/app/build,sharing=locked \
+    cmake ..
+RUN --mount=type=cache,target=/usr/src/app/build,sharing=locked \
+    make -C /usr/src/app/build
+RUN --mount=type=cache,target=/usr/src/app/build,sharing=locked \
+    cp /usr/src/app/build/pokemon /tmp/pokemon
+RUN mv /tmp/pokemon /usr/src/app/build/pokemon
 
 CMD ["./pokemon"]
 
