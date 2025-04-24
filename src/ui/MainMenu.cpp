@@ -273,8 +273,10 @@ void mainMenu(ScreenInteractive& screen, GameState& state, Player& player,
     
     Component pokemon_container = Container::Horizontal({
         Container::Vertical({
-            tab_toggle | border,
-            move_container,
+            Container::Horizontal({
+                tab_toggle | border,
+                move_container | center,
+            }),
             pokemon_interact_button,
             heal_button,
         }),
