@@ -150,10 +150,13 @@ Component PokemonDetails(std::shared_ptr<Pokemon> p) {
     // Display pokemon details
     return Container::Vertical({
         Renderer([&] {
+            Element hp_display = text(std::to_string(p->getCurrentHp()) + "/" + std::to_string(p->getBaseHp()) + " HP");
             return vbox({
                 text(p->getName()) | bold | center,
                 separator(),
-                text(std::to_string(p->getCurrentHp()) + "/" + std::to_string(p->getBaseHp()) + " HP"),
+                ( p->getCurrentHp() == 0 )
+                ? ( hp_display | color(Color::Red) )
+                : ( hp_display ),
                 text("Type(s): " + p->getType1() + (p->getType2().empty() ? "" : ", " + p->getType2())),
             }) | border | center;
         }),
