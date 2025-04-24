@@ -18,7 +18,7 @@ void opponentTurn(bool& is_player_turn, std::vector<std::shared_ptr<Pokemon>>& p
         if(opponent_pokemon->getCurrentHp() > 0) {
             std::shared_ptr<Pokemon> target {};
             if(player_index < static_cast<int>(player_pokemons.size())){
-                target = player_pokemons[player_index];
+                target = player_pokemons.at(player_index);
             }
             if(target->getCurrentHp() > 0) {
                 float multiplicator { getDamagesMultiplicator(opponent_pokemon, target) };
@@ -79,7 +79,7 @@ void Fight(ftxui::ScreenInteractive& screen, Player& player, Trainer& opponent) 
             
             std::vector<Element> visible_logs;
             for (int i = start_index; i < log_size; ++i) {
-                visible_logs.push_back(fight_logs[i]);
+                visible_logs.push_back(fight_logs.at(i));
             }
     
             return vbox(visible_logs) | flex | size(HEIGHT, LESS_THAN, 8);
@@ -103,16 +103,16 @@ void Fight(ftxui::ScreenInteractive& screen, Player& player, Trainer& opponent) 
             std::shared_ptr<Pokemon> target {};
 
             if(opponent_index < static_cast<int>(opponent_pokemons.size())){
-                target = opponent_pokemons[opponent_index];
+                target = opponent_pokemons.at(opponent_index);
             }
 
             if(target->getCurrentHp() > 0) {
-                float multiplicator { getDamagesMultiplicator(player_pokemons[player_index], target) };
+                float multiplicator { getDamagesMultiplicator(player_pokemons.at(player_index), target) };
                 // Pokemon masters deal +25% damages 
                 if(is_master) { multiplicator *= 1.25; }
-                int damage { static_cast<int>(multiplicator * player_pokemons[player_index]->getAttackDamage()) };
+                int damage { static_cast<int>(multiplicator * player_pokemons.at(player_index)->getAttackDamage()) };
                 target->takeDamage(damage);
-                fight_logs.push_back(text(player_pokemons[player_index]->getName() + " does " + std::to_string(damage) + " damages to " + target->getName()));
+                fight_logs.push_back(text(player_pokemons.at(player_index)->getName() + " does " + std::to_string(damage) + " damages to " + target->getName()));
                 
                 screen.PostEvent(Event::Custom);
 
@@ -130,7 +130,7 @@ void Fight(ftxui::ScreenInteractive& screen, Player& player, Trainer& opponent) 
             
             is_player_turn = false;
 
-            opponentTurn(is_player_turn, player_pokemons, player_index, opponent_pokemons[opponent_index], player, opponent, fight_logs, screen);
+            opponentTurn(is_player_turn, player_pokemons, player_index, opponent_pokemons.at(opponent_index), player, opponent, fight_logs, screen);
         }
     }, ButtonOption::Animated());
 
@@ -141,15 +141,15 @@ void Fight(ftxui::ScreenInteractive& screen, Player& player, Trainer& opponent) 
             return vbox({
                 text(player.getName() + " - " + std::to_string(player.getNbPotions()) + " potion(s)"),
                 separatorDouble(),
-                player_pokemons[player_index]->getSprite()->Render(),
+                player_pokemons.at(player_index)->getSprite()->Render(),
                 text (
-                    "Current Pokemon: " + player_pokemons[player_index]->getName() + " - "
-                    + std::to_string(player_pokemons[player_index]->getCurrentHp()) + "/" 
-                    + std::to_string(player_pokemons[player_index]->getBaseHp()) + " HP"
+                    "Current Pokemon: " + player_pokemons.at(player_index)->getName() + " - "
+                    + std::to_string(player_pokemons.at(player_index)->getCurrentHp()) + "/" 
+                    + std::to_string(player_pokemons.at(player_index)->getBaseHp()) + " HP"
                 ),
                 text (
-                    "Type(s) : " + player_pokemons[player_index]->getType1()
-                    + (!player_pokemons[player_index]->getType2().empty() ? ", " + player_pokemons[player_index]->getType2() : "")
+                    "Type(s) : " + player_pokemons.at(player_index)->getType1()
+                    + (!player_pokemons.at(player_index)->getType2().empty() ? ", " + player_pokemons.at(player_index)->getType2() : "")
                 ),
                 separatorDouble(),
             });
@@ -165,15 +165,15 @@ void Fight(ftxui::ScreenInteractive& screen, Player& player, Trainer& opponent) 
             return vbox ({
                 text((is_master ? "Master " : "Gym leader ") + opponent.getName()),
                 separatorDouble(),
-                opponent_pokemons[opponent_index]->getSprite()->Render(),
+                opponent_pokemons.at(opponent_index)->getSprite()->Render(),
                 text (
-                    "Current Pokemon: " + opponent_pokemons[opponent_index]->getName() + " - "
-                    + std::to_string(opponent_pokemons[opponent_index]->getCurrentHp()) + "/" 
-                    + std::to_string(opponent_pokemons[opponent_index]->getBaseHp()) + " HP"
+                    "Current Pokemon: " + opponent_pokemons.at(opponent_index)->getName() + " - "
+                    + std::to_string(opponent_pokemons.at(opponent_index)->getCurrentHp()) + "/" 
+                    + std::to_string(opponent_pokemons.at(opponent_index)->getBaseHp()) + " HP"
                 ),
                 text (
-                    "Type(s) : " + opponent_pokemons[opponent_index]->getType1()
-                    + (!opponent_pokemons[opponent_index]->getType2().empty() ? ", " + opponent_pokemons[opponent_index]->getType2() : "")
+                    "Type(s) : " + opponent_pokemons.at(opponent_index)->getType1()
+                    + (!opponent_pokemons.at(opponent_index)->getType2().empty() ? ", " + opponent_pokemons.at(opponent_index)->getType2() : "")
                 ),
             });
         }),

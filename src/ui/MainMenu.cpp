@@ -162,7 +162,7 @@ Component PokemonDetails(std::shared_ptr<Pokemon> p) {
 
 Component healButton(int& selected, Player& player) {
     return Button("Heal", [&] {
-        auto& selected_pokemon = player.getPokemons()[selected];
+        auto& selected_pokemon = player.getPokemons().at(selected);
         // Heal the pokemon only if needed and player has at least 1 potion
         if(selected_pokemon->getCurrentHp() < selected_pokemon->getBaseHp() 
         && player.getNbPotions() > 0) 
@@ -187,7 +187,7 @@ Component interactionBox(std::shared_ptr<Element> interaction_text) {
 
 Component pokemonInteractButton(int& selected, Player& player, std::shared_ptr<Element> interaction_text) {
     return Button("Interact", [&] {
-        auto& selected_pokemon = player.getPokemons()[selected];
+        auto& selected_pokemon = player.getPokemons().at(selected);
         *interaction_text = text(player.interactWith(selected_pokemon));
     }, ButtonOption::Animated(Color::Orange4)) | center;
 }
@@ -225,10 +225,10 @@ void mainMenu(ScreenInteractive& screen, GameState& state, Player& player,
 
             do {
                 random_index = Random::get(0, static_cast<int>(masters.size()) - 1);
-            } while (masters[random_index].isDefeated() && !defeatedAllMasters(masters));
+            } while (masters.at(random_index).isDefeated() && !defeatedAllMasters(masters));
 
             if(!defeatedAllMasters(masters)) {
-                Fight(screen, player, masters[random_index]);
+                Fight(screen, player, masters.at(random_index));
                 screen.ExitLoopClosure()();
             }
             
@@ -257,7 +257,7 @@ void mainMenu(ScreenInteractive& screen, GameState& state, Player& player,
     Component tab_content = Renderer([&] {
         return hbox({
             vbox({
-                PokemonDetails(player.getPokemons()[tab_selected])->Render(),
+                PokemonDetails(player.getPokemons().at(tab_selected))->Render(),
                 sprite->Render(),
             }),
         }); 

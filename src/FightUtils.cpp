@@ -9,7 +9,7 @@ bool isOpponentMaster(Trainer& opponent) {
 void updatePokemonIndex(int& index, std::vector<std::shared_ptr<Pokemon>>& pokemon_list) {
 
     int list_lenght { static_cast<int>(pokemon_list.size()) };
-    while(index < list_lenght - 1 && pokemon_list[index]->getCurrentHp() <= 0) {
+    while(index < list_lenght - 1 && pokemon_list.at(index)->getCurrentHp() <= 0) {
         index++;
     }
     if(index >= list_lenght) {
