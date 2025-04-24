@@ -117,7 +117,6 @@ std::vector<std::shared_ptr<Pokemon>> SelectionMenu(
     Component container = Container::Vertical({
         title,
         scrollable_checkbox,
-        Renderer([] { return separatorDouble(); }),
         sprite,
         warning_message,
         validate_button,

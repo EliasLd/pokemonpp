@@ -150,10 +150,13 @@ Component PokemonDetails(std::shared_ptr<Pokemon> p) {
     // Display pokemon details
     return Container::Vertical({
         Renderer([&] {
+            Element hp_display = text(std::to_string(p->getCurrentHp()) + "/" + std::to_string(p->getBaseHp()) + " HP");
             return vbox({
                 text(p->getName()) | bold | center,
                 separator(),
-                text(std::to_string(p->getCurrentHp()) + "/" + std::to_string(p->getBaseHp()) + " HP"),
+                ( p->getCurrentHp() == 0 )
+                ? ( hp_display | color(Color::Red) )
+                : ( hp_display ),
                 text("Type(s): " + p->getType1() + (p->getType2().empty() ? "" : ", " + p->getType2())),
             }) | border | center;
         }),
@@ -170,7 +173,7 @@ Component healButton(int& selected, Player& player) {
             selected_pokemon->heal();
             player.setNbPotions(player.getNbPotions() - 1);
         }
-    }, ButtonOption::Animated(Color::Pink1));
+    }, ButtonOption::Animated(Color::Pink1)) | center;
 }
 
 Component interactionBox(std::shared_ptr<Element> interaction_text) {
@@ -270,8 +273,10 @@ void mainMenu(ScreenInteractive& screen, GameState& state, Player& player,
     
     Component pokemon_container = Container::Horizontal({
         Container::Vertical({
-            tab_toggle | border,
-            move_container,
+            Container::Horizontal({
+                tab_toggle | border,
+                move_container | center,
+            }),
             pokemon_interact_button,
             heal_button,
         }),

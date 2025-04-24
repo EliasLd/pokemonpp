@@ -14,9 +14,9 @@ std::string IntroductionMenu(ScreenInteractive& screen, GameState& current_state
         return vbox({
             text(R"( _       __     __                        )")  | color(Color::Blue1) | center,
             text(R"(| |     / /__  / /________  ____ ___  ___ )")  | color(Color::Blue1) | center,
-            text(R"(| | /| / / _ \/ / ___/ __ \/ __ `__ \/ _ \ )") | color(Color::Blue1) | center,
+            text(R"(| | /| / / _ \/ / ___/ __ \/ __ `__ \/ _ \)")  | color(Color::Blue1) | center,
             text(R"(| |/ |/ /  __/ / /__/ /_/ / / / / / /  __/)")  | color(Color::Blue1) | center,    
-            text(R"(|__/|__/\___/_/\___/\____/_/ /_/ /_/\___/ )")   | color(Color::Blue1) | center,
+            text(R"(|__/|__/\___/_/\___/\____/_/ /_/ /_/\___/ )")  | color(Color::Blue1) | center,
         });
     });
 

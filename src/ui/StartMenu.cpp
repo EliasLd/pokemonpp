@@ -13,10 +13,10 @@ GameState StartMenu(ScreenInteractive& screen)
 
     Component title = Renderer([&] {
         return vbox ({
-            text("   ___       __                       ___  ___  ") | color(Color::Blue1) | center ,
-            text("  / _ \\___  / /_____ __ _  ___  ___  / _ \\/ _ \\ ") | color(Color::Blue1) | center,
-            text(" / ___/ _ \\/  '_/ -_)  ' \\/ _ \\/ _ \\/ ___/ ___/ ") | color(Color::Blue1) | center,
-            text("/_/   \\___/_/\\_\\\\__/_/_/_/\\_ __/_//_/_/  /_/     ") | color(Color::Blue1) | center,
+            text(R"(   ___       __                       ___  ___ )") | color(Color::Blue1) | center,
+            text(R"(  / _ \___  / /_____ __ _  ___  ___  / _ \/ _ \)") | color(Color::Blue1) | center,
+            text(R"( / ___/ _ \/  '_/ -_)  ' \/ _ \/ _ \/ ___/ ___/)") | color(Color::Blue1) | center,
+            text(R"(/_/   \___/_/\_\\__/_/_/_/\___/_//_/_/  /_/    )") | color(Color::Blue1) | center,
         });
     });
 
