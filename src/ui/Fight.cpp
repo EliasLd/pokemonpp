@@ -141,7 +141,7 @@ void Fight(ftxui::ScreenInteractive& screen, Player& player, Trainer& opponent) 
             return vbox({
                 text(player.getName() + " - " + std::to_string(player.getNbPotions()) + " potion(s)"),
                 separatorDouble(),
-                player_pokemons.at(player_index)->getSprite()->Render(),
+                player_pokemons.at(player_index)->getSprite()->Render() | center,
                 text (
                     "Current Pokemon: " + player_pokemons.at(player_index)->getName() + " - "
                     + std::to_string(player_pokemons.at(player_index)->getCurrentHp()) + "/" 
@@ -165,7 +165,7 @@ void Fight(ftxui::ScreenInteractive& screen, Player& player, Trainer& opponent) 
             return vbox ({
                 text((is_master ? "Master " : "Gym leader ") + opponent.getName()),
                 separatorDouble(),
-                opponent_pokemons.at(opponent_index)->getSprite()->Render(),
+                opponent_pokemons.at(opponent_index)->getSprite()->Render() | center,
                 text (
                     "Current Pokemon: " + opponent_pokemons.at(opponent_index)->getName() + " - "
                     + std::to_string(opponent_pokemons.at(opponent_index)->getCurrentHp()) + "/" 
