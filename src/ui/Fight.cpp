@@ -44,7 +44,7 @@ Component fightHeader(const Player& player, const Trainer& opponent) {
     return Renderer([&] {
         return hbox ({
             text("Pokemon trainer " + player.getName()),
-            text(" VS ") | color(Color::Green),
+            text(" VS ") | color(Color::Green1),
             text(opponent.toString()),
         });
     });

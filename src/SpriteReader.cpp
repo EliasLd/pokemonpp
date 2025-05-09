@@ -243,8 +243,10 @@ std::vector<std::vector<Color>> convertToColorGrid(const std::vector<std::pair<s
     std::vector<std::vector<Color>> grid;
     grid.reserve(parsed.size() * 2UL);
 
-    Color fg_color = Color::Black;
-    Color bg_color = Color::Black;
+    const Color default_color = Color::RGB(0, 0, 0);
+
+    Color fg_color = default_color;
+    Color bg_color = default_color;
 
     for (const auto& line : parsed) {
         size_t colorIndex {};
@@ -267,12 +269,12 @@ std::vector<std::vector<Color>> convertToColorGrid(const std::vector<std::pair<s
                 ++colorIndex;
                 break;
             case Item::ColorReset:
-                fg_color = Color::Black;
-                bg_color = Color::Black;
+                fg_color = default_color;
+                bg_color = default_color;
                 break;
             case Item::Space:
-                upper_pixels.emplace_back(Color::Black);
-                lower_pixels.emplace_back(Color::Black);
+                upper_pixels.emplace_back(default_color);
+                lower_pixels.emplace_back(default_color);
                 break;
             case Item::UpperSquare:
                 upper_pixels.emplace_back(fg_color);

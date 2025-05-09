@@ -23,13 +23,13 @@ GameState StartMenu(ScreenInteractive& screen)
     Component subhead = Renderer([&]{
         return vbox ({
             separatorEmpty(),
-            text("Welcome to Pokemonpp, a C++ Pokemon battle simulation") | center | bold | color(Color::BlueLight),
+            text("Welcome to Pokemonpp, a C++ Pokemon battle simulation") | center | bold | color(Color::SkyBlue1),
             separatorEmpty(),
         });
     });
 
-    auto style = ButtonOption::Animated(Color::Default, Color::GrayDark,
-                                        Color::Default, Color::White);
+    auto style = ButtonOption::Animated(Color::Default, Color::DarkSlateGray1,
+                                        Color::Default, Color::RGB(255, 255, 255));
 
     Component selection = Container::Horizontal({
         Button("Start", [&] {current_state = GameState::Introduction; screen.ExitLoopClosure()();}, style) | center,

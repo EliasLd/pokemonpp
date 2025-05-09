@@ -23,7 +23,7 @@ std::string IntroductionMenu(ScreenInteractive& screen, GameState& current_state
     Component intro_text = Renderer([&] {
         return vbox ({
             separatorEmpty(),
-            text("Welcome to the incredible world of Pokemons !") | bold | center | color(Color::BlueLight),
+            text("Welcome to the incredible world of Pokemons !") | bold | center | color(Color::SkyBlue1),
             separatorEmpty(),
             text("You will soon get started in the Kanto region") | center,
             separatorDouble(),
@@ -65,13 +65,13 @@ std::string IntroductionMenu(ScreenInteractive& screen, GameState& current_state
         } 
         else if (length > 15) {
             return vbox({
-                text("Name is too long (max 15 characters)") | center | color(Color::Red),
+                text("Name is too long (max 15 characters)") | center | color(Color::Red1),
                 separatorEmpty(),
             }) | center;
         }
         else {
             return vbox({
-                text("Seems like a valid name :)") | center | color(Color::Green),
+                text("Seems like a valid name :)") | center | color(Color::Green1),
                 separatorEmpty(),
             }) | center;
         }
@@ -84,7 +84,7 @@ std::string IntroductionMenu(ScreenInteractive& screen, GameState& current_state
             current_state = GameState::SelectionMenu;
             screen.ExitLoopClosure()();
         }
-    }, ButtonOption::Animated(Color::BlueLight));
+    }, ButtonOption::Animated(Color::SkyBlue1));
 
     Component resume = Renderer([&] {
         return hbox ({
@@ -93,9 +93,9 @@ std::string IntroductionMenu(ScreenInteractive& screen, GameState& current_state
             separatorDouble(),
             text("Badges: 0"),
             separatorDouble(),
-            text("Win(s): 0") | color(Color::Green),
+            text("Win(s): 0") | color(Color::Green1),
             separatorDouble(),
-            text("Defeat(s): 0") | color(Color::Red),
+            text("Defeat(s): 0") | color(Color::Red1),
         });
     });
 
