@@ -14,7 +14,7 @@ Component exitButton(ScreenInteractive& screen, GameState& state) {
     return Button(" Exit game ", [&] {
         state = GameState::Exit;
         screen.ExitLoopClosure()();
-    }, ButtonOption::Animated(Color::Red));
+    }, ButtonOption::Animated(Color::Red1));
 }
 
 Component PlayerStats(const Player& player) {
@@ -23,11 +23,11 @@ Component PlayerStats(const Player& player) {
         return hbox ({
             text(player.getName() + " "),
             separatorDouble(),
-            text(" " + std::to_string(player.getBadges()) + " badge(s) ") | color(Color::BlueLight),
+            text(" " + std::to_string(player.getBadges()) + " badge(s) ") | color(Color::SkyBlue1),
             separatorDouble(),
-            text(" " + std::to_string(player.getWins()) + " win(s) ") | color(Color::Green),
+            text(" " + std::to_string(player.getWins()) + " win(s) ") | color(Color::Green1),
             separatorDouble(),
-            text(" " + std::to_string(player.getDefeats()) + " defeat(s) ") | color(Color::Red),
+            text(" " + std::to_string(player.getDefeats()) + " defeat(s) ") | color(Color::Red1),
             separatorDouble(),
             text(" " + std::to_string(player.getNbPotions()) + " potion(s) ") | color(Color::Pink1),
         }) | center | border;
@@ -155,7 +155,7 @@ Component PokemonDetails(std::shared_ptr<Pokemon> p) {
                 text(p->getName()) | bold | center,
                 separator(),
                 ( p->getCurrentHp() == 0 )
-                ? ( hp_display | color(Color::Red) )
+                ? ( hp_display | color(Color::Red1) )
                 : ( hp_display ),
                 text("Type(s): " + p->getType1() + (p->getType2().empty() ? "" : ", " + p->getType2())),
             }) | border | center;
@@ -180,7 +180,7 @@ Component interactionBox(std::shared_ptr<Element> interaction_text) {
     return Container::Vertical({
         Renderer([&] {
             return vbox({
-                text("Interaction box") | bold | color(Color::Green) | center,
+                text("Interaction box") | bold | color(Color::Green1) | center,
                 separatorDouble(),
                 *interaction_text
             }) | border | center;

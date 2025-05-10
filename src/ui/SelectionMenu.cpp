@@ -74,13 +74,13 @@ std::vector<std::shared_ptr<Pokemon>> SelectionMenu(
         } 
         else if (nb_selected > 6) {
             return vbox({ 
-                text("Too many Pokemons selected (" + std::to_string(nb_selected) + ")") | center | bgcolor(Color::Red),
+                text("Too many Pokemons selected (" + std::to_string(nb_selected) + ")") | center | bgcolor(Color::Red1),
                 separator(),
             });
         } 
         else {
             return vbox({ 
-                text("Good") | center | bgcolor(Color::Green),
+                text("Good") | center | bgcolor(Color::Green1),
                 separator(),
             }) ;
         }
