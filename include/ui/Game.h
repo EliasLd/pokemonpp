@@ -8,7 +8,6 @@ enum class GameState {
     Introduction,
     MainMenu,
     SelectionMenu,
-    Credits,
     Exit,
     EndMenu,
 };

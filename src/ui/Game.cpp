@@ -93,6 +93,7 @@ void runGame()
             break;
         
         default:
+            throw std::runtime_error("Unreachable");
             break;
         }   
     }
