@@ -21,11 +21,6 @@ std::vector<std::shared_ptr<Pokemon>> SelectionMenu(
         pokemon_list.push_back(pair.second);
     }
     
-    // Collects all the entries
-    std::vector<std::string> pokemon_choices {};
-    for (const auto& p: pokemon_list)
-        pokemon_choices.push_back(p->toString());
-    
     std::vector<std::shared_ptr<Pokemon>> selected_pokemons {};
 
     Component title = Renderer([&] {
@@ -46,7 +41,7 @@ std::vector<std::shared_ptr<Pokemon>> SelectionMenu(
     bool* states = new bool[length];
     for (size_t i {0} ; i < length ; ++i) {
         states[i] = false;
-        checkbox_container->Add(Checkbox(pokemon_choices[i], &states[i]));
+        checkbox_container->Add(Checkbox(pokemon_list.at(i)->toString(), &states[i]));
     }
 
     // Makes the checkbox scrollable with max 10 entries displayed
