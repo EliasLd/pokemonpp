@@ -42,8 +42,8 @@ std::vector<std::shared_ptr<Pokemon>> SelectionMenu(
 
     auto checkbox_container = Container::Vertical({});
 
-    bool* states = new bool[pokemon_choices.size()];
-    int length { static_cast<int>(pokemon_choices.size())};
+    size_t length { pokemon_list.size() };
+    bool* states = new bool[length];
     for (size_t i {0} ; i < length ; ++i) {
         states[i] = false;
         checkbox_container->Add(Checkbox(pokemon_choices[i], &states[i]));
@@ -64,7 +64,7 @@ std::vector<std::shared_ptr<Pokemon>> SelectionMenu(
     // By default, they have to choose 6 pokemons
     Component warning_message = Renderer([&] {
 
-        long nb_selected = std::count(states, states + pokemon_choices.size(), true);
+        long nb_selected = std::count(states, states + length, true);
     
         if (nb_selected < 6) {
             return vbox({ 
@@ -88,7 +88,7 @@ std::vector<std::shared_ptr<Pokemon>> SelectionMenu(
 
     auto validate_button = Button("Validate Choices", [&] {
 
-        long nb_selected = std::count(states, states + pokemon_choices.size(), true);
+        long nb_selected = std::count(states, states + length, true);
 
         if (nb_selected == 6) {
 
@@ -107,7 +107,7 @@ std::vector<std::shared_ptr<Pokemon>> SelectionMenu(
 
     auto sprite = Renderer([&] {
         int i = checkbox_container->ActiveChild()->Index();
-        if (0 <= i && i < pokemon_list.size()) {
+        if (0 <= i && i < length) {
             return pokemon_list.at(i)->getSprite()->Render() | center;
         }
         return vbox({ text("index out of range") });
