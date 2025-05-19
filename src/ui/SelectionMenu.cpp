@@ -94,8 +94,6 @@ std::vector<std::shared_ptr<Pokemon>> SelectionMenu(
                     selected_pokemons.push_back(pokemon_list.at(i));
             }
             
-            // Free allocated memory and exit menu
-            delete[] states;
             screen.ExitLoopClosure()();
         }
     }, ButtonOption::Animated());
@@ -118,6 +116,9 @@ std::vector<std::shared_ptr<Pokemon>> SelectionMenu(
     }) | border | center | bgcolor(Color::RGB(0, 0, 0));
 
     screen.Loop(container);
+
+    // Free allocated memory before exiting
+    delete[] states;
 
     return selected_pokemons;
 }
