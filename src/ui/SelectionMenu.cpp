@@ -17,6 +17,7 @@ std::vector<std::shared_ptr<Pokemon>> SelectionMenu(
         throw std::runtime_error("Error: no pokemon loaded.");
 
     std::vector<std::shared_ptr<Pokemon>> pokemon_list;
+    pokemon_list.reserve(pokemon_map.size());
     for (const auto& pair : pokemon_map) {
         pokemon_list.push_back(pair.second);
     }
