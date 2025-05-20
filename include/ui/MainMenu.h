@@ -9,7 +9,7 @@
 
 ftxui::Component exitButton(ftxui::ScreenInteractive& screen, GameState& state);
 ftxui::Component PlayerStats(const Player& player);
-ftxui::Component leaderEntry(ftxui::ScreenInteractive& screen, GymLeader& leader, Player& player, GameState& state, std::shared_ptr<ftxui::Element> interaction_text);
+ftxui::Component leaderEntry(ftxui::ScreenInteractive& screen, GymLeader& leader, Player& player, GameState& state);
 ftxui::Component Title(const Player& player, const std::vector<GymLeader>& leaders);
 ftxui::Component movePokemonContainer(std::vector<std::string>& values, std::vector<std::string>& entries, Player& player, int& selected);
 ftxui::Component PokemonDetails(std::shared_ptr<Pokemon> p);
