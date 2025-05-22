@@ -14,12 +14,18 @@ const std::string pokemon_filename  {"../data/pokemon.csv"};
 const std::string leader_filename   {"../data/leaders.csv"};
 const std::string master_filename   {"../data/maitres.csv"};
 
-void resetToGameStart(
-    std::unordered_map<std::string, std::shared_ptr<Pokemon>>& pokemons,
-    std::vector<GymLeader>& leaders,
-    std::vector<Master>& masters,
-    Player& player
-) {
+GameController::GameController() {
+    try {
+        pokemons = readPokemonFromCSV(pokemon_filename);
+        leaders = readGymLeadersFromCSV(leader_filename, pokemons);
+        masters = readMasterFromCSV(master_filename, pokemons);
+    } catch (const std::runtime_error& e) {
+        std::cerr << "Error reading files: " << e.what() << std::endl;
+        return;
+    }
+}
+
+void GameController::resetToGameStart() {
     std::vector<std::shared_ptr<Pokemon>> p;
     p.reserve(pokemons.size());
     for (const auto& pair : pokemons) {
@@ -44,21 +50,10 @@ void resetToGameStart(
     player.setBadges(0);
 }
 
-void runGame()
-{
-    GameState state { GameState::StartMenu };
-
-    std::unordered_map<std::string, std::shared_ptr<Pokemon>> pokemons {readPokemonFromCSV(pokemon_filename)};
-    std::vector<GymLeader> leaders {readGymLeadersFromCSV(leader_filename, pokemons)};
-    std::vector<Master> masters {readMasterFromCSV(master_filename, pokemons)};
-    
-    Player player {};
+void GameController::runGame() {
     std::vector<std::shared_ptr<Pokemon>> player_pokemons {};
     std::string player_name {};
     bool victory {};
-    
-    // Game screen (shared across all components)
-    auto screen {ftxui::ScreenInteractive::Fullscreen()};
 
     while(state != GameState::Exit) 
     {
@@ -76,7 +71,6 @@ void runGame()
         case GameState::SelectionMenu:
             player_pokemons = SelectionMenu(screen, pokemons);
             player.setPokemons(player_pokemons);
-            
             state = GameState::MainMenu;
             break;
 
@@ -89,12 +83,12 @@ void runGame()
 
         case GameState::EndMenu:
             state = EndMenu(screen, victory);
-            resetToGameStart(pokemons, leaders, masters, player);
+            resetToGameStart();
             break;
         
         default:
+            throw std::runtime_error("Unreachable");
             break;
         }   
     }
-
 }
