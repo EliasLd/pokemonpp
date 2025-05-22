@@ -22,6 +22,7 @@ public:
     // pure virtual function
     virtual const std::string toString() const = 0;
     virtual void Defeated() = 0;
+    virtual void setDefeated(const bool new_defeated) = 0;
 
     const std::vector<std::shared_ptr<Pokemon>>& getPokemons() const;
     const std::string& getName() const;
@@ -55,6 +56,7 @@ public:
 
     void swapPokemons(int index1, int index2);
     void Defeated() override;
+    void setDefeated(const bool new_defeated) override;
 
     const std::string interactWith(const std::shared_ptr<Interact>& target);
 };
@@ -76,6 +78,7 @@ public:
     int getBadgesCondition() const;
     bool isDefeated() const;
     void Defeated() override;
+    void setDefeated(const bool new_defeated) override;
     const std::string interactWith() const override;
 };
 
@@ -89,6 +92,7 @@ public:
     const std::string toString() const override;
     bool isDefeated() const;
     void Defeated() override;
+    void setDefeated(const bool new_defeated) override;
 };
 
 #endif
