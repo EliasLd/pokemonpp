@@ -2,5 +2,6 @@
 
 int main() 
 {
-    runGame();
+    GameController controller;
+    controller.runGame();
 }
