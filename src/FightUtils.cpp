@@ -67,3 +67,11 @@ bool defeatedAllMasters(const std::vector<Master>& masters) {
 
     return true;
 }
+
+bool isVictory(const std::vector<GymLeader>& leaders, const std::vector<Master>& masters) {
+    return defeatedAllGym(leaders) && defeatedAllMasters(masters);
+}
+
+bool isDefeat(const Player& player) {
+    return allPokemonsKO(player.getPokemons()) && player.getNbPotions() == 0;
+}
