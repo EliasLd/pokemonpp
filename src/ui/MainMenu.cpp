@@ -193,10 +193,12 @@ Component pokemonInteractButton(int& selected, Player& player) {
     }, ButtonOption::Animated(Color::Orange4)) | center;
 }
 
-void mainMenu(ScreenInteractive& screen, GameState& state, Player& player, 
+bool mainMenu(ScreenInteractive& screen, GameState& state, Player& player,
     std::vector<GymLeader>& leaders, 
     std::vector<Master>& masters)
 {
+    interaction_text = text("");
+
     Component header            { PlayerStats(player) };
     Component title             { Title(player, leaders) };
     Component leaders_display   { Container::Vertical({}) };
@@ -304,5 +306,16 @@ void mainMenu(ScreenInteractive& screen, GameState& state, Player& player,
         }) | center | bgcolor(Color::RGB(0, 0, 0));
     }
 
+    if (isVictory(leaders, masters)) {
+        state = GameState::EndMenu;
+        return true;
+    }
+    if (isDefeat(player)) {
+        state = GameState::EndMenu;
+        return false;
+    }
+
     screen.Loop(render);
+
+    return false;
 }

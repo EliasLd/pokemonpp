@@ -10,6 +10,7 @@ enum class GameState {
     SelectionMenu,
     Credits,
     Exit,
+    EndMenu,
 };
 
 void runGame();

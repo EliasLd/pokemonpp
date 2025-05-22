@@ -46,6 +46,7 @@ void Player::swapPokemons(int index1, int index2) {
 }
 
 void Player::Defeated() { setDefeats(getDefeats() + 1); }
+void Player::setDefeated(const bool new_defeated) { if (new_defeated) Defeated(); }
 
 const std::string Player::interactWith(const std::shared_ptr<Interact>& target) {
     return target->interactWith();
@@ -72,6 +73,7 @@ const std::string& GymLeader::getGymName() const { return gym_name; }
 int GymLeader::getBadgesCondition() const { return badges_condition; }
 bool GymLeader::isDefeated() const { return defeated; }
 void GymLeader::Defeated() { defeated = true; }
+void GymLeader::setDefeated(const bool new_defeated) { defeated = new_defeated; }
 
 const std::string GymLeader::interactWith() const {
     return name + ": Félicitations ! Tu as prouvé ta force et ta détermination. Continue comme ça et tu deviendras un véritable maître Pokemon !";
@@ -92,3 +94,4 @@ const std::string Master::toString() const
 
 bool Master::isDefeated() const { return defeated; }
 void Master::Defeated() { defeated = true; }
+void Master::setDefeated(const bool new_defeated) { defeated = new_defeated; }
