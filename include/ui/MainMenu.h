@@ -17,7 +17,7 @@ ftxui::Component healButton(int& selected, Player& player);
 
 void updatePokemonsEntries(std::vector<std::string>& values, std::vector<std::string>& entries, Player& player);
 
-void mainMenu(ftxui::ScreenInteractive& screen, GameState& state, Player& player, 
+bool mainMenu(ftxui::ScreenInteractive& screen, GameState& state, Player& player,
             std::vector<GymLeader>& leaders, 
             std::vector<Master>& masters);
 
